@@ -44,15 +44,15 @@ public class MainActivity extends AppCompatActivity
         songsRV.setAdapter(songRVAdapter);
 
         // Add new song button is pushed
-        addSongButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
+        //addSongButton.setOnClickListener(new View.OnClickListener()
+        //{
+        //@Override
+        //public void onClick(View v)
+        //{
                 // Opening a new activity via an intent
                 //Intent i = new Intent(AddSongActivity.this, MainActivity.class);
                 //startActivity(i);
-            }
-        });
+        //}
+        //});
     }
 }
