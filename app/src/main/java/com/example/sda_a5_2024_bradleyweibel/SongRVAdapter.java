@@ -49,10 +49,8 @@ public class SongRVAdapter extends RecyclerView.Adapter<SongRVAdapter.ViewHolder
             {
                 // Calling an intent
                 Intent i = new Intent(context, ViewSongAndVersionsActivity.class);
-
                 // Passing all values
                 i.putExtra(StringHelper.SongData_Intent_Name, modal.getSongName());
-
                 context.startActivity(i);
             }
         });

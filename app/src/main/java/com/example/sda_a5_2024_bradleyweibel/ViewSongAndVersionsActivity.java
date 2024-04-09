@@ -1,8 +1,6 @@
 package com.example.sda_a5_2024_bradleyweibel;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,7 +8,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 
 public class ViewSongAndVersionsActivity extends AppCompatActivity
@@ -21,7 +18,6 @@ public class ViewSongAndVersionsActivity extends AppCompatActivity
     private DBHandler dbHandler;
     private VersionRVAdapter versionRVAdapter;
     private RecyclerView versionsRV;
-    private SharedPreferences songData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -29,7 +25,7 @@ public class ViewSongAndVersionsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_song_and_versions);
 
-        // Getting data which we passed in our adapter class
+        // Getting song name which we passed in the adapter class
         String songName = getIntent().getStringExtra(StringHelper.SongData_Intent_Name);
 
         // Attaching variables to UI elements
@@ -59,22 +55,16 @@ public class ViewSongAndVersionsActivity extends AppCompatActivity
         // Setting adapter to recycler view
         versionsRV.setAdapter(versionRVAdapter);
 
-        // Get shared preferences
-        songData = this.getSharedPreferences(StringHelper.SongData_SharedPreferences, Context.MODE_PRIVATE);
-
-        // Back to home
+        // Edit the song's name button is clicked
         editSongBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                // Save name in SharedPreferences
-                SharedPreferences.Editor editor = songData.edit();
-                editor.putString(StringHelper.SongData_Preference_Name, songName);
-                editor.apply();
-
                 // Opening a new activity via a intent
                 Intent i = new Intent(ViewSongAndVersionsActivity.this, EditSongActivity.class);
+                // Passing song name through intent
+                i.putExtra(StringHelper.SongData_Intent_Name, songName);
                 startActivity(i);
             }
         });

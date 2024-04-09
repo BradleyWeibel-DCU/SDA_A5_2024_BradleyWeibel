@@ -1,8 +1,6 @@
 package com.example.sda_a5_2024_bradleyweibel;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +12,6 @@ public class EditSongActivity extends AppCompatActivity
     private String originalSongName;
     private EditText songNameEdt;
     private Button saveBtn, backToSongAndVersionsBtn;
-    private SharedPreferences songData;
     private DBHandler dbHandler;
 
     @Override
@@ -28,15 +25,15 @@ public class EditSongActivity extends AppCompatActivity
         saveBtn = findViewById(R.id.idBtnSave);
         backToSongAndVersionsBtn = findViewById(R.id.idBtnBackToSongAndVersions);
 
-        // Get shared preferences
-        songData = this.getSharedPreferences(StringHelper.SongData_SharedPreferences, Context.MODE_PRIVATE);
-        // Set song name in UI
-        originalSongName = songData.getString(StringHelper.SongData_Preference_Name, "");
+        // Get original song name from intent
+        originalSongName = getIntent().getStringExtra(StringHelper.SongData_Intent_Name);
+        // Set original song name in UI
         songNameEdt.setText(originalSongName);
 
+        // Initiate DB handler
         dbHandler = new DBHandler(EditSongActivity.this);
 
-        // below line is to add on click listener for the save song button
+        // Add on click listener for the save song button
         saveBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -52,8 +49,12 @@ public class EditSongActivity extends AppCompatActivity
                     StringHelper.showToast("Please enter a name for the song", EditSongActivity.this);
                     return;
                 }
-
-                // Check name is unique in DB TODO
+                else if (!dbHandler.isSongNameUnique(newSongName))
+                {
+                    // TODO: hard coded string
+                    StringHelper.showToast("Please enter a unique song name", EditSongActivity.this);
+                    return;
+                }
 
                 // Save changes in SQLite DB
                 // Get song ID for update
@@ -64,21 +65,21 @@ public class EditSongActivity extends AppCompatActivity
 
                 // Go to 'View Song and Versions' page
                 Intent i = new Intent(EditSongActivity.this, ViewSongAndVersionsActivity.class);
-                // Passing all values
+                // Passing the new song name
                 i.putExtra(StringHelper.SongData_Intent_Name, newSongName);
                 startActivity(i);
             }
         });
 
-        // Back to home
+        // Back to view song and versions page
         backToSongAndVersionsBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                // opening a new activity via a intent.
+                // Opening a new activity via a intent
                 Intent i = new Intent(EditSongActivity.this, ViewSongAndVersionsActivity.class);
-                // Passing all values
+                // Passing original song name through intent
                 i.putExtra(StringHelper.SongData_Intent_Name, originalSongName);
                 startActivity(i);
             }

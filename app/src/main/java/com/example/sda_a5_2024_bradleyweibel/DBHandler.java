@@ -121,7 +121,8 @@ public class DBHandler extends SQLiteOpenHelper
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Creating a cursor with query to read songs data from database
-        Cursor cursorSongs = db.rawQuery("SELECT * FROM " + SONGS_TABLE_NAME, null);
+        String searchQuery = "SELECT * FROM " + SONGS_TABLE_NAME;
+        Cursor cursorSongs = db.rawQuery(searchQuery, null);
 
         ArrayList<SongModal> songModalArrayList = new ArrayList<>();
 
@@ -149,7 +150,8 @@ public class DBHandler extends SQLiteOpenHelper
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Creating a cursor with query to read versions data from database
-        Cursor cursorVersions = db.rawQuery("SELECT * FROM " + VERSIONS_TABLE_NAME + " WHERE " + VERSIONS_SONG_ID_COL + " = " + versionSongId, null);
+        String searchQuery = "SELECT * FROM " + VERSIONS_TABLE_NAME + " WHERE " + VERSIONS_SONG_ID_COL + " = " + versionSongId;
+        Cursor cursorVersions = db.rawQuery(searchQuery, null);
 
         ArrayList<VersionModal> versionModalArrayList = new ArrayList<>();
 
@@ -177,7 +179,8 @@ public class DBHandler extends SQLiteOpenHelper
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Creating a cursor with query to read versions data from database
-        Cursor cursorSong = db.rawQuery("SELECT " + SONGS_ID_COL + " FROM " + SONGS_TABLE_NAME + " WHERE " + SONGS_NAME_COL + " = '" + songName + "'", null);
+        String searchQuery = "SELECT " + SONGS_ID_COL + " FROM " + SONGS_TABLE_NAME + " WHERE " + SONGS_NAME_COL + " = '" + songName + "'";
+        Cursor cursorSong = db.rawQuery(searchQuery, null);
 
         Integer songId = null;
 
@@ -192,6 +195,85 @@ public class DBHandler extends SQLiteOpenHelper
         db.close();
 
         return songId;
+    }
+
+    // Getting a version's ID from DB
+    public Integer getVersionId(Integer songId, String versionName)
+    {
+        // Creating a database for reading our database
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Creating a cursor with query to read versions data from database
+        String searchQuery = "SELECT " + VERSIONS_ID_COL + " FROM " + VERSIONS_TABLE_NAME + " WHERE " + VERSIONS_SONG_ID_COL + " = " + songId + " AND " + VERSIONS_NAME_COL + " = '" + versionName + "'";
+        Cursor cursorSong = db.rawQuery(searchQuery, null);
+
+        Integer versionId = null;
+
+        if (cursorSong.moveToFirst()) {
+            // Getting the version id
+            versionId = cursorSong.getInt(0);
+        }
+
+        // Closing our cursor and returning our array list
+        cursorSong.close();
+        // Closing our database after adding the song
+        db.close();
+
+        return versionId;
+    }
+
+    // Is song name unique
+    public Boolean isSongNameUnique(String songName)
+    {
+        // Creating a database for reading our database
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Creating a cursor with query to read versions data from database
+        String searchQuery = "SELECT " + SONGS_ID_COL + " FROM " + SONGS_TABLE_NAME + " WHERE " + SONGS_NAME_COL + " = '" + songName + "'";
+        Cursor cursorSong = db.rawQuery(searchQuery, null);
+
+        Boolean songNameIsUnique = true;
+
+        if (cursorSong.moveToFirst()) {
+            // Getting the song id
+            Integer songId = cursorSong.getInt(0);
+            if (songId != 0 && songId != null)
+                songNameIsUnique = false;
+        }
+
+        // Closing our cursor and returning our array list
+        cursorSong.close();
+        // Closing our database after adding the song
+        db.close();
+
+        return songNameIsUnique;
+    }
+
+    // Is version name unique in context of song's versions
+    public Boolean isVersionNameUnique(Integer songId, String versionName)
+    {
+        // Creating a database for reading our database
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Creating a cursor with query to read versions data from database
+        String searchQuery = "SELECT " + VERSIONS_ID_COL + " FROM " + VERSIONS_TABLE_NAME + " WHERE " + VERSIONS_SONG_ID_COL + " = " + songId + " AND " + VERSIONS_NAME_COL + " = '" + versionName + "'";
+        Cursor cursorSong = db.rawQuery(searchQuery, null);
+
+        Boolean versionNameIsUnique = true;
+
+        if (cursorSong.moveToFirst()) {
+            // Getting the version id
+            Integer versionId = cursorSong.getInt(0);
+            if (versionId != 0 && versionId != null)
+                versionNameIsUnique = false;
+        }
+
+        // Closing our cursor and returning our array list
+        cursorSong.close();
+        // Closing our database after adding the song
+        db.close();
+
+        return versionNameIsUnique;
     }
 
 

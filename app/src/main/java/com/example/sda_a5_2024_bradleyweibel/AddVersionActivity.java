@@ -1,8 +1,6 @@
 package com.example.sda_a5_2024_bradleyweibel;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,9 +12,8 @@ public class AddVersionActivity extends AppCompatActivity
 {
     private TextView songNameTxt;
     private EditText versionNameEdt, versionDescriptionEdt, versionLyricsEdt;
-    private Button createBtn, backToHomeBtn;
+    private Button createBtn, backToSongBtn;
     private DBHandler dbHandler;
-    private SharedPreferences songData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -30,15 +27,13 @@ public class AddVersionActivity extends AppCompatActivity
         versionDescriptionEdt = findViewById(R.id.idEdtVersionDescription);
         versionLyricsEdt = findViewById(R.id.idEdtVersionLyrics);
         createBtn = findViewById(R.id.idBtnAddVersion);
-        backToHomeBtn = findViewById(R.id.idBtnBackToHome);
+        backToSongBtn = findViewById(R.id.idBtnBackToAddSong);
 
-        // Creating a new dbhandler class and passing our context to it
+        // Creating a new DB handler class and passing our context to it
         dbHandler = new DBHandler(AddVersionActivity.this);
 
-        // Get shared preferences
-        songData = this.getSharedPreferences(StringHelper.SongData_SharedPreferences, Context.MODE_PRIVATE);
-        // Set song name in UI
-        songNameTxt.setText(songData.getString(StringHelper.SongData_Preference_Name, ""));
+        // Set song name in UI from intent
+        songNameTxt.setText(getIntent().getStringExtra(StringHelper.SongData_Intent_Name));
 
         // Add on click listener for add song and version button.
         createBtn.setOnClickListener(new View.OnClickListener()
@@ -59,7 +54,6 @@ public class AddVersionActivity extends AppCompatActivity
                 }
 
                 String creationDate = StringHelper.getFormattedDate();
-
                 // Calling a method to add new song to sqlite data and pass all our values to it
                 Integer songId = dbHandler.addNewSong(songName, creationDate, creationDate);
 
@@ -69,20 +63,24 @@ public class AddVersionActivity extends AppCompatActivity
                 // after adding the data we are displaying a toast message
                 StringHelper.showToast("Song and version added", AddVersionActivity.this);
 
+                // TODO: Go to View version page, not home screen
+
                 // Returning to home page
                 Intent i = new Intent(AddVersionActivity.this, MainActivity.class);
                 startActivity(i);
             }
         });
 
-        // Back to home
-        backToHomeBtn.setOnClickListener(new View.OnClickListener()
+        // Back to song button is clicked
+        backToSongBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 // opening a new activity via a intent.
-                Intent i = new Intent(AddVersionActivity.this, MainActivity.class);
+                Intent i = new Intent(AddVersionActivity.this, AddSongActivity.class);
+                // Passing the song name
+                i.putExtra(StringHelper.SongData_Intent_Name, songNameTxt.getText().toString());
                 startActivity(i);
             }
         });

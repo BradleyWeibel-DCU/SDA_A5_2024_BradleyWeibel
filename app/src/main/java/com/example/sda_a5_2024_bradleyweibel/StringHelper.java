@@ -39,3 +39,16 @@ public class StringHelper
     // Get current date in '09 Apr 2024' format
     public static String getFormattedDate() { return new SimpleDateFormat("dd MMM yyyy").format(new Date()); }
 }
+
+// TODO: Shared preference code, maybe it is needed later
+// private SharedPreferences songData;
+
+// Get shared preferences
+//songData = this.getSharedPreferences(StringHelper.SongData_SharedPreferences, Context.MODE_PRIVATE);
+// Set song name in UI
+//songNameTxt.setText(songData.getString(StringHelper.SongData_Preference_Name, ""));
+
+// Clear or insert song name into shared preferences
+//SharedPreferences.Editor editor = songData.edit();
+//editor.putString(StringHelper.SongData_Preference_Name, "");
+//editor.apply();

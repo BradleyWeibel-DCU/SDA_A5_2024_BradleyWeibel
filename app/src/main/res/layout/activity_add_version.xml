@@ -57,11 +57,11 @@
         android:textAllCaps="false" />
 
     <Button
-        android:id="@+id/idBtnBackToHome"
+        android:id="@+id/idBtnBackToAddSong"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Back to Home"
+        android:text="Back to Song"
         android:textAllCaps="false" />
 
 </LinearLayout>

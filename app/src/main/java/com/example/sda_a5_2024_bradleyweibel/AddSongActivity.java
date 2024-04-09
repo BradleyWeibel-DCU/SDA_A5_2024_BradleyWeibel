@@ -1,8 +1,6 @@
 package com.example.sda_a5_2024_bradleyweibel;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +11,7 @@ public class AddSongActivity extends AppCompatActivity
 {
     private EditText songNameEdt;
     private Button nextBtn, backToHomeBtn;
-    private SharedPreferences songData;
+    private DBHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -26,8 +24,12 @@ public class AddSongActivity extends AppCompatActivity
         nextBtn = findViewById(R.id.idBtnNext);
         backToHomeBtn = findViewById(R.id.idBtnBackToHome);
 
-        // Get shared preferences
-        songData = this.getSharedPreferences(StringHelper.SongData_SharedPreferences, Context.MODE_PRIVATE);
+        // Initiate DB handler
+        dbHandler = new DBHandler(AddSongActivity.this);
+
+        // Get song name from intent if it was passed
+        String songName = getIntent().getStringExtra(StringHelper.SongData_Intent_Name);
+        songNameEdt.setText(songName);
 
         // below line is to add on click listener for the next screen button
         nextBtn.setOnClickListener(new View.OnClickListener()
@@ -45,15 +47,17 @@ public class AddSongActivity extends AppCompatActivity
                     StringHelper.showToast("Please enter a name for the song", AddSongActivity.this);
                     return;
                 }
-                // TODO: make sure no name in DB matches this one
-
-                // Save name in SharedPreferences
-                SharedPreferences.Editor editor = songData.edit();
-                editor.putString(StringHelper.SongData_Preference_Name, songName);
-                editor.apply();
+                else if (!dbHandler.isSongNameUnique(songName))
+                {
+                    // TODO: hard coded string
+                    StringHelper.showToast("Please enter a unique song name", AddSongActivity.this);
+                    return;
+                }
 
                 // Go to 'Add Version' page
                 Intent i = new Intent(AddSongActivity.this, AddVersionActivity.class);
+                // Passing song name through intent
+                i.putExtra(StringHelper.SongData_Intent_Name, songName);
                 startActivity(i);
             }
         });
