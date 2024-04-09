@@ -64,6 +64,8 @@ public class DBHandler extends SQLiteOpenHelper
         db.execSQL(versionsTableQuery);
     }
 
+
+    // -------------------------------- Adding entry to DB --------------------------------
     // Method to add new song to our SONGS table
     public Integer addNewSong(String songName, String songCreationDate, String songEditDate)
     {
@@ -84,26 +86,7 @@ public class DBHandler extends SQLiteOpenHelper
         db.close();
 
         // GET newly create song's id
-        // Creating a database for reading our database
-        db = this.getReadableDatabase();
-
-        // Creating a cursor with query to read versions data from database
-        Cursor cursorSong = db.rawQuery("SELECT " + SONGS_ID_COL + " FROM " + SONGS_TABLE_NAME + " WHERE " + SONGS_NAME_COL + " = '" + songName + "'", null);
-
-        Integer songId = null;
-
-        if (cursorSong.moveToFirst())
-        {
-            // Getting the song id
-            songId = cursorSong.getInt(0);
-        }
-
-        // Closing our cursor and returning our array list
-        cursorSong.close();
-        // Closing our database after adding the song
-        db.close();
-
-        return songId;
+        return getSongId(songName);
     }
 
     // Method to add new song-version to our VERSIONS table
@@ -129,6 +112,8 @@ public class DBHandler extends SQLiteOpenHelper
         db.close();
     }
 
+
+    // -------------------------------- Reading from DB --------------------------------
     // Reading all songs
     public ArrayList<SongModal> readSongs()
     {
@@ -158,7 +143,7 @@ public class DBHandler extends SQLiteOpenHelper
     }
 
     // Reading all song-versions
-    public ArrayList<VersionModal> readVersions(String versionSongId)
+    public ArrayList<VersionModal> readVersions(Integer versionSongId)
     {
         // Creating a database for reading our database
         SQLiteDatabase db = this.getReadableDatabase();
@@ -185,8 +170,34 @@ public class DBHandler extends SQLiteOpenHelper
         return versionModalArrayList;
     }
 
+    // Getting a song's ID from DB
+    public Integer getSongId(String songName)
+    {
+        // Creating a database for reading our database
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Creating a cursor with query to read versions data from database
+        Cursor cursorSong = db.rawQuery("SELECT " + SONGS_ID_COL + " FROM " + SONGS_TABLE_NAME + " WHERE " + SONGS_NAME_COL + " = '" + songName + "'", null);
+
+        Integer songId = null;
+
+        if (cursorSong.moveToFirst()) {
+            // Getting the song id
+            songId = cursorSong.getInt(0);
+        }
+
+        // Closing our cursor and returning our array list
+        cursorSong.close();
+        // Closing our database after adding the song
+        db.close();
+
+        return songId;
+    }
+
+
+    // -------------------------------- Updating entry in DB --------------------------------
     // Updating a song
-    public void updateSong(String songId, String songName, String songEditDate)
+    public void updateSong(Integer songId, String songName, String songEditDate)
     {
         // Calling a method to get writable database
         SQLiteDatabase db = this.getWritableDatabase();
@@ -197,12 +208,12 @@ public class DBHandler extends SQLiteOpenHelper
         values.put(SONGS_EDIT_DATE_COL, songEditDate);
 
         // Calling a update method to update our SONGS table in database and passing our values and comparing it with id of our song
-        db.update(SONGS_TABLE_NAME, values, SONGS_ID_COL + "=?", new String[]{ songId });
+        db.update(SONGS_TABLE_NAME, values, SONGS_ID_COL + "=" + songId, null);
         db.close();
     }
 
     // Updating a song-version
-    public void updateVersion(String versionId, String versionName, String versionDescription, String versionLyrics, String versionEditDate)
+    public void updateVersion(Integer versionId, String versionName, String versionDescription, String versionLyrics, String versionEditDate)
     {
         // Calling a method to get writable database
         SQLiteDatabase db = this.getWritableDatabase();
@@ -215,10 +226,12 @@ public class DBHandler extends SQLiteOpenHelper
         values.put(SONGS_EDIT_DATE_COL, versionEditDate);
 
         // Calling a update method to update our VERSIONS table in database and passing our values and comparing it with id of our version
-        db.update(VERSIONS_TABLE_NAME, values, VERSIONS_ID_COL + "=?", new String[]{ versionId });
+        db.update(VERSIONS_TABLE_NAME, values, VERSIONS_ID_COL + "=" + versionId,null);
         db.close();
     }
 
+
+    // -------------------------------- Deleting entry in DB --------------------------------
     // Deleting a song
     public void deleteSong(String songId)
     {

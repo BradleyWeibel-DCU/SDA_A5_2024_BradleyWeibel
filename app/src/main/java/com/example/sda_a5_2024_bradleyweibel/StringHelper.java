@@ -1,11 +1,9 @@
 package com.example.sda_a5_2024_bradleyweibel;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.core.content.ContextCompat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -16,7 +14,11 @@ public class StringHelper
 
     // SharedPreference key names
     // Song data
-    public final static String SongData_Preference_Name = "name";
+    public final static String SongData_Preference_Name = "song_name";
+
+    // Intent values
+    public final static String SongData_Intent_Name = "song_name";
+    public final static String VersionData_Intent_Name = "version_name";
 
     // Show a customized toast message
     public static void showToast(String message, Context context)

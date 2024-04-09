@@ -42,22 +42,20 @@ public class SongRVAdapter extends RecyclerView.Adapter<SongRVAdapter.ViewHolder
         holder.songEditDateTV.setText(modal.getSongEditDate());
 
         // Add on click listener for recycler view item
-        //holder.itemView.setOnClickListener(new View.OnClickListener()
-        //{
-            //@Override
-            //public void onClick(View v)
-            //{
+        holder.itemView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
                 // Calling an intent
-                //Intent i = new Intent(context, UpdateSongActivity.class);
+                Intent i = new Intent(context, ViewSongAndVersionsActivity.class);
 
                 // Passing all values
-            //i.putExtra("NAME", modal.getSongName());
-            //i.putExtra("CREATION_DATE", modal.getSongCreationDate());
-            //i.putExtra("EDIT_DATE", modal.getSongEditDate());
+                i.putExtra(StringHelper.SongData_Intent_Name, modal.getSongName());
 
-            //context.startActivity(i);
-            //}
-            //});
+                context.startActivity(i);
+            }
+        });
     }
 
     @Override

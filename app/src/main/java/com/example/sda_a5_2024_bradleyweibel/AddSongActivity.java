@@ -29,7 +29,7 @@ public class AddSongActivity extends AppCompatActivity
         // Get shared preferences
         songData = this.getSharedPreferences(StringHelper.SongData_SharedPreferences, Context.MODE_PRIVATE);
 
-        // below line is to add on click listener for our add course button.
+        // below line is to add on click listener for the next screen button
         nextBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -45,6 +45,7 @@ public class AddSongActivity extends AppCompatActivity
                     StringHelper.showToast("Please enter a name for the song", AddSongActivity.this);
                     return;
                 }
+                // TODO: make sure no name in DB matches this one
 
                 // Save name in SharedPreferences
                 SharedPreferences.Editor editor = songData.edit();

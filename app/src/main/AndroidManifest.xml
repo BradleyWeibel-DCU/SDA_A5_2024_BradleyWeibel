@@ -19,6 +19,12 @@
             android:name=".AddVersionActivity"
             android:exported="false" />
         <activity
+            android:name=".ViewSongAndVersionsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditSongActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
