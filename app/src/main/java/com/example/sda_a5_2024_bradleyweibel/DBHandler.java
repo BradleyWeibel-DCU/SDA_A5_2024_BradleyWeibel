@@ -65,7 +65,7 @@ public class DBHandler extends SQLiteOpenHelper
     }
 
     // Method to add new song to our SONGS table
-    public void addNewSong(String songName, String songCreationDate, String songEditDate)
+    public Integer addNewSong(String songName, String songCreationDate, String songEditDate)
     {
         // Creating a variable for our sqlite database and calling writable method as we are writing data in our database
         SQLiteDatabase db = this.getWritableDatabase();
@@ -82,10 +82,32 @@ public class DBHandler extends SQLiteOpenHelper
 
         // Closing our database after adding the song
         db.close();
+
+        // GET newly create song's id
+        // Creating a database for reading our database
+        db = this.getReadableDatabase();
+
+        // Creating a cursor with query to read versions data from database
+        Cursor cursorSong = db.rawQuery("SELECT " + SONGS_ID_COL + " FROM " + SONGS_TABLE_NAME + " WHERE " + SONGS_NAME_COL + " = '" + songName + "'", null);
+
+        Integer songId = null;
+
+        if (cursorSong.moveToFirst())
+        {
+            // Getting the song id
+            songId = cursorSong.getInt(0);
+        }
+
+        // Closing our cursor and returning our array list
+        cursorSong.close();
+        // Closing our database after adding the song
+        db.close();
+
+        return songId;
     }
 
     // Method to add new song-version to our VERSIONS table
-    public void addNewVersion(String versionName, String versionSongId, String versionDescription, String versionLyrics, String versionCreationDate, String versionEditDate)
+    public void addNewVersion(String versionName, Integer versionSongId, String versionDescription, String versionLyrics, String versionCreationDate, String versionEditDate)
     {
         // Creating a variable for our sqlite database and calling writable method as we are writing data in our database
         SQLiteDatabase db = this.getWritableDatabase();
@@ -124,9 +146,9 @@ public class DBHandler extends SQLiteOpenHelper
             do
             {
                 // Adding the data from cursor to our array list
-                songModalArrayList.add(new SongModal(cursorSongs.getString(2),
-                        cursorSongs.getString(3),
-                        cursorSongs.getString(4)));
+                songModalArrayList.add(new SongModal(cursorSongs.getString(1),
+                        cursorSongs.getString(2),
+                        cursorSongs.getString(3)));
             } while (cursorSongs.moveToNext());
             // Moving cursor to next entry
         }
@@ -152,9 +174,9 @@ public class DBHandler extends SQLiteOpenHelper
             do
             {
                 // Adding the data from cursor to our array list
-                versionModalArrayList.add(new VersionModal(cursorVersions.getString(3),
-                        cursorVersions.getString(6),
-                        cursorVersions.getString(7)));
+                versionModalArrayList.add(new VersionModal(cursorVersions.getString(2),
+                        cursorVersions.getString(5),
+                        cursorVersions.getString(6)));
             } while (cursorVersions.moveToNext());
             // Moving cursor to next entry
         }
