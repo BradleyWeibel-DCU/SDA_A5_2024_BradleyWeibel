@@ -20,10 +20,8 @@ public class ViewVersionActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_version);
 
-        // Getting song name which we passed in the adapter class
+        // Getting version data from the adapter class
         Integer versionId = getIntent().getIntExtra(StringHelper.VersionData_Intent_ID, 0);
-        Integer versionSongId = getIntent().getIntExtra(StringHelper.VersionData_Intent_Song_ID, 0);
-        String versionName = getIntent().getStringExtra(StringHelper.VersionData_Intent_Name);
 
         // Attaching variables to UI elements
         songNameTxt = findViewById(R.id.idTxtSongName);
@@ -38,26 +36,26 @@ public class ViewVersionActivity extends AppCompatActivity
         // Get version data from DB
         versionData = dbHandler.getSongVersion(versionId);
         // Get song name
-        String songName = dbHandler.getSongName(versionSongId);
+        String songName = dbHandler.getSongName(versionData.getVersionSongId());
         // Insert values into UI elements
         songNameTxt.setText(songName);
-        versionNameTxt.setText(versionName);
+        versionNameTxt.setText(versionData.getVersionName());
         versionDescriptionTxt.setText(versionData.getVersionDescription());
         versionLyricsTxt.setText(versionData.getVersionLyrics());
 
         // Edit the version button is clicked
-        //editVersionBtn.setOnClickListener(new View.OnClickListener()
-        //{
-        //    @Override
-        //    public void onClick(View v)
-        //    {
+        editVersionBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
                 // Opening a new activity via a intent
-        //        Intent i = new Intent(ViewVersionActivity.this, EditVersionActivity.class);
-                // Passing song name through intent
-        //        i.putExtra(StringHelper.SongData_Intent_Name, songName);
-        //        startActivity(i);
-        //    }
-        //});
+                Intent i = new Intent(ViewVersionActivity.this, EditVersionActivity.class);
+                // Passing version id through intent
+                i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
+                startActivity(i);
+            }
+        });
 
         // Back to song and versions screen
         backToSongAndVersionsBtn.setOnClickListener(new View.OnClickListener()

@@ -22,10 +22,13 @@
             android:name=".ViewSongAndVersionsActivity"
             android:exported="false" />
         <activity
+            android:name=".ViewVersionActivity"
+            android:exported="false" />
+        <activity
             android:name=".EditSongActivity"
             android:exported="false" />
         <activity
-            android:name=".ViewVersionActivity"
+            android:name=".EditVersionActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

@@ -65,8 +65,6 @@ public class AddVersionActivity extends AppCompatActivity
                 Intent i = new Intent(AddVersionActivity.this, ViewVersionActivity.class);
                 // Pass data through intent
                 i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
-                i.putExtra(StringHelper.VersionData_Intent_Song_ID, songId);
-                i.putExtra(StringHelper.VersionData_Intent_Name, versionName);
                 startActivity(i);
             }
         });

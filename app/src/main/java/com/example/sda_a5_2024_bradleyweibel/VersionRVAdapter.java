@@ -51,8 +51,6 @@ public class VersionRVAdapter extends RecyclerView.Adapter<VersionRVAdapter.View
                 Intent i = new Intent(context, ViewVersionActivity.class);
                 // Passing version name through intent
                 i.putExtra(StringHelper.VersionData_Intent_ID, modal.getId());
-                i.putExtra(StringHelper.VersionData_Intent_Song_ID, modal.getVersionSongId());
-                i.putExtra(StringHelper.VersionData_Intent_Name, modal.getVersionName());
                 context.startActivity(i);
             }
         });

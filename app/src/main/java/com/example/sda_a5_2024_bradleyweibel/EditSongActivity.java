@@ -59,9 +59,9 @@ public class EditSongActivity extends AppCompatActivity
                 // Save changes in SQLite DB
                 // Get song ID for update
                 Integer songId = dbHandler.getSongId(originalSongName);
-                String todaysDate = StringHelper.getFormattedDate();
+                String modificationDate = StringHelper.getFormattedDate();
                 // Update song with new name
-                dbHandler.updateSong(songId, newSongName, todaysDate);
+                dbHandler.updateSong(songId, newSongName, modificationDate);
 
                 // Go to 'View Song and Versions' page
                 Intent i = new Intent(EditSongActivity.this, ViewSongAndVersionsActivity.class);
