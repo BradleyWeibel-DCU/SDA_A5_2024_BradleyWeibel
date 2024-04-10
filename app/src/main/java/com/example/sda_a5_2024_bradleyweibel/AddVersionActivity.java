@@ -33,7 +33,11 @@ public class AddVersionActivity extends AppCompatActivity
         dbHandler = new DBHandler(AddVersionActivity.this);
 
         // Set song name in UI from intent
-        songNameTxt.setText(getIntent().getStringExtra(StringHelper.SongData_Intent_Name));
+        String songName = getIntent().getStringExtra(StringHelper.SongData_Intent_Name);
+        songNameTxt.setText(songName);
+
+        final Integer[] songId = {dbHandler.getSongId(songName)};
+        final Integer[] versionId = {0};
 
         // Add on click listener for add song and version button.
         createBtn.setOnClickListener(new View.OnClickListener()
@@ -42,29 +46,46 @@ public class AddVersionActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 // Get data from all edit text fields
-                String songName = songNameTxt.getText().toString().trim();
                 String versionName = versionNameEdt.getText().toString().trim();
                 String versionDescription = versionDescriptionEdt.getText().toString().trim();
                 String versionLyrics = versionLyricsEdt.getText().toString().trim();
 
                 // Validating if needed text fields are empty or not
-                if (songName.isEmpty() || versionName.isEmpty()) {
-                    StringHelper.showToast("Please enter all names", AddVersionActivity.this);
+                if (versionName.isEmpty()) {
+                    StringHelper.showToast("Please enter a version name", AddVersionActivity.this);
                     return;
                 }
 
                 String creationDate = StringHelper.getFormattedDate();
-                // Add new song to DB
-                Integer songId = dbHandler.addNewSong(songName, creationDate, creationDate);
-                // Add new version of song to DB
-                Integer versionId = dbHandler.addNewVersion(versionName, songId, versionDescription, versionLyrics, creationDate, creationDate);
 
-                StringHelper.showToast("Song and version added", AddVersionActivity.this);
+                if (songId[0].equals(0))
+                {
+                    // Song doesn't exist yet
+                    // Add new song to DB
+                    songId[0] = dbHandler.addNewSong(songName, creationDate, creationDate);
+                    // Add new version of song to DB
+                    versionId[0] = dbHandler.addNewVersion(versionName, songId[0], versionDescription, versionLyrics, creationDate, creationDate);
+
+                    StringHelper.showToast("Song and version added", AddVersionActivity.this);
+                }
+                else
+                {
+                    // Song already exists, add a new version for this song
+                    // Version name must be unique in the context of this song
+                    if (!dbHandler.isVersionNameUnique(songId[0], versionName))
+                    {
+                        StringHelper.showToast("Version name must be unique for this song", AddVersionActivity.this);
+                        return;
+                    }
+                    // Add new version of song to DB
+                    versionId[0] = dbHandler.addNewVersion(versionName, songId[0], versionDescription, versionLyrics, creationDate, creationDate);
+                }
+
 
                 // Go to view version screen
                 Intent i = new Intent(AddVersionActivity.this, ViewVersionActivity.class);
                 // Pass data through intent
-                i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
+                i.putExtra(StringHelper.VersionData_Intent_ID, versionId[0]);
                 startActivity(i);
             }
         });
@@ -75,8 +96,19 @@ public class AddVersionActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                // opening a new activity via a intent.
-                Intent i = new Intent(AddVersionActivity.this, AddSongActivity.class);
+                Intent i;
+                if (songId[0].equals(0))
+                {
+                    // Song has not been created yet, go back to create song screen
+                    // Opening a new activity via an intent
+                    i = new Intent(AddVersionActivity.this, AddSongActivity.class);
+                }
+                else
+                {
+                    // Song has been created already, go back to 'song and versions' screen
+                    // Opening a new activity via an intent
+                    i = new Intent(AddVersionActivity.this, ViewSongAndVersionsActivity.class);
+                }
                 // Passing the song name
                 i.putExtra(StringHelper.SongData_Intent_Name, songNameTxt.getText().toString());
                 startActivity(i);

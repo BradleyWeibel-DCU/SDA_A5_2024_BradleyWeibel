@@ -233,7 +233,7 @@ public class DBHandler extends SQLiteOpenHelper
         String searchQuery = "SELECT " + SONGS_ID_COL + " FROM " + SONGS_TABLE_NAME + " WHERE " + SONGS_NAME_COL + " = '" + songName + "'";
         Cursor cursorSong = db.rawQuery(searchQuery, null);
 
-        Integer songId = null;
+        Integer songId = 0;
 
         if (cursorSong.moveToFirst()) {
             // Getting the song id

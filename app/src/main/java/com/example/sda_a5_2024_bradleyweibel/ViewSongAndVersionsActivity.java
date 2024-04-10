@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class ViewSongAndVersionsActivity extends AppCompatActivity
 {
     private TextView songNameTxt;
-    private Button editSongBtn, backToHomeBtn;
+    private Button editSongBtn, addVersionBtn, backToHomeBtn;
     private ArrayList<VersionModal> versionModalArrayList;
     private DBHandler dbHandler;
     private VersionRVAdapter versionRVAdapter;
@@ -31,6 +31,7 @@ public class ViewSongAndVersionsActivity extends AppCompatActivity
         // Attaching variables to UI elements
         songNameTxt = findViewById(R.id.idTxtSongName);
         editSongBtn = findViewById(R.id.idBtnEditSong);
+        addVersionBtn = findViewById(R.id.idBtnAddVersion);
         backToHomeBtn = findViewById(R.id.idBtnBackToHome);
 
         songNameTxt.setText(songName);
@@ -65,6 +66,20 @@ public class ViewSongAndVersionsActivity extends AppCompatActivity
                 // Opening a new activity via a intent
                 Intent i = new Intent(ViewSongAndVersionsActivity.this, EditSongActivity.class);
                 // Passing song name through intent
+                i.putExtra(StringHelper.SongData_Intent_Name, songName);
+                startActivity(i);
+            }
+        });
+
+        // Add a new version button is clicked
+        addVersionBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // opening a new activity via a intent.
+                Intent i = new Intent(ViewSongAndVersionsActivity.this, AddVersionActivity.class);
+                // Pass song name through intent
                 i.putExtra(StringHelper.SongData_Intent_Name, songName);
                 startActivity(i);
             }
