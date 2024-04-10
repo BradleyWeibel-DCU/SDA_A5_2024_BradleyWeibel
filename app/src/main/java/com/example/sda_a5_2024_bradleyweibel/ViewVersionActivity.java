@@ -45,15 +45,14 @@ public class ViewVersionActivity extends AppCompatActivity
         versionDescriptionTxt.setText(versionData.getVersionDescription());
         versionLyricsTxt.setText(versionData.getVersionLyrics());
 
-
-        // Edit the song's name button is clicked
+        // Edit the version button is clicked
         //editVersionBtn.setOnClickListener(new View.OnClickListener()
         //{
         //    @Override
         //    public void onClick(View v)
         //    {
                 // Opening a new activity via a intent
-        //        Intent i = new Intent(ViewVersionActivity.this, EditSongActivity.class);
+        //        Intent i = new Intent(ViewVersionActivity.this, EditVersionActivity.class);
                 // Passing song name through intent
         //        i.putExtra(StringHelper.SongData_Intent_Name, songName);
         //        startActivity(i);

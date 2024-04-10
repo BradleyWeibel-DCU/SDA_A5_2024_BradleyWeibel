@@ -54,19 +54,19 @@ public class AddVersionActivity extends AppCompatActivity
                 }
 
                 String creationDate = StringHelper.getFormattedDate();
-                // Calling a method to add new song to sqlite data and pass all our values to it
+                // Add new song to DB
                 Integer songId = dbHandler.addNewSong(songName, creationDate, creationDate);
+                // Add new version of song to DB
+                Integer versionId = dbHandler.addNewVersion(versionName, songId, versionDescription, versionLyrics, creationDate, creationDate);
 
-                // Calling a method to add new version to sqlite data and pass all our values to it
-                dbHandler.addNewVersion(versionName, songId, versionDescription, versionLyrics, creationDate, creationDate);
-
-                // after adding the data we are displaying a toast message
                 StringHelper.showToast("Song and version added", AddVersionActivity.this);
 
-                // TODO: Go to View version page, not home screen
-
-                // Returning to home page
-                Intent i = new Intent(AddVersionActivity.this, MainActivity.class);
+                // Go to view version screen
+                Intent i = new Intent(AddVersionActivity.this, ViewVersionActivity.class);
+                // Pass data through intent
+                i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
+                i.putExtra(StringHelper.VersionData_Intent_Song_ID, songId);
+                i.putExtra(StringHelper.VersionData_Intent_Name, versionName);
                 startActivity(i);
             }
         });

@@ -31,7 +31,7 @@ public class AddSongActivity extends AppCompatActivity
         String songName = getIntent().getStringExtra(StringHelper.SongData_Intent_Name);
         songNameEdt.setText(songName);
 
-        // below line is to add on click listener for the next screen button
+        // On click listener for the next screen button
         nextBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override

@@ -90,7 +90,7 @@ public class DBHandler extends SQLiteOpenHelper
     }
 
     // Method to add new song-version to our VERSIONS table
-    public void addNewVersion(String versionName, Integer versionSongId, String versionDescription, String versionLyrics, String versionCreationDate, String versionEditDate)
+    public Integer addNewVersion(String versionName, Integer versionSongId, String versionDescription, String versionLyrics, String versionCreationDate, String versionEditDate)
     {
         // Creating a variable for our sqlite database and calling writable method as we are writing data in our database
         SQLiteDatabase db = this.getWritableDatabase();
@@ -110,6 +110,8 @@ public class DBHandler extends SQLiteOpenHelper
 
         // Closing our database after adding the song
         db.close();
+
+        return getVersionId(versionSongId, versionName);
     }
 
 
@@ -149,13 +151,13 @@ public class DBHandler extends SQLiteOpenHelper
     }
 
     // Reading all song-versions
-    public ArrayList<VersionModal> readVersions(Integer versionSongId)
+    public ArrayList<VersionModal> readVersions(Integer songId)
     {
         // Creating a database for reading our database
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Creating a cursor with query to read versions data from database
-        String searchQuery = "SELECT * FROM " + VERSIONS_TABLE_NAME + " WHERE " + VERSIONS_SONG_ID_COL + " = " + versionSongId;
+        String searchQuery = "SELECT * FROM " + VERSIONS_TABLE_NAME + " WHERE " + VERSIONS_SONG_ID_COL + " = " + songId;
         Cursor cursorVersions = db.rawQuery(searchQuery, null);
 
         ArrayList<VersionModal> versionModalArrayList = new ArrayList<>();
@@ -223,6 +225,9 @@ public class DBHandler extends SQLiteOpenHelper
     {
         // Creating a database for reading our database
         SQLiteDatabase db = this.getReadableDatabase();
+
+        // String handling in case of apostrophes - add escape to be searched in DB
+        songName = songName.replace("'", "''");
 
         // Creating a cursor with query to read versions data from database
         String searchQuery = "SELECT " + SONGS_ID_COL + " FROM " + SONGS_TABLE_NAME + " WHERE " + SONGS_NAME_COL + " = '" + songName + "'";
@@ -299,6 +304,9 @@ public class DBHandler extends SQLiteOpenHelper
         // Creating a database for reading our database
         SQLiteDatabase db = this.getReadableDatabase();
 
+        // String handling in case of apostrophes - add escape to be searched in DB
+        songName = songName.replace("'", "''");
+
         // Creating a cursor with query to read versions data from database
         String searchQuery = "SELECT " + SONGS_ID_COL + " FROM " + SONGS_TABLE_NAME + " WHERE " + SONGS_NAME_COL + " = '" + songName + "'";
         Cursor cursorSong = db.rawQuery(searchQuery, null);
@@ -326,6 +334,9 @@ public class DBHandler extends SQLiteOpenHelper
         // Creating a database for reading our database
         SQLiteDatabase db = this.getReadableDatabase();
 
+        // String handling in case of apostrophes - add escape to be searched in DB
+        versionName = versionName.replace("'", "''");
+
         // Creating a cursor with query to read versions data from database
         String searchQuery = "SELECT " + VERSIONS_ID_COL + " FROM " + VERSIONS_TABLE_NAME + " WHERE " + VERSIONS_SONG_ID_COL + " = " + songId + " AND " + VERSIONS_NAME_COL + " = '" + versionName + "'";
         Cursor cursorSong = db.rawQuery(searchQuery, null);
@@ -350,8 +361,7 @@ public class DBHandler extends SQLiteOpenHelper
 
     // -------------------------------- Updating entry in DB --------------------------------
     // Updating a song
-    public void updateSong(Integer songId, String songName, String songEditDate)
-    {
+    public void updateSong(Integer songId, String songName, String songEditDate) {
         // Calling a method to get writable database
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
