@@ -3,17 +3,17 @@ package com.example.sda_a5_2024_bradleyweibel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 public class ViewSongAndVersionsActivity extends AppCompatActivity
 {
     private TextView songNameTxt;
-    private Button editSongBtn, addVersionBtn, backToHomeBtn;
+    private FloatingActionButton editSongBtn, addVersionBtn, backToHomeBtn;
     private ArrayList<VersionModal> versionModalArrayList;
     private DBHandler dbHandler;
     private VersionRVAdapter versionRVAdapter;
@@ -34,6 +34,7 @@ public class ViewSongAndVersionsActivity extends AppCompatActivity
         addVersionBtn = findViewById(R.id.idBtnAddVersion);
         backToHomeBtn = findViewById(R.id.idBtnBackToHome);
 
+        // Start preparing UI elements
         songNameTxt.setText(songName);
 
         // Initializing our all variables

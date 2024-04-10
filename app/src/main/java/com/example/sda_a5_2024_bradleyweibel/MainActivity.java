@@ -4,9 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.view.View;
-import android.widget.Button;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity
     private DBHandler dbHandler;
     private SongRVAdapter songRVAdapter;
     private RecyclerView songsRV;
-    private Button addSongButton;
+    private FloatingActionButton addSongButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

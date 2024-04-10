@@ -123,7 +123,7 @@ public class DBHandler extends SQLiteOpenHelper
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Creating a cursor with query to read songs data from database
-        String searchQuery = "SELECT * FROM " + SONGS_TABLE_NAME;
+        String searchQuery = "SELECT * FROM " + SONGS_TABLE_NAME + " ORDER BY " + SONGS_NAME_COL + " ASC";
         Cursor cursorSongs = db.rawQuery(searchQuery, null);
 
         ArrayList<SongModal> songModalArrayList = new ArrayList<>();

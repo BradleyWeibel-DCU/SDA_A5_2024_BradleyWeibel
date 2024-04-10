@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#000000</color>
+    <!-- Top header bar -->
+    <color name="colorPrimaryDark">#000000</color>
+    <!-- Toast colours -->
+    <color name="color_toast">#fc6909</color>
+    <color name="color_toast_text">#000000</color>
+
+    <color name="back_button">#747875</color>
+    <color name="screen_background">#000000</color>
+    <color name="colorAccent">#fc6909</color>
+    <color name="standard_text_grey">#2A000000</color>
+    <color name="standard_text_dark_grey">#747875</color>
+    <color name="standard_text_dark">#000000</color>
+    <color name="highlighted_text">#fc6909</color>
+    <color name="list_item_background_shade">#2A000000</color>
 </resources>

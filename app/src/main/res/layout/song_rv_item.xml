@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:elevation="8dp"
-    app:cardCornerRadius="4dp">
+    android:layout_margin="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/screen_background">
 
         <TextView
             android:id="@+id/idTVSongName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="3dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
             android:text="[Song Name]"
-            android:textColor="@color/black" />
+            android:textColor="@color/highlighted_text" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,7 +34,7 @@
                 android:layout_weight="1"
                 android:padding="3dp"
                 android:text="[Creation Date]"
-                android:textColor="@color/black" />
+                android:textColor="@color/standard_text_dark_grey" />
 
             <TextView
                 android:id="@+id/idTVSongEditDate"
@@ -43,8 +42,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="3dp"
+                android:gravity="end"
                 android:text="[Edit Date]"
-                android:textColor="@color/black" />
+                android:textColor="@color/standard_text_dark_grey" />
 
         </LinearLayout>
 

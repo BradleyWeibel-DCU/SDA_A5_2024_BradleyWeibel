@@ -3,16 +3,16 @@ package com.example.sda_a5_2024_bradleyweibel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class EditSongActivity extends AppCompatActivity
 {
     private Integer songId;
     private String originalSongName;
     private EditText songNameEdt;
-    private Button saveBtn, deleteBtn, backToSongAndVersionsBtn;
+    private FloatingActionButton saveBtn, deleteBtn, backToSongAndVersionsBtn;
     private DBHandler dbHandler;
 
     @Override
@@ -31,6 +31,7 @@ public class EditSongActivity extends AppCompatActivity
         originalSongName = getIntent().getStringExtra(StringHelper.SongData_Intent_Name);
         // Set original song name in UI
         songNameEdt.setText(originalSongName);
+        songNameEdt.requestFocus();
 
         // Initiate DB handler
         dbHandler = new DBHandler(EditSongActivity.this);

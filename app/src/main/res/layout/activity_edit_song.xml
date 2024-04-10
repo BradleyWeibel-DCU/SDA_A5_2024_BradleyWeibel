@@ -1,49 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".EditSongActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/screen_background"
+    tools:context=".AddSongActivity">
+
+    <ImageView
+        android:id="@+id/lyricistImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/solar_eclipse_image"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/lyricistImage"
+        android:layout_marginTop="14dp"
+        android:gravity="center"
         android:text="Lyricist"
+        android:textColor="@color/highlighted_text"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/lyricistImage" />
 
     <EditText
         android:id="@+id/idEdtSongName"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:hint="Song Name" />
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/edittext_shape"
+        android:layout_centerVertical="true"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        android:gravity="center"
+        android:hint="@string/edit_song_name"
+        android:textColorHint="@color/colorAccent"
+        android:topLeftRadius="15dp"
+        android:topRightRadius="15dp" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/idBtnSave"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Save new song name"
-        android:textAllCaps="false" />
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="19dp"
+        android:clickable="true"
+        app:backgroundTint="@color/back_button"
+        app:fabCustomSize="57dp"
+        android:scaleType="center"
+        app:maxImageSize="45dp"
+        app:srcCompat="@drawable/confirm_icon" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/idBtnDelete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Delete song"
-        android:textAllCaps="false" />
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        app:fabCustomSize="57dp"
+        android:scaleType="center"
+        app:maxImageSize="38dp"
+        app:srcCompat="@drawable/delete_bomb_icon" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/idBtnBackToSongAndVersions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Back"
-        android:textAllCaps="false" />
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="19dp"
+        android:clickable="true"
+        android:scaleType="center"
+        app:maxImageSize="32dp"
+        app:srcCompat="@drawable/back_arrow_icon"
+        app:backgroundTint="@color/back_button"/>
 
-</LinearLayout>
+</RelativeLayout>

@@ -4,35 +4,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/screen_background"
     tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/lyricistImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/solar_eclipse_image"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/lyricistImage"
+        android:layout_marginTop="14dp"
+        android:gravity="center"
         android:text="Lyricist"
+        android:textColor="@color/highlighted_text"
         android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/idBtnAddSong"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="Add song"
-        android:textAllCaps="false" />
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/lyricistImage" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/idRVSongs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/idBtnAddSong"
-        android:layout_marginTop="2dp" />
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView1" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/idBtnAddSong"
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        app:fabCustomSize="57dp"
+        android:scaleType="center"
+        app:maxImageSize="45dp"
+        app:srcCompat="@drawable/add_icon" />
 
 </RelativeLayout>

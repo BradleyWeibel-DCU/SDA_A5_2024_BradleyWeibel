@@ -3,9 +3,9 @@ package com.example.sda_a5_2024_bradleyweibel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DeleteSongOrVersionActivity extends AppCompatActivity
 {
@@ -13,7 +13,7 @@ public class DeleteSongOrVersionActivity extends AppCompatActivity
     private Integer songId, versionId;
     private String songName, versionName;
     private TextView songOrVersionTxt, warningTxt;
-    private Button deleteBtn, backToSongAndVersionsBtn;
+    private FloatingActionButton deleteBtn, backToSongAndVersionsBtn;
     private DBHandler dbHandler;
 
     @Override
@@ -38,9 +38,9 @@ public class DeleteSongOrVersionActivity extends AppCompatActivity
         songWasPassed = versionId.equals(0);
 
         // Set text in UI depending on what was passed
-        String songOrVersionName = songWasPassed ? songName : versionName;
+        String songOrVersionName = songWasPassed ? songName : songName + " - " + versionName;
         songOrVersionTxt.setText(songOrVersionName);
-        String warningMessage = songWasPassed ? "Are you sure you want to delete this song and all it's versions?" : "Are you sure you want to delete this version?";
+        String warningMessage = songWasPassed ? getString(R.string.delete_song_warning) : getString(R.string.delete_version_warning);
         warningTxt.setText(warningMessage);
 
         // Add on click listener for the save song button
