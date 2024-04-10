@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".AddSongActivity">
+    tools:context=".EditSongActivity">
 
     <TextView
         android:id="@+id/textView1"
@@ -15,27 +15,38 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/idEdtSongName"
+    <TextView
+        android:id="@+id/idTxtSongOrVersionName"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="10dp"
-        android:hint="Song Name" />
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="Song Name" />
+
+    <TextView
+        android:id="@+id/idTxtWarning"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="Are you fricken sure you want to delete this?" />
 
     <Button
-        android:id="@+id/idBtnNext"
+        android:id="@+id/idBtnDelete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Next"
+        android:text="Delete"
         android:textAllCaps="false" />
 
     <Button
-        android:id="@+id/idBtnBackToHome"
+        android:id="@+id/idBtnBackToSongAndVersions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Back to home"
+        android:text="Back"
         android:textAllCaps="false" />
 
 </LinearLayout>

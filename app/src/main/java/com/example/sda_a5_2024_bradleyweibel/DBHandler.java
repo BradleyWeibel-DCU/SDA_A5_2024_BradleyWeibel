@@ -396,26 +396,26 @@ public class DBHandler extends SQLiteOpenHelper
 
     // -------------------------------- Deleting entry in DB --------------------------------
     // Deleting a song
-    public void deleteSong(String songId)
+    public void deleteSongAndVersions(Integer songId)
     {
         // Creating a variable to write our database
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Calling a method to delete all versions where song id matches this song id
-        db.delete(VERSIONS_TABLE_NAME, VERSIONS_SONG_ID_COL + "=?", new String[]{ songId });
-        // Calling a method to delete song and comparing it with song id
-        db.delete(SONGS_TABLE_NAME, SONGS_ID_COL + "=?", new String[]{ songId });
+        // Delete all versions where song id matches this song id
+        db.delete(VERSIONS_TABLE_NAME, VERSIONS_SONG_ID_COL + "=" + songId, null);
+        // Delete song where song id matches
+        db.delete(SONGS_TABLE_NAME, SONGS_ID_COL + "=" + songId, null);
         db.close();
     }
 
     // Deleting a song-version
-    public void deleteVersion(String versionId)
+    public void deleteVersion(Integer versionId)
     {
         // Creating a variable to write our database
         SQLiteDatabase db = this.getWritableDatabase();
 
         // Calling a method to delete version and comparing it with version id
-        db.delete(VERSIONS_TABLE_NAME, VERSIONS_ID_COL + "=?", new String[]{ versionId });
+        db.delete(VERSIONS_TABLE_NAME, VERSIONS_ID_COL + "=" + versionId, null);
         db.close();
     }
 

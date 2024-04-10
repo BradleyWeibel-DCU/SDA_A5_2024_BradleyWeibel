@@ -15,9 +15,9 @@ public class StringHelper
     public final static String SongData_Preference_Name = "song_name";
 
     // Intent data values
+    public final static String SongData_Intent_ID = "song_id";
     public final static String SongData_Intent_Name = "song_name";
     public final static String VersionData_Intent_ID = "version_id";
-    public final static String VersionData_Intent_Song_ID = "version_song_id";
     public final static String VersionData_Intent_Name = "version_name";
 
     // Show a customized toast message

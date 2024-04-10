@@ -9,9 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class EditSongActivity extends AppCompatActivity
 {
+    private Integer songId;
     private String originalSongName;
     private EditText songNameEdt;
-    private Button saveBtn, backToSongAndVersionsBtn;
+    private Button saveBtn, deleteBtn, backToSongAndVersionsBtn;
     private DBHandler dbHandler;
 
     @Override
@@ -23,6 +24,7 @@ public class EditSongActivity extends AppCompatActivity
         // Initializing all our variables
         songNameEdt = findViewById(R.id.idEdtSongName);
         saveBtn = findViewById(R.id.idBtnSave);
+        deleteBtn = findViewById(R.id.idBtnDelete);
         backToSongAndVersionsBtn = findViewById(R.id.idBtnBackToSongAndVersions);
 
         // Get original song name from intent
@@ -32,6 +34,7 @@ public class EditSongActivity extends AppCompatActivity
 
         // Initiate DB handler
         dbHandler = new DBHandler(EditSongActivity.this);
+        songId = dbHandler.getSongId(originalSongName);
 
         // Add on click listener for the save song button
         saveBtn.setOnClickListener(new View.OnClickListener()
@@ -57,8 +60,6 @@ public class EditSongActivity extends AppCompatActivity
                 }
 
                 // Save changes in SQLite DB
-                // Get song ID for update
-                Integer songId = dbHandler.getSongId(originalSongName);
                 String modificationDate = StringHelper.getFormattedDate();
                 // Update song with new name
                 dbHandler.updateSong(songId, newSongName, modificationDate);
@@ -67,6 +68,21 @@ public class EditSongActivity extends AppCompatActivity
                 Intent i = new Intent(EditSongActivity.this, ViewSongAndVersionsActivity.class);
                 // Passing the new song name
                 i.putExtra(StringHelper.SongData_Intent_Name, newSongName);
+                startActivity(i);
+            }
+        });
+
+        // Delete song button clicked
+        deleteBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // Opening a new activity via a intent
+                Intent i = new Intent(EditSongActivity.this, DeleteSongOrVersionActivity.class);
+                // Passing song name through intent
+                i.putExtra(StringHelper.SongData_Intent_ID, songId);
+                i.putExtra(StringHelper.SongData_Intent_Name, originalSongName);
                 startActivity(i);
             }
         });

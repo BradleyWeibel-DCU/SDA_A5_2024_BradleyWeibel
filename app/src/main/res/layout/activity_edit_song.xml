@@ -8,7 +8,7 @@
     tools:context=".EditSongActivity">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Lyricist"
@@ -28,6 +28,14 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:text="Save new song name"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/idBtnDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Delete song"
         android:textAllCaps="false" />
 
     <Button

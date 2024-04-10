@@ -31,6 +31,9 @@
             android:name=".EditVersionActivity"
             android:exported="false" />
         <activity
+            android:name=".DeleteSongOrVersionActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

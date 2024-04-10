@@ -12,7 +12,7 @@ public class EditVersionActivity extends AppCompatActivity
 {
     private TextView songNameTxt;
     private EditText versionNameEdt, versionDescriptionEdt, versionLyricsEdt;
-    private Button saveBtn, deleteVersionBtn, backToViewVersionBtn;
+    private Button saveBtn, deleteBtn, backToViewVersionBtn;
     private DBHandler dbHandler;
     private VersionModal versionData;
 
@@ -31,17 +31,20 @@ public class EditVersionActivity extends AppCompatActivity
         versionDescriptionEdt = findViewById(R.id.idEdtVersionDescription);
         versionLyricsEdt = findViewById(R.id.idEdtVersionLyrics);
         saveBtn = findViewById(R.id.idBtnSaveVersion);
+        deleteBtn = findViewById(R.id.idBtnDeleteVersion);
         backToViewVersionBtn = findViewById(R.id.idBtnBack);
 
         // Creating a new DB handler class and passing our context to it
         dbHandler = new DBHandler(EditVersionActivity.this);
         // Get version data from DB
         versionData = dbHandler.getSongVersion(versionId);
-        // Get song name
+
         String songName = dbHandler.getSongName(versionData.getVersionSongId());
+        String versionName = versionData.getVersionName();
+
         // Insert values into UI elements
         songNameTxt.setText(songName);
-        versionNameEdt.setText(versionData.getVersionName());
+        versionNameEdt.setText(versionName);
         versionDescriptionEdt.setText(versionData.getVersionDescription());
         versionLyricsEdt.setText(versionData.getVersionLyrics());
 
@@ -79,6 +82,22 @@ public class EditVersionActivity extends AppCompatActivity
                 Intent i = new Intent(EditVersionActivity.this, ViewVersionActivity.class);
                 // Pass data through intent
                 i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
+                startActivity(i);
+            }
+        });
+
+        // Delete version button is clicked
+        deleteBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // Opening a new activity via an intent
+                Intent i = new Intent(EditVersionActivity.this, DeleteSongOrVersionActivity.class);
+                // Passing the song name
+                i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
+                i.putExtra(StringHelper.VersionData_Intent_Name, versionName);
+                i.putExtra(StringHelper.SongData_Intent_Name, songName);
                 startActivity(i);
             }
         });
