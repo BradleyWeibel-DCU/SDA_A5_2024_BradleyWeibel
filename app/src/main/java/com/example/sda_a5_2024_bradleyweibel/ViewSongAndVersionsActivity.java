@@ -30,9 +30,10 @@ public class ViewSongAndVersionsActivity extends AppCompatActivity
 
         // Attaching variables to UI elements
         songNameTxt = findViewById(R.id.idTxtSongName);
-        songNameTxt.setText(songName);
         editSongBtn = findViewById(R.id.idBtnEditSong);
         backToHomeBtn = findViewById(R.id.idBtnBackToHome);
+
+        songNameTxt.setText(songName);
 
         // Initializing our all variables
         versionModalArrayList = new ArrayList<>();

@@ -8,7 +8,7 @@
     tools:context=".AddVersionActivity">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Lyricist"
@@ -24,6 +24,14 @@
         android:text="Song Name"/>
 
     <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="Version name"
+        android:textSize="20sp"/>
+
+    <TextView
         android:id="@+id/idTxtVersionName"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -32,7 +40,15 @@
         android:text="Version name" />
 
     <TextView
-        android:id="@+id/idEdtVersionDescription"
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="Description"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/idTxtVersionDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -42,7 +58,15 @@
         android:minLines="2"/>
 
     <TextView
-        android:id="@+id/idEdtVersionLyrics"
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="Lyrics"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/idTxtVersionLyrics"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -60,11 +84,11 @@
         android:textAllCaps="false" />
 
     <Button
-        android:id="@+id/idBtnBackToHome"
+        android:id="@+id/idBtnBackToSongAndVersions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Back to Home"
+        android:text="Back to Song and Versions"
         android:textAllCaps="false" />
 
 </LinearLayout>

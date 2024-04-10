@@ -28,8 +28,10 @@ public class VersionModal
     public void setVersionEditDate(String versionEditDate) { this.versionEditDate = versionEditDate; }
 
     // Constructor
-    public VersionModal(String versionName, String versionCreationDate, String versionEditDate)
+    public VersionModal(Integer id, Integer versionSongId, String versionName, String versionCreationDate, String versionEditDate)
     {
+        this.id = id;
+        this.versionSongId = versionSongId;
         this.versionName = versionName;
         this.versionCreationDate = versionCreationDate;
         this.versionEditDate = versionEditDate;

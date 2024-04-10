@@ -132,14 +132,19 @@ public class DBHandler extends SQLiteOpenHelper
             do
             {
                 // Adding the data from cursor to our array list
-                songModalArrayList.add(new SongModal(cursorSongs.getString(1),
-                        cursorSongs.getString(2),
-                        cursorSongs.getString(3)));
+                songModalArrayList.add(new SongModal(
+                        cursorSongs.getString(1), // song name
+                        cursorSongs.getString(2), // creation date
+                        cursorSongs.getString(3))); // edit date
             } while (cursorSongs.moveToNext());
             // Moving cursor to next entry
         }
+
         // Closing our cursor and returning our array list
         cursorSongs.close();
+        // Closing our database after adding the song
+        db.close();
+
         return songModalArrayList;
     }
 
@@ -161,15 +166,56 @@ public class DBHandler extends SQLiteOpenHelper
             do
             {
                 // Adding the data from cursor to our array list
-                versionModalArrayList.add(new VersionModal(cursorVersions.getString(2),
-                        cursorVersions.getString(5),
-                        cursorVersions.getString(6)));
+                versionModalArrayList.add(new VersionModal(
+                        cursorVersions.getInt(0), // id
+                        cursorVersions.getInt(1), // song id
+                        cursorVersions.getString(2), // name
+                        cursorVersions.getString(5), // creation date
+                        cursorVersions.getString(6))); // edit date
             } while (cursorVersions.moveToNext());
             // Moving cursor to next entry
         }
+
         // Closing our cursor and returning our array list
         cursorVersions.close();
+        // Closing our database after adding the song
+        db.close();
+
         return versionModalArrayList;
+    }
+
+    // Get song version
+    public VersionModal getSongVersion(Integer versionId)
+    {
+        // Creating a database for reading our database
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Creating a cursor with query to read versions data from database
+        String searchQuery = "SELECT * FROM " + VERSIONS_TABLE_NAME + " WHERE " + VERSIONS_ID_COL + " = " + versionId;
+        Cursor cursorVersion = db.rawQuery(searchQuery, null);
+
+        VersionModal versionModal = null;
+
+        // Moving our cursor to first position
+        if (cursorVersion.moveToFirst())
+        {
+            // Adding the data from cursor to versionModal
+            versionModal = new VersionModal(
+                    cursorVersion.getInt(0), // id
+                    cursorVersion.getInt(1), // song id
+                    cursorVersion.getString(2), // name
+                    cursorVersion.getString(5), // creation date
+                    cursorVersion.getString(6)); // edit date
+            versionModal.setVersionDescription(cursorVersion.getString(3));
+            versionModal.setVersionLyrics(cursorVersion.getString(4));
+        }
+
+        // Closing our cursor and returning our array list
+        cursorVersion.close();
+        // Closing our database after adding the song
+        db.close();
+
+        return versionModal;
     }
 
     // Getting a song's ID from DB
@@ -195,6 +241,31 @@ public class DBHandler extends SQLiteOpenHelper
         db.close();
 
         return songId;
+    }
+
+    // Getting a song's name from DB
+    public String getSongName(Integer songId)
+    {
+        // Creating a database for reading our database
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Creating a cursor with query to read versions data from database
+        String searchQuery = "SELECT " + SONGS_NAME_COL + " FROM " + SONGS_TABLE_NAME + " WHERE " + SONGS_ID_COL + " = " + songId;
+        Cursor cursorSong = db.rawQuery(searchQuery, null);
+
+        String songName = null;
+
+        if (cursorSong.moveToFirst()) {
+            // Getting the song name
+            songName = cursorSong.getString(0);
+        }
+
+        // Closing our cursor and returning our array list
+        cursorSong.close();
+        // Closing our database after adding the song
+        db.close();
+
+        return songName;
     }
 
     // Getting a version's ID from DB

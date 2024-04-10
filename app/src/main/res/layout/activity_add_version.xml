@@ -8,7 +8,7 @@
     tools:context=".AddVersionActivity">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Lyricist"

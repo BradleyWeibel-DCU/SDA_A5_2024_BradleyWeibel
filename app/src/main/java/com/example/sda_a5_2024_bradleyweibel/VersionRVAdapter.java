@@ -42,20 +42,20 @@ public class VersionRVAdapter extends RecyclerView.Adapter<VersionRVAdapter.View
         holder.versionEditDateTV.setText(modal.getVersionEditDate());
 
         // Add on click listener for recycler view item
-        //holder.itemView.setOnClickListener(new View.OnClickListener()
-        //{
-        //@Override
-        //public void onClick(View v)
-        //{
+        holder.itemView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
                 // Calling an intent
-        //Intent i = new Intent(context, ViewVersionsActivity.class);
-
-                // Passing all values
-        //i.putExtra(StringHelper.VersionData_Intent_Name, modal.getVersionName());
-
-        //context.startActivity(i);
-        //}
-        //});
+                Intent i = new Intent(context, ViewVersionActivity.class);
+                // Passing version name through intent
+                i.putExtra(StringHelper.VersionData_Intent_ID, modal.getId());
+                i.putExtra(StringHelper.VersionData_Intent_Song_ID, modal.getVersionSongId());
+                i.putExtra(StringHelper.VersionData_Intent_Name, modal.getVersionName());
+                context.startActivity(i);
+            }
+        });
     }
 
     @Override
