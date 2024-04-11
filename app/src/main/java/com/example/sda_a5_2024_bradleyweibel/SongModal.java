@@ -17,15 +17,6 @@ public class SongModal
 
     // Setter methods
     public void setId(int id) { this.id = id; }
-    public void setSongName(String songName)
-    {
-        this.songName = songName;
-    }
-    public void setSongCreationDate(String songCreationDate) { this.songCreationDate = songCreationDate; }
-    public void setSongEditDate(String songEditDate)
-    {
-        this.songEditDate = songEditDate;
-    }
 
     // Constructor
     public SongModal(String songName, String songCreationDate, String songEditDate)

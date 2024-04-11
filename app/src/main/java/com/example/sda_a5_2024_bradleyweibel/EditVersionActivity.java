@@ -3,16 +3,16 @@ package com.example.sda_a5_2024_bradleyweibel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class EditVersionActivity extends AppCompatActivity
 {
     private TextView songNameTxt;
     private EditText versionNameEdt, versionDescriptionEdt, versionLyricsEdt;
-    private Button saveBtn, deleteBtn, backToViewVersionBtn;
+    private FloatingActionButton saveBtn, deleteBtn, backToViewVersionBtn;
     private DBHandler dbHandler;
     private VersionModal versionData;
 
@@ -62,13 +62,13 @@ public class EditVersionActivity extends AppCompatActivity
 
                 // Validating if version name is empty
                 if (newVersionName.isEmpty()) {
-                    StringHelper.showToast("Please enter a version name", EditVersionActivity.this);
+                    StringHelper.showToast(getString(R.string.toastr_missing_version_name), EditVersionActivity.this);
                     return;
                 }
                 else if (!newVersionName.equals(originalVersionName))
                     if (!dbHandler.isVersionNameUnique(versionData.getVersionSongId(), newVersionName))
                     {
-                        StringHelper.showToast("Version name must be unique for this song", EditVersionActivity.this);
+                        StringHelper.showToast(getString(R.string.toastr_unique_version_name), EditVersionActivity.this);
                         return;
                     }
 
@@ -76,7 +76,7 @@ public class EditVersionActivity extends AppCompatActivity
                 // Add new version of song to DB
                 dbHandler.updateVersion(versionId, newVersionName, versionDescription, versionLyrics, modificationDate);
 
-                StringHelper.showToast("Version update successful", EditVersionActivity.this);
+                StringHelper.showToast(getString(R.string.toastr_new_version_created), EditVersionActivity.this);
 
                 // Go to view version screen
                 Intent i = new Intent(EditVersionActivity.this, ViewVersionActivity.class);

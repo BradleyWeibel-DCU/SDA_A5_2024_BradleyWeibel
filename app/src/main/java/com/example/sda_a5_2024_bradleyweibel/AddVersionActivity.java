@@ -3,16 +3,16 @@ package com.example.sda_a5_2024_bradleyweibel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class AddVersionActivity extends AppCompatActivity
 {
     private TextView songNameTxt;
     private EditText versionNameEdt, versionDescriptionEdt, versionLyricsEdt;
-    private Button createBtn, backToSongBtn;
+    private FloatingActionButton createBtn, backToSongBtn;
     private DBHandler dbHandler;
 
     @Override
@@ -35,6 +35,7 @@ public class AddVersionActivity extends AppCompatActivity
         // Set song name in UI from intent
         String songName = getIntent().getStringExtra(StringHelper.SongData_Intent_Name);
         songNameTxt.setText(songName);
+        versionNameEdt.requestFocus();
 
         final Integer[] songId = {dbHandler.getSongId(songName)};
         final Integer[] versionId = {0};
@@ -52,7 +53,7 @@ public class AddVersionActivity extends AppCompatActivity
 
                 // Validating if needed text fields are empty or not
                 if (versionName.isEmpty()) {
-                    StringHelper.showToast("Please enter a version name", AddVersionActivity.this);
+                    StringHelper.showToast(getString(R.string.toastr_missing_version_name), AddVersionActivity.this);
                     return;
                 }
 
@@ -66,7 +67,7 @@ public class AddVersionActivity extends AppCompatActivity
                     // Add new version of song to DB
                     versionId[0] = dbHandler.addNewVersion(versionName, songId[0], versionDescription, versionLyrics, creationDate, creationDate);
 
-                    StringHelper.showToast("Song and version added", AddVersionActivity.this);
+                    StringHelper.showToast(getString(R.string.toastr_song_and_version_added), AddVersionActivity.this);
                 }
                 else
                 {
@@ -74,7 +75,7 @@ public class AddVersionActivity extends AppCompatActivity
                     // Version name must be unique in the context of this song
                     if (!dbHandler.isVersionNameUnique(songId[0], versionName))
                     {
-                        StringHelper.showToast("Version name must be unique for this song", AddVersionActivity.this);
+                        StringHelper.showToast(getString(R.string.toastr_unique_version_name), AddVersionActivity.this);
                         return;
                     }
                     // Add new version of song to DB

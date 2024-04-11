@@ -43,14 +43,12 @@ public class AddSongActivity extends AppCompatActivity
                 // validating if the text fields are empty or not.
                 if (songName.isEmpty())
                 {
-                    // TODO: hard coded string
-                    StringHelper.showToast("Please enter a name for the song", AddSongActivity.this);
+                    StringHelper.showToast(getString(R.string.toastr_missing_song_name), AddSongActivity.this);
                     return;
                 }
                 else if (!dbHandler.isSongNameUnique(songName))
                 {
-                    // TODO: hard coded string
-                    StringHelper.showToast("Please enter a unique song name", AddSongActivity.this);
+                    StringHelper.showToast(getString(R.string.toastr_unique_song_name), AddSongActivity.this);
                     return;
                 }
 

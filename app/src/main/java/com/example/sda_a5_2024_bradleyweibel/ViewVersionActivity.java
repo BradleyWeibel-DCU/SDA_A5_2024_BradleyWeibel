@@ -3,14 +3,14 @@ package com.example.sda_a5_2024_bradleyweibel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ViewVersionActivity extends AppCompatActivity
 {
     private TextView songNameTxt, versionNameTxt, versionDescriptionTxt, versionLyricsTxt;
-    private Button editVersionBtn, deleteVersionBtn, backToSongAndVersionsBtn;
+    private FloatingActionButton editVersionBtn, backToSongAndVersionsBtn;
     private DBHandler dbHandler;
     private VersionModal versionData;
 

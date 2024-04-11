@@ -1,99 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/screen_background"
     tools:context=".AddVersionActivity">
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Lyricist"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+    <ImageView
+        android:id="@+id/lyricistImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/solar_eclipse_image"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/idTxtSongName"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lyricistImage"
+        android:layout_marginTop="14dp"
+        android:gravity="center"
+        android:text="@string/song_name"
+        android:textColor="@color/highlighted_text_yellow"
         android:textSize="20sp"
-        android:text="Song Name"/>
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/lyricistImage" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:text="Version name"
-        android:textSize="20sp"/>
+        android:layout_below="@+id/idTxtSongName"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="start"
+        android:text="@string/version"
+        android:textColor="@color/standard_text_dark_grey"
+        android:textSize="17dp" />
 
     <EditText
         android:id="@+id/idEdtVersionName"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:hint="Version name" />
+        android:layout_below="@+id/textView2"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/edittext_shape"
+        android:hint="@string/version_name"
+        android:paddingLeft="10dp"
+        android:textColor="@color/highlighted_text_yellow"
+        android:textColorHint="@color/standard_text_dark_grey"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:text="Description"
-        android:textSize="20sp"/>
+        android:layout_below="@+id/idEdtVersionName"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="start"
+        android:text="@string/description"
+        android:textColor="@color/standard_text_dark_grey"
+        android:textSize="17dp" />
 
     <EditText
         android:id="@+id/idEdtVersionDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/textView3"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/edittext_shape"
+        android:hint="@string/version_description"
         android:inputType="textMultiLine"
-        android:layout_margin="10dp"
-        android:hint="Description"
-        android:minLines="1"/>
+        android:minLines="2"
+        android:gravity="start"
+        android:paddingLeft="10dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:textColor="@color/highlighted_text_yellow"
+        android:textColorHint="@color/standard_text_dark_grey"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:text="Lyrics"
-        android:textSize="20sp"/>
+        android:layout_below="@+id/idEdtVersionDescription"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="start"
+        android:text="@string/lyrics"
+        android:textColor="@color/standard_text_dark_grey"
+        android:textSize="17dp" />
 
     <EditText
         android:id="@+id/idEdtVersionLyrics"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/textView4"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/edittext_shape"
+        android:hint="@string/version_lyrics"
         android:inputType="textMultiLine"
-        android:layout_margin="10dp"
-        android:hint="Lyrics"
-        android:minLines="1"/>
+        android:minLines="3"
+        android:gravity="start"
+        android:paddingLeft="10dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:textColor="@color/highlighted_text_yellow"
+        android:textColorHint="@color/standard_text_dark_grey"
+        android:textStyle="bold" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/idBtnSaveVersion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Save"
-        android:textAllCaps="false" />
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="19dp"
+        android:clickable="true"
+        android:contentDescription="@string/save"
+        app:backgroundTint="@color/back_button"
+        app:fabCustomSize="57dp"
+        android:scaleType="center"
+        app:maxImageSize="45dp"
+        app:srcCompat="@drawable/confirm_icon" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/idBtnDeleteVersion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Delete"
-        android:textAllCaps="false" />
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:contentDescription="@string/delete"
+        app:fabCustomSize="57dp"
+        android:scaleType="center"
+        app:maxImageSize="38dp"
+        app:srcCompat="@drawable/delete_bomb_icon" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/idBtnBack"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Cancel"
-        android:textAllCaps="false" />
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="19dp"
+        android:clickable="true"
+        android:contentDescription="@string/back"
+        android:scaleType="center"
+        app:maxImageSize="32dp"
+        app:srcCompat="@drawable/back_arrow_icon"
+        app:backgroundTint="@color/back_button"/>
 
-</LinearLayout>
+</RelativeLayout>

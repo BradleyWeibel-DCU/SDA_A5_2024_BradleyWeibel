@@ -26,8 +26,8 @@
         android:layout_below="@+id/lyricistImage"
         android:layout_marginTop="14dp"
         android:gravity="center"
-        android:text="Lyricist"
-        android:textColor="@color/highlighted_text"
+        android:text="@string/app_name"
+        android:textColor="@color/highlighted_text_orange"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/lyricistImage" />
@@ -41,14 +41,10 @@
         android:background="@drawable/edittext_shape"
         android:layout_centerVertical="true"
         android:textStyle="bold"
-        android:textColor="@color/colorAccent"
-        android:bottomLeftRadius="15dp"
-        android:bottomRightRadius="15dp"
+        android:textColor="@color/highlighted_text_yellow"
         android:gravity="center"
         android:hint="@string/song_name"
-        android:textColorHint="@color/colorAccent"
-        android:topLeftRadius="15dp"
-        android:topRightRadius="15dp" />
+        android:textColorHint="@color/standard_text_dark_grey" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/idBtnNext"
@@ -58,6 +54,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="19dp"
         android:clickable="true"
+        android:contentDescription="@string/next"
         app:backgroundTint="@color/back_button"
         app:fabCustomSize="57dp"
         android:scaleType="center"
@@ -71,6 +68,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="19dp"
         android:clickable="true"
+        android:contentDescription="@string/back_to_home"
         android:scaleType="center"
         app:maxImageSize="32dp"
         app:srcCompat="@drawable/back_arrow_icon"
