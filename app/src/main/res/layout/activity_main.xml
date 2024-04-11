@@ -32,12 +32,27 @@
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/lyricistImage" />
 
+    <EditText
+        android:id="@+id/idEdtSearchSongs"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/textView1"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="10dp"
+        android:drawableLeft="@drawable/search_icon"
+        android:drawablePadding="8dp"
+        android:hint="@string/search_songs"
+        android:background="@drawable/edit_text_shape_grey"
+        android:textColor="@color/highlighted_text_orange"
+        android:textColorHint="@color/standard_text_dark_grey" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/idRVSongs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="25dp"
+        android:layout_below="@+id/idEdtSearchSongs"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView1" />
 

@@ -3,7 +3,10 @@ package com.example.sda_a5_2024_bradleyweibel;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -15,7 +18,8 @@ public class MainActivity extends AppCompatActivity
     private DBHandler dbHandler;
     private SongRVAdapter songRVAdapter;
     private RecyclerView songsRV;
-    private FloatingActionButton addSongButton;
+    private EditText searchBarEdt;
+    private FloatingActionButton addSongBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -23,8 +27,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Attaching the button to the variable
-        addSongButton = findViewById(R.id.idBtnAddSong);
+        // Attaching local variables to UI elements
+        addSongBtn = findViewById(R.id.idBtnAddSong);
+        searchBarEdt = findViewById(R.id.idEdtSearchSongs);
 
         // Initializing our all variables
         songModalArrayList = new ArrayList<>();
@@ -45,7 +50,7 @@ public class MainActivity extends AppCompatActivity
         songsRV.setAdapter(songRVAdapter);
 
         // Add new song button is pushed
-        addSongButton.setOnClickListener(new View.OnClickListener()
+        addSongBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -54,6 +59,38 @@ public class MainActivity extends AppCompatActivity
                 Intent i = new Intent(MainActivity.this, AddSongActivity.class);
                 startActivity(i);
             }
+        });
+
+        // Text has been typed into the search bar
+        searchBarEdt.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {} // Do not remove
+
+            // Where the magic happens
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                // Get new search term
+                String songSearchTerm = searchBarEdt.getText().toString().trim();
+                // Search new search term against song names
+                songModalArrayList = dbHandler.readSongs(songSearchTerm);
+
+                // Populate the UI with the song list as is done above...
+                songRVAdapter = new SongRVAdapter(songModalArrayList, MainActivity.this);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
+                songsRV.setLayoutManager(linearLayoutManager);
+                songsRV.setAdapter(songRVAdapter);
+
+                // Set searching image in search bar
+                if (songSearchTerm.equals(""))
+                    searchBarEdt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.search_icon, 0, 0, 0);
+                else
+                    searchBarEdt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.searching_icon, 0, 0, 0);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {} // Do not remove
         });
     }
 }

@@ -10,7 +10,8 @@
     <color name="back_button">#747875</color>
     <color name="screen_background">#000000</color>
     <color name="colorAccent">#fc6909</color>
-    <color name="standard_text_grey">#2A000000</color>
+    <color name="color_accent_grey">#747875</color>
+    <color name="color_accent_dark_grey">#2A000000</color>
     <color name="standard_text_dark_grey">#747875</color>
     <color name="standard_text_dark">#000000</color>
     <color name="highlighted_text_yellow">#FFA21F</color>

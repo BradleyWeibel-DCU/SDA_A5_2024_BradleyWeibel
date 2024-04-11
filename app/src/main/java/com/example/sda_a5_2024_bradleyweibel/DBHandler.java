@@ -150,6 +150,43 @@ public class DBHandler extends SQLiteOpenHelper
         return songModalArrayList;
     }
 
+    // Reading all matching songs
+    public ArrayList<SongModal> readSongs(String songName)
+    {
+        // Creating a database for reading our database
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // String handling in case of apostrophes - add escape to be searched in DB
+        songName = songName.replace("'", "''");
+
+        // Creating a cursor with query to read songs data from database
+        String searchQuery = "SELECT * FROM " + SONGS_TABLE_NAME + " WHERE " + SONGS_NAME_COL + " LIKE ? ORDER BY " + SONGS_NAME_COL + " ASC";
+        Cursor cursorSongs = db.rawQuery(searchQuery, new String[] {"%" + songName + "%"});
+
+        ArrayList<SongModal> songModalArrayList = new ArrayList<>();
+
+        // Moving our cursor to first position
+        if (cursorSongs.moveToFirst())
+        {
+            do
+            {
+                // Adding the data from cursor to our array list
+                songModalArrayList.add(new SongModal(
+                        cursorSongs.getString(1), // song name
+                        cursorSongs.getString(2), // creation date
+                        cursorSongs.getString(3))); // edit date
+            } while (cursorSongs.moveToNext());
+            // Moving cursor to next entry
+        }
+
+        // Closing our cursor and returning our array list
+        cursorSongs.close();
+        // Closing our database after adding the song
+        db.close();
+
+        return songModalArrayList;
+    }
+
     // Reading all song-versions
     public ArrayList<VersionModal> readVersions(Integer songId)
     {

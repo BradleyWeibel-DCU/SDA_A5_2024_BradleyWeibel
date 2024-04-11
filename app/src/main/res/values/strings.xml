@@ -12,6 +12,9 @@
     <string name="creation_date">[Creation Date]</string>
     <string name="modified_date">[Modified Date]</string>
 
+    <!-- Home screen -->
+    <string name="search_songs">filter...</string>
+
     <!-- Song handling -->
     <string name="song_name">song name...</string>
     <string name="edit_song_name">new song name...</string>
