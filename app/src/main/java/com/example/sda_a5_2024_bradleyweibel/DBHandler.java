@@ -413,7 +413,7 @@ public class DBHandler extends SQLiteOpenHelper
     }
 
     // Updating a song-version
-    public void updateVersion(Integer versionId, String versionName, String versionDescription, String versionLyrics, String versionEditDate)
+    public void updateVersion(Integer versionId, String versionName, String songName, String versionDescription, String versionLyrics, String versionEditDate)
     {
         // Calling a method to get writable database
         SQLiteDatabase db = this.getWritableDatabase();
@@ -427,6 +427,17 @@ public class DBHandler extends SQLiteOpenHelper
 
         // Calling a update method to update our VERSIONS table in database and passing our values and comparing it with id of our version
         db.update(VERSIONS_TABLE_NAME, values, VERSIONS_ID_COL + "=" + versionId,null);
+
+        // Update modification date in song entry
+        values = new ContentValues();
+
+        // Passing all values along with its key and value pair
+        values.put(SONGS_NAME_COL, songName);
+        values.put(SONGS_EDIT_DATE_COL, versionEditDate);
+
+        // Calling a update method to update our SONGS table in database and passing our values and comparing it with id of our song
+        db.update(SONGS_TABLE_NAME, values, SONGS_NAME_COL + "='" + songName + "'", null);
+
         db.close();
     }
 

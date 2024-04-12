@@ -73,8 +73,8 @@ public class EditVersionActivity extends AppCompatActivity
                     }
 
                 String modificationDate = StringHelper.getFormattedDate();
-                // Add new version of song to DB
-                dbHandler.updateVersion(versionId, newVersionName, versionDescription, versionLyrics, modificationDate);
+                // Update version of song in DB
+                dbHandler.updateVersion(versionId, newVersionName, songName, versionDescription, versionLyrics, modificationDate);
 
                 StringHelper.showToast(getString(R.string.toastr_new_version_created), EditVersionActivity.this);
 
