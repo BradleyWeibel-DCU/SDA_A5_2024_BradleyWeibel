@@ -125,7 +125,6 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/edit_text_shape_orange"
                 android:hint="@string/version_lyrics"
                 android:inputType="textMultiLine"
@@ -137,6 +136,117 @@
                 android:textColor="@color/highlighted_text_yellow"
                 android:textColorHint="@color/standard_text_dark_grey"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="start"
+                android:text="@string/images"
+                android:textColor="@color/standard_text_dark_grey"
+                android:textSize="17dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="10dp">
+
+                <ImageButton
+                    android:id="@+id/idAddImageBtn"
+                    android:layout_width="57sp"
+                    android:layout_height="57sp"
+                    android:layout_marginStart="13dp"
+                    android:background="@drawable/edit_text_shape_orange"
+                    app:srcCompat="@drawable/add_gallery_image" />
+
+                <ImageButton
+                    android:id="@+id/idAddPhotoBtn"
+                    android:layout_width="57sp"
+                    android:layout_height="57sp"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/edit_text_shape_orange"
+                    app:srcCompat="@drawable/add_new_image" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="start"
+                android:text="@string/video"
+                android:textColor="@color/standard_text_dark_grey"
+                android:textSize="17dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="10dp">
+
+                <ImageButton
+                    android:id="@+id/idAddGalleryVideoBtn"
+                    android:layout_width="57sp"
+                    android:layout_height="57sp"
+                    android:layout_marginStart="13dp"
+                    android:background="@drawable/edit_text_shape_orange"
+                    app:srcCompat="@drawable/add_gallery_video" />
+
+                <ImageButton
+                    android:id="@+id/idAddVideoBtn"
+                    android:layout_width="57sp"
+                    android:layout_height="57sp"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/edit_text_shape_orange"
+                    app:srcCompat="@drawable/add_new_video" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="start"
+                android:text="@string/audio"
+                android:textColor="@color/standard_text_dark_grey"
+                android:textSize="17dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="10dp">
+
+                <ImageButton
+                    android:id="@+id/idAddGalleryAudioBtn"
+                    android:layout_width="57sp"
+                    android:layout_height="57sp"
+                    android:layout_marginStart="13dp"
+                    android:background="@drawable/edit_text_shape_orange"
+                    app:srcCompat="@drawable/add_gallery_audio" />
+
+                <ImageButton
+                    android:id="@+id/idAddAudioBtn"
+                    android:layout_width="57sp"
+                    android:layout_height="57sp"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/edit_text_shape_orange"
+                    app:srcCompat="@drawable/add_new_audio" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -30,6 +30,9 @@
     <string name="description">Description</string>
     <string name="version_lyrics">lyrics...</string>
     <string name="lyrics">Lyrics</string>
+    <string name="images">Images</string>
+    <string name="video">Video</string>
+    <string name="audio">Audio</string>
     <string name="toastr_missing_version_name">Please enter a version name...</string>
     <string name="toastr_unique_version_name">Please enter a unique version name for this song...</string>
     <string name="toastr_new_version_created">New song version created...</string>

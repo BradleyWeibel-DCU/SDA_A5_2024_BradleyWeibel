@@ -35,7 +35,6 @@ public class AddVersionActivity extends AppCompatActivity
         // Set song name in UI from intent
         String songName = getIntent().getStringExtra(StringHelper.SongData_Intent_Name);
         songNameTxt.setText(songName);
-        versionNameEdt.requestFocus();
 
         final Integer[] songId = {dbHandler.getSongId(songName)};
         final Integer[] versionId = {0};
@@ -81,7 +80,6 @@ public class AddVersionActivity extends AppCompatActivity
                     // Add new version of song to DB
                     versionId[0] = dbHandler.addNewVersion(versionName, songId[0], versionDescription, versionLyrics, creationDate, creationDate);
                 }
-
 
                 // Go to view version screen
                 Intent i = new Intent(AddVersionActivity.this, ViewVersionActivity.class);
