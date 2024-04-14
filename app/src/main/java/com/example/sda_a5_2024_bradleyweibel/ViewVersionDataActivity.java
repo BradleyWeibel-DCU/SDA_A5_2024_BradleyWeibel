@@ -22,8 +22,7 @@ public class ViewVersionDataActivity extends AppCompatActivity
     private LinearLayout imageContainerLyt;
 
     // General variables
-    private Integer imageCounter;
-
+    private Integer versionId, imageCounter;
     private String songName, versionName;
 
     @Override
@@ -33,7 +32,7 @@ public class ViewVersionDataActivity extends AppCompatActivity
         setContentView(R.layout.activity_view_version_data);
 
         // Getting version data from the adapter class
-        Integer versionId = getIntent().getIntExtra(StringHelper.VersionData_Intent_ID, 0);
+        versionId = getIntent().getIntExtra(StringHelper.VersionData_Intent_ID, 0);
 
         // Attaching variables to UI elements
         songNameTxt = findViewById(R.id.idTxtSongName);
@@ -44,8 +43,6 @@ public class ViewVersionDataActivity extends AppCompatActivity
         editVersionBtn = findViewById(R.id.idBtnEditVersion);
         backToSongAndVersionsBtn = findViewById(R.id.idBtnBackToSongAndVersions);
 
-        imageCounter = 1;
-
         // Initializing db Handler
         dbHandler = new DBHandler(ViewVersionDataActivity.this);
         // Get version data from DB
@@ -53,13 +50,16 @@ public class ViewVersionDataActivity extends AppCompatActivity
         // Get names
         songName = dbHandler.getSongName(versionData.getVersionSongId());
         versionName = versionData.getVersionName();
+
         // Insert values into UI elements
         songNameTxt.setText(songName);
         versionNameTxt.setText(versionData.getVersionName());
         versionDescriptionTxt.setText(versionData.getVersionDescription());
         versionLyricsTxt.setText(versionData.getVersionLyrics());
 
-        getImages();
+        // Image handling
+        imageCounter = 1;
+        getVersionImages();
 
         // Edit the version button is clicked
         editVersionBtn.setOnClickListener(new View.OnClickListener()
@@ -90,16 +90,17 @@ public class ViewVersionDataActivity extends AppCompatActivity
         });
     }
 
-    //
-    private void getImages()
+    // Get list of already created images for this version
+    private void getVersionImages()
     {
         File file = new File(StringHelper.filePath);
         File[] files = file.listFiles();
         if (files != null) {
             String fullPathString = StringHelper.filePath + "/";
+            String imagePrefix = StringHelper.Image_Prefix + songName + "_" + versionName + "_";
             for (File currentFile : files) {
                 String currentFileName = currentFile.getPath().replace(fullPathString, "");
-                if (currentFileName.startsWith("IMG_" + songName + "_" + versionName + "_"))
+                if (currentFileName.startsWith(imagePrefix))
                 {
                     // Image belonging to this song and version found
                     File imageFile = new File(currentFile.getPath());
@@ -113,12 +114,8 @@ public class ViewVersionDataActivity extends AppCompatActivity
                     params.setMargins(0, 10, 0, 10);
                     imageView.setLayoutParams(params);
                     imageView.setImageURI(Uri.fromFile(imageFile));
-                    //imageView.setImageBitmap(cameraImage);
-
-                    // Create ImageView id
-                    String selectedImageDisplayID =  "idImageView" + imageCounter.toString();
-                    int resourceId = getResources().getIdentifier(selectedImageDisplayID,"id", getPackageName());
-                    imageView.setId(resourceId);
+                    imageView.setTag(currentFile.getPath());
+                    imageView.setOnClickListener(v -> { viewImage(v.getTag().toString()); });
                     // Insert ImageView into UI
                     imageContainerLyt.addView(imageView);
 
@@ -127,6 +124,17 @@ public class ViewVersionDataActivity extends AppCompatActivity
                 }
             }
         }
+    }
+
+    private void viewImage(String imagePath)
+    {
+        // Song name
+        Intent i = new Intent(ViewVersionDataActivity.this, ViewOrDeleteImageActivity.class);
+        // Passing the needed variables that will be needed to return and reopen this screen - no yet unsaved data the user has entered must be lost
+        i.putExtra(StringHelper.SongData_Intent_Name, songName);
+        i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
+        i.putExtra(StringHelper.ImageData_Intent_Path, imagePath);
+        startActivity(i);
     }
 
     private int imageViewDPSizeInPX()

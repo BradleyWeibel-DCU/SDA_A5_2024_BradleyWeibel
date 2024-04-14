@@ -32,11 +32,12 @@ public class AddVersionDataActivity extends AppCompatActivity
     private FloatingActionButton createBtn, backToVersionBtn;
     private LinearLayout imageContainerLyt;
     private ImageButton galleryImageBtn, newImageBtn, galleryVideoBtn, newVideoBtn, galleryAudioBtn, newAudioBtn;
-    private DBHandler dbHandler;
 
     // General variables
     private Integer imageCounter;
-    private String songName, versionName, currentPhotoPath;
+    private DBHandler dbHandler;
+    private Boolean wasPreviousScreenImageViewer;
+    private String songName, versionName, currentPhotoPath, versionDescription, versionLyrics;
 
     // Static keys
     private static final int REQUEST_CODE = 100;
@@ -70,24 +71,36 @@ public class AddVersionDataActivity extends AppCompatActivity
         // Creating a new DB handler class and passing our context to it
         dbHandler = new DBHandler(AddVersionDataActivity.this);
 
-        // Set song name in UI from intent
+        // Get all intent data
         songName = getIntent().getStringExtra(StringHelper.SongData_Intent_Name);
-        songNameTxt.setText(songName);
         versionName = getIntent().getStringExtra(StringHelper.VersionData_Intent_Name);
+        // If returning from Image viewer, more intent data is passed
+        versionDescription = getIntent().getStringExtra(StringHelper.VersionData_Intent_Description);
+        versionLyrics = getIntent().getStringExtra(StringHelper.VersionData_Intent_Lyrics);
+        wasPreviousScreenImageViewer = getIntent().getBooleanExtra(StringHelper.VersionData_Intent_View_Screen, false);
+
+        // Populate UI elements
+        songNameTxt.setText(songName);
         versionNameTxt.setText(versionName);
+        if (wasPreviousScreenImageViewer)
+        {
+            versionDescriptionEdt.setText(versionDescription);
+            versionLyricsEdt.setText(versionLyrics);
+            getVersionImages();
+        }
 
         final Integer[] songId = {dbHandler.getSongId(songName)};
         final Integer[] versionId = {0};
 
-        // Add on click listener for add song and version button.
+        // Add on click listener for add song and version button
         createBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 // Get data from all edit text fields
-                String versionDescription = versionDescriptionEdt.getText().toString().trim();
-                String versionLyrics = versionLyricsEdt.getText().toString().trim();
+                versionDescription = versionDescriptionEdt.getText().toString().trim();
+                versionLyrics = versionLyricsEdt.getText().toString().trim();
 
                 String creationDate = StringHelper.getFormattedDate();
 
@@ -127,7 +140,7 @@ public class AddVersionDataActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 // TODO: remove any newly created images, videos or audio clips
-
+                removeAllNewImages();
                 // Opening a new activity via an intent
                 Intent i = new Intent(AddVersionDataActivity.this, AddVersionActivity.class);
                 // Passing the song name
@@ -159,49 +172,7 @@ public class AddVersionDataActivity extends AppCompatActivity
         });
     }
 
-    // Check if permissions are already granted
-    private Boolean isCameraPermissionGranted() { return ContextCompat.checkSelfPermission(AddVersionDataActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED; }
-    private Boolean isWriteExternalPermissionGranted() { return ContextCompat.checkSelfPermission(AddVersionDataActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED; }
-    private Boolean isReadExternalPermissionGranted() { return ContextCompat.checkSelfPermission(AddVersionDataActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED; }
-
-    // Ask permission to use camera
-    private void askCameraPermission() {
-        ActivityCompat.requestPermissions(AddVersionDataActivity.this, new String[] {Manifest.permission.CAMERA}, REQUEST_CODE);
-    }
-
-    // Ask permission to use phone's storage
-    private void askWriteStoragePermission() {
-        ActivityCompat.requestPermissions(AddVersionDataActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
-    }
-
-    // Ask permission to read phone's storage
-    private void askReadStoragePermission() {
-        ActivityCompat.requestPermissions(AddVersionDataActivity.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE);
-    }
-
-    // Trigger on response from User
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
-    {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-        {
-            if (isCameraPermissionGranted() && isWriteExternalPermissionGranted() && isReadExternalPermissionGranted())
-                openCamera();
-            else if (!isCameraPermissionGranted())
-                askCameraPermission();
-            else if (!isWriteExternalPermissionGranted())
-                askWriteStoragePermission();
-            else if (!isReadExternalPermissionGranted())
-                askReadStoragePermission();
-        }
-        else
-        {
-            // TODO
-            StringHelper.showToast("Please accept all permission prompts to use these features", AddVersionDataActivity.this);
-        }
-    }
-
+    // --------------------------------------------- Creating new images in UI
     // Permission granted, proceed with image capture (and later saving)
     private void openCamera()
     {
@@ -228,7 +199,7 @@ public class AddVersionDataActivity extends AppCompatActivity
     // Create image and save in phones storage
     private File createImageFile() throws IOException
     {
-        String imageFileName = "IMG_" + songName + "_" + versionName + "_" + imageCounter;
+        String imageFileName = StringHelper.Image_Prefix + songName + "_" + versionName + "_" + imageCounter;
         // Location: Phone > Android > data > com.example.sda_a5_2024_bradleyweibel > files > Pictures
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
@@ -245,7 +216,7 @@ public class AddVersionDataActivity extends AppCompatActivity
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK)
         {
-            // Image was successfully taken with the camera
+            // Image was successfully taken with the camera and created
             File imageFile = new File(currentPhotoPath);
 
             // Create new ImageView
@@ -257,12 +228,8 @@ public class AddVersionDataActivity extends AppCompatActivity
             params.setMargins(0, 10, 0, 10);
             imageView.setLayoutParams(params);
             imageView.setImageURI(Uri.fromFile(imageFile));
-            //imageView.setImageBitmap(cameraImage);
-
-            // Create ImageView id
-            String selectedImageDisplayID =  "idImageView" + imageCounter.toString();
-            int resourceId = getResources().getIdentifier(selectedImageDisplayID,"id", getPackageName());
-            imageView.setId(resourceId);
+            imageView.setTag(currentPhotoPath);
+            imageView.setOnClickListener(v -> { viewImage(v.getTag().toString()); });
             // Insert ImageView into UI
             imageContainerLyt.addView(imageView);
 
@@ -282,5 +249,116 @@ public class AddVersionDataActivity extends AppCompatActivity
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
         int result = Math.round(px);
         return result;
+    }
+
+    private void removeAllNewImages()
+    {
+        File file = new File(StringHelper.filePath);
+        File[] files = file.listFiles();
+        if (files != null) {
+            String fullPathString = StringHelper.filePath + "/";
+            String imagePrefix = StringHelper.Image_Prefix + songName + "_" + versionName + "_";
+            for (File currentFile : files) {
+                String currentFileName = currentFile.getPath().replace(fullPathString, "");
+                if (currentFileName.startsWith(imagePrefix))
+                {
+                    // Image belonging to this song and version found
+                    File imageFile = new File(currentFile.getPath());
+                    imageFile.delete();
+                }
+            }
+        }
+    }
+
+    private void viewImage(String imagePath)
+    {
+        versionDescription = versionDescriptionEdt.getText().toString().trim();
+        versionLyrics = versionLyricsEdt.getText().toString().trim();
+
+        Intent i = new Intent(AddVersionDataActivity.this, ViewOrDeleteImageActivity.class);
+        // Passing the needed variables that will be needed to return and reopen this screen - no yet unsaved data the user has entered must be lost
+        i.putExtra(StringHelper.SongData_Intent_Name, songName);
+        i.putExtra(StringHelper.VersionData_Intent_Name, versionName);
+        i.putExtra(StringHelper.VersionData_Intent_Description, versionDescription);
+        i.putExtra(StringHelper.VersionData_Intent_Lyrics, versionLyrics);
+        i.putExtra(StringHelper.ImageData_Intent_Path, imagePath);
+        i.putExtra(StringHelper.VersionData_Intent_Add_Screen, true);
+        startActivity(i);
+    }
+
+
+    // --------------------------------------------- Permission handling
+    // Check if permissions are already granted
+    private Boolean isCameraPermissionGranted() { return ContextCompat.checkSelfPermission(AddVersionDataActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED; }
+    private Boolean isWriteExternalPermissionGranted() { return ContextCompat.checkSelfPermission(AddVersionDataActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED; }
+    private Boolean isReadExternalPermissionGranted() { return ContextCompat.checkSelfPermission(AddVersionDataActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED; }
+
+    // Asking for permission
+    private void askCameraPermission() { ActivityCompat.requestPermissions(AddVersionDataActivity.this, new String[] {Manifest.permission.CAMERA}, REQUEST_CODE); }
+    private void askWriteStoragePermission() { ActivityCompat.requestPermissions(AddVersionDataActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE); }
+    private void askReadStoragePermission() { ActivityCompat.requestPermissions(AddVersionDataActivity.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE); }
+
+    // Trigger on response to permission prompt from User
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+        {
+            if (isCameraPermissionGranted() && isWriteExternalPermissionGranted() && isReadExternalPermissionGranted())
+                openCamera();
+            else if (!isCameraPermissionGranted())
+                askCameraPermission();
+            else if (!isWriteExternalPermissionGranted())
+                askWriteStoragePermission();
+            else if (!isReadExternalPermissionGranted())
+                askReadStoragePermission();
+        }
+        else
+        {
+            // TODO
+            StringHelper.showToast("Please accept all permission prompts to use these features", AddVersionDataActivity.this);
+        }
+    }
+
+
+
+
+
+
+    // Get list of already created images for this version
+    private void getVersionImages()
+    {
+        File file = new File(StringHelper.filePath);
+        File[] files = file.listFiles();
+        if (files != null) {
+            String fullPathString = StringHelper.filePath + "/";
+            String imagePrefix = StringHelper.Image_Prefix + songName + "_" + versionName + "_";
+            for (File currentFile : files) {
+                String currentFileName = currentFile.getPath().replace(fullPathString, "");
+                if (currentFileName.startsWith(imagePrefix))
+                {
+                    // Image belonging to this song and version found
+                    File imageFile = new File(currentFile.getPath());
+
+                    // Create new ImageView
+                    ImageView imageView = new ImageView(AddVersionDataActivity.this);
+                    // Set the parameters
+                    int dimensions = imageViewDPSizeInPX();
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dimensions, dimensions);
+                    // Set the margin in linearlayout
+                    params.setMargins(0, 10, 0, 10);
+                    imageView.setLayoutParams(params);
+                    imageView.setImageURI(Uri.fromFile(imageFile));
+                    imageView.setTag(currentFile.getPath());
+                    imageView.setOnClickListener(v -> { viewImage(v.getTag().toString()); });
+                    // Insert ImageView into UI
+                    imageContainerLyt.addView(imageView);
+
+                    // Move to next image
+                    imageCounter+=1;
+                }
+            }
+        }
     }
 }

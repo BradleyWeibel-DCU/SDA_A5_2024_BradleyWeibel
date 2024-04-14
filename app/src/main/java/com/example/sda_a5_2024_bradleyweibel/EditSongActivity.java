@@ -6,11 +6,12 @@ import android.view.View;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import java.io.File;
 
 public class EditSongActivity extends AppCompatActivity
 {
     private Integer songId;
-    private String originalSongName;
+    private String originalSongName, newSongName;
     private EditText songNameEdt;
     private FloatingActionButton saveBtn, deleteBtn, backToSongAndVersionsBtn;
     private DBHandler dbHandler;
@@ -44,7 +45,7 @@ public class EditSongActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 // Get song name from edit text field
-                String newSongName = songNameEdt.getText().toString().trim();
+                newSongName = songNameEdt.getText().toString().trim();
 
                 // validating if the text fields are empty or not.
                 if (newSongName.isEmpty())
@@ -62,6 +63,9 @@ public class EditSongActivity extends AppCompatActivity
                 String modificationDate = StringHelper.getFormattedDate();
                 // Update song with new name
                 dbHandler.updateSong(songId, newSongName, modificationDate);
+
+                // TODO: rename all images, videos and audio clips with new song name
+                renameImages();
 
                 // Go to 'View Song and Versions' page
                 Intent i = new Intent(EditSongActivity.this, ViewSongAndVersionsActivity.class);
@@ -99,5 +103,28 @@ public class EditSongActivity extends AppCompatActivity
                 startActivity(i);
             }
         });
+    }
+
+    private void renameImages()
+    {
+        File file = new File(StringHelper.filePath);
+        File[] files = file.listFiles();
+        if (files != null) {
+            String fullPathString = StringHelper.filePath + "/";
+            String imagePrefix = StringHelper.Image_Prefix + originalSongName + "_";
+            for (File currentFile : files) {
+                String currentFileName = currentFile.getPath().replace(fullPathString, "");
+                if (currentFileName.startsWith(imagePrefix))
+                {
+                    // Image belonging to this song and version found
+                    File imageFile = new File(currentFile.getPath());
+                    String newFileName = currentFile.getPath();
+                    newFileName = newFileName.replace(imagePrefix, StringHelper.Image_Prefix + newSongName + "_");
+                    // Rename file with new version name
+                    File newNameImageFile = new File(newFileName);
+                    imageFile.renameTo(newNameImageFile);
+                }
+            }
+        }
     }
 }

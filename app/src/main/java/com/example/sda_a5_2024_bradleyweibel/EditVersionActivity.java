@@ -15,7 +15,7 @@ public class EditVersionActivity extends AppCompatActivity
     private EditText versionNameEdt;
     private TextView songNameTxt;
     private VersionModal versionData;
-    private FloatingActionButton nextBtn, deleteBtn, backToSongAndVersionsBtn;
+    private FloatingActionButton nextBtn, deleteBtn, backToViewVersionDataBtn;
     private DBHandler dbHandler;
 
     @Override
@@ -29,7 +29,7 @@ public class EditVersionActivity extends AppCompatActivity
         versionNameEdt = findViewById(R.id.idEdtVersionName);
         nextBtn = findViewById(R.id.idBtnNext);
         deleteBtn = findViewById(R.id.idBtnDelete);
-        backToSongAndVersionsBtn = findViewById(R.id.idBtnBackToSongAndVersions);
+        backToViewVersionDataBtn = findViewById(R.id.idBtnBackToViewVersion);
 
         // Get version ID from intent
         versionId = getIntent().getIntExtra(StringHelper.VersionData_Intent_ID, 0);
@@ -93,16 +93,16 @@ public class EditVersionActivity extends AppCompatActivity
             }
         });
 
-        // Back to view song and versions page
-        backToSongAndVersionsBtn.setOnClickListener(new View.OnClickListener()
+        // Back to view version page
+        backToViewVersionDataBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 // Opening a new activity via a intent
-                Intent i = new Intent(EditVersionActivity.this, ViewSongAndVersionsActivity.class);
-                // Passing original song name through intent
-                i.putExtra(StringHelper.SongData_Intent_Name, songName);
+                Intent i = new Intent(EditVersionActivity.this, ViewVersionDataActivity.class);
+                // Passing version ID through intent
+                i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
                 startActivity(i);
             }
         });

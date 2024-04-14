@@ -21,9 +21,16 @@ public class StringHelper
     public final static String SongData_Intent_Name = "song_name";
     public final static String VersionData_Intent_ID = "version_id";
     public final static String VersionData_Intent_Name = "version_name";
+    public final static String VersionData_Intent_Description = "version_description";
+    public final static String VersionData_Intent_Lyrics = "version_lyrics";
+    public final static String VersionData_Intent_Add_Screen = "version_from_add_screen";
+    public final static String VersionData_Intent_View_Screen = "version_from_image_viewer_screen";
+    public final static String ImageData_Intent_Path = "image_path";
 
     // Directories
     public static String filePath = "/storage/emulated/0/Android/data/com.example.sda_a5_2024_bradleyweibel/files/Pictures";
+    public static String Image_Prefix = "IMG_";
+    public static String ImageView_ID_Prefix = "idImageView";
 
     // Show a customized toast message
     public static void showToast(String message, Context context)

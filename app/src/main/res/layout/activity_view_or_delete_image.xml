@@ -32,34 +32,17 @@
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/lyricistImage" />
 
-    <EditText
-        android:id="@+id/idEdtVersionName"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+    <ImageView
+        android:id="@+id/idImgImageViewer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxHeight="450dp"
+        android:adjustViewBounds="true"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/edit_text_shape_orange"
         android:layout_centerVertical="true"
-        android:textStyle="bold"
-        android:textColor="@color/highlighted_text_yellow"
         android:gravity="center"
-        android:hint="@string/version_name"
-        android:textColorHint="@color/standard_text_dark_grey" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/idBtnNext"
-        android:layout_width="57dp"
-        android:layout_height="57dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="19dp"
-        android:clickable="true"
-        android:contentDescription="@string/next"
-        app:backgroundTint="@color/back_button"
-        app:fabCustomSize="57dp"
-        android:scaleType="center"
-        app:maxImageSize="45dp"
-        app:srcCompat="@drawable/confirm_icon" />
+        android:src="@drawable/solar_eclipse_image" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/idBtnDelete"
@@ -74,16 +57,16 @@
         app:fabCustomSize="57dp"
         android:scaleType="center"
         app:maxImageSize="38dp"
-        app:srcCompat="@drawable/delete_bomb_icon" />
+        app:srcCompat="@drawable/delete_explosion_icon" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/idBtnBackToViewVersion"
+        android:id="@+id/idBtnBack"
         android:layout_width="57dp"
         android:layout_height="57dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="19dp"
         android:clickable="true"
-        android:contentDescription="@string/back"
+        android:contentDescription="@string/back_to_home"
         android:scaleType="center"
         app:maxImageSize="32dp"
         app:srcCompat="@drawable/back_arrow_icon"

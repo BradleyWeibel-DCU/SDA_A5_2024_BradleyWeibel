@@ -14,7 +14,7 @@ public class AddVersionActivity extends AppCompatActivity
     private EditText versionNameEdt;
     private FloatingActionButton nextBtn, backToSongBtn;
     private DBHandler dbHandler;
-    private String songName;
+    private String songName, versionName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,7 +33,10 @@ public class AddVersionActivity extends AppCompatActivity
 
         // Get song name from intent
         songName = getIntent().getStringExtra(StringHelper.SongData_Intent_Name);
+        versionName = getIntent().getStringExtra(StringHelper.VersionData_Intent_Name);
+        // Populate elements with passed values
         songNameTxt.setText(songName);
+        versionNameEdt.setText(versionName);
 
         final Integer[] songId = {dbHandler.getSongId(songName)};
 

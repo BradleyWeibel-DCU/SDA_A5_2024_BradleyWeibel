@@ -37,6 +37,9 @@
             android:name=".ViewVersionDataActivity"
             android:exported="false" />
         <activity
+            android:name=".ViewOrDeleteImageActivity"
+            android:exported="false" />
+        <activity
             android:name=".EditSongActivity"
             android:exported="false" />
         <activity

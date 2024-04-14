@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import java.io.File;
 
 public class DeleteSongOrVersionActivity extends AppCompatActivity
 {
@@ -59,6 +60,9 @@ public class DeleteSongOrVersionActivity extends AppCompatActivity
                     dbHandler.deleteSongAndVersions(songId);
                     // Return to main menu
                     i = new Intent(DeleteSongOrVersionActivity.this, MainActivity.class);
+
+                    // TODO: remove all images, videos and audio relating to the song
+                    removeAllImages(songName, "");
                 }
                 else
                 {
@@ -68,6 +72,9 @@ public class DeleteSongOrVersionActivity extends AppCompatActivity
                     i = new Intent(DeleteSongOrVersionActivity.this, ViewSongAndVersionsActivity.class);
                     // Passing the song name
                     i.putExtra(StringHelper.SongData_Intent_Name, songName);
+
+                    // TODO: remove all images, videos and audio relating to this version
+                    removeAllImages(songName, versionName);
                 }
                 startActivity(i);
             }
@@ -79,12 +86,47 @@ public class DeleteSongOrVersionActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                // Opening a new activity via a intent
-                Intent i = new Intent(DeleteSongOrVersionActivity.this, ViewSongAndVersionsActivity.class);
-                // Passing song name through intent
-                i.putExtra(StringHelper.SongData_Intent_Name, songName);
+                // Initiate DB handler
+                dbHandler = new DBHandler(DeleteSongOrVersionActivity.this);
+
+                Intent i;
+                if (songWasPassed)
+                {
+                    // Return to 'Edit Song' page
+                    i = new Intent(DeleteSongOrVersionActivity.this, EditSongActivity.class);
+                    // Passing the song name
+                    i.putExtra(StringHelper.SongData_Intent_Name, songName);
+                }
+                else
+                {
+                    // Return to 'Edit Version' page
+                    i = new Intent(DeleteSongOrVersionActivity.this, EditVersionActivity.class);
+                    // Passing the version id
+                    i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
+                }
                 startActivity(i);
             }
         });
+    }
+
+    public void removeAllImages(String thisSongName, String thisVersionName)
+    {
+        File file = new File(StringHelper.filePath);
+        File[] files = file.listFiles();
+        if (files != null) {
+            String fullPathString = StringHelper.filePath + "/";
+            String imagePrefix = StringHelper.Image_Prefix + thisSongName + "_";
+            if (!thisVersionName.equals(""))
+                imagePrefix = imagePrefix + thisVersionName + "_";
+            for (File currentFile : files) {
+                String currentFileName = currentFile.getPath().replace(fullPathString, "");
+                if (currentFileName.startsWith(imagePrefix))
+                {
+                    // Image belonging to this song and version found
+                    File imageFile = new File(currentFile.getPath());
+                    imageFile.delete();
+                }
+            }
+        }
     }
 }
