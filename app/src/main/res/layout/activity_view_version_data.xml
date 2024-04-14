@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/screen_background"
-    tools:context=".AddVersionActivity">
+    tools:context=".AddVersionDataActivity">
 
     <ImageView
         android:id="@+id/lyricistImage"
@@ -124,7 +124,27 @@
                 android:textSize="20sp"
                 android:textStyle="bold"/>
 
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="start"
+                android:text="@string/images"
+                android:textColor="@color/standard_text_dark_grey"
+                android:textSize="17dp" />
 
+            <LinearLayout
+                android:id="@+id/imageContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="5dp">
+
+            </LinearLayout>
 
         </LinearLayout>
 

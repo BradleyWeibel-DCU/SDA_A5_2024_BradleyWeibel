@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/screen_background"
-    tools:context=".AddVersionActivity">
+    tools:context=".AddSongActivity">
 
     <ImageView
         android:id="@+id/lyricistImage"
@@ -32,125 +32,29 @@
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/lyricistImage" />
 
-    <ScrollView
-        android:id="@+id/scrollView1"
+    <EditText
+        android:id="@+id/idEdtVersionName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="24dp"
-        android:layout_alignBaseline="@+id/idTxtSongName">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/idTxtSongName"
-                android:layout_marginStart="17dp"
-                android:layout_marginEnd="10dp"
-                android:gravity="start"
-                android:text="@string/version"
-                android:textColor="@color/standard_text_dark_grey"
-                android:textSize="17dp" />
-
-            <EditText
-                android:id="@+id/idEdtVersionName"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@+id/textView2"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/edit_text_shape_orange"
-                android:hint="@string/version_name"
-                android:paddingLeft="10dp"
-                android:textColor="@color/highlighted_text_yellow"
-                android:textColorHint="@color/standard_text_dark_grey"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/idEdtVersionName"
-                android:layout_marginStart="17dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:gravity="start"
-                android:text="@string/description"
-                android:textColor="@color/standard_text_dark_grey"
-                android:textSize="17dp" />
-
-            <EditText
-                android:id="@+id/idEdtVersionDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textView3"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/edit_text_shape_orange"
-                android:hint="@string/version_description"
-                android:inputType="textMultiLine"
-                android:minLines="2"
-                android:gravity="start"
-                android:paddingLeft="10dp"
-                android:paddingTop="14dp"
-                android:paddingBottom="14dp"
-                android:textColor="@color/highlighted_text_yellow"
-                android:textColorHint="@color/standard_text_dark_grey"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/idEdtVersionDescription"
-                android:layout_marginStart="17dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:gravity="start"
-                android:text="@string/lyrics"
-                android:textColor="@color/standard_text_dark_grey"
-                android:textSize="17dp" />
-
-            <EditText
-                android:id="@+id/idEdtVersionLyrics"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textView4"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/edit_text_shape_orange"
-                android:hint="@string/version_lyrics"
-                android:inputType="textMultiLine"
-                android:minLines="3"
-                android:gravity="start"
-                android:paddingLeft="10dp"
-                android:paddingTop="14dp"
-                android:paddingBottom="14dp"
-                android:textColor="@color/highlighted_text_yellow"
-                android:textColorHint="@color/standard_text_dark_grey"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-    </ScrollView>
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/edit_text_shape_orange"
+        android:layout_centerVertical="true"
+        android:textStyle="bold"
+        android:textColor="@color/highlighted_text_yellow"
+        android:gravity="center"
+        android:hint="@string/version_name"
+        android:textColorHint="@color/standard_text_dark_grey" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/idBtnSaveVersion"
+        android:id="@+id/idBtnNext"
         android:layout_width="57dp"
         android:layout_height="57dp"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="19dp"
         android:clickable="true"
-        android:contentDescription="@string/save"
+        android:contentDescription="@string/next"
         app:backgroundTint="@color/back_button"
         app:fabCustomSize="57dp"
         android:scaleType="center"
@@ -158,7 +62,7 @@
         app:srcCompat="@drawable/confirm_icon" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/idBtnDeleteVersion"
+        android:id="@+id/idBtnDelete"
         android:layout_width="57dp"
         android:layout_height="57dp"
         android:layout_alignParentEnd="true"
@@ -173,7 +77,7 @@
         app:srcCompat="@drawable/delete_bomb_icon" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/idBtnBack"
+        android:id="@+id/idBtnBackToSongAndVersions"
         android:layout_width="57dp"
         android:layout_height="57dp"
         android:layout_marginStart="16dp"

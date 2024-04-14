@@ -11,9 +11,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class AddVersionActivity extends AppCompatActivity
 {
     private TextView songNameTxt;
-    private EditText versionNameEdt, versionDescriptionEdt, versionLyricsEdt;
-    private FloatingActionButton createBtn, backToSongBtn;
+    private EditText versionNameEdt;
+    private FloatingActionButton nextBtn, backToSongBtn;
     private DBHandler dbHandler;
+    private String songName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -21,75 +22,56 @@ public class AddVersionActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_version);
 
-        // Initializing all our variables
+        // Mapping UI elements to local variables
         songNameTxt = findViewById(R.id.idTxtSongName);
         versionNameEdt = findViewById(R.id.idEdtVersionName);
-        versionDescriptionEdt = findViewById(R.id.idEdtVersionDescription);
-        versionLyricsEdt = findViewById(R.id.idEdtVersionLyrics);
-        createBtn = findViewById(R.id.idBtnAddVersion);
+        nextBtn = findViewById(R.id.idBtnNext);
         backToSongBtn = findViewById(R.id.idBtnBackToAddSong);
 
-        // Creating a new DB handler class and passing our context to it
+        // Initiate DB handler
         dbHandler = new DBHandler(AddVersionActivity.this);
 
-        // Set song name in UI from intent
-        String songName = getIntent().getStringExtra(StringHelper.SongData_Intent_Name);
+        // Get song name from intent
+        songName = getIntent().getStringExtra(StringHelper.SongData_Intent_Name);
         songNameTxt.setText(songName);
 
         final Integer[] songId = {dbHandler.getSongId(songName)};
-        final Integer[] versionId = {0};
 
-        // Add on click listener for add song and version button.
-        createBtn.setOnClickListener(new View.OnClickListener()
+        // On click listener for the next screen button
+        nextBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                // Get data from all edit text fields
+                // Get version name from edit text field
                 String versionName = versionNameEdt.getText().toString().trim();
-                String versionDescription = versionDescriptionEdt.getText().toString().trim();
-                String versionLyrics = versionLyricsEdt.getText().toString().trim();
 
-                // Validating if needed text fields are empty or not
+                // Validate if version name field is populated
                 if (versionName.isEmpty()) {
                     StringHelper.showToast(getString(R.string.toastr_missing_version_name), AddVersionActivity.this);
                     return;
                 }
-
-                String creationDate = StringHelper.getFormattedDate();
-
-                if (songId[0].equals(0))
+                else if (!songId[0].equals(0))
                 {
-                    // Song doesn't exist yet
-                    // Add new song to DB
-                    songId[0] = dbHandler.addNewSong(songName, creationDate, creationDate);
-                    // Add new version of song to DB
-                    versionId[0] = dbHandler.addNewVersion(versionName, songId[0], versionDescription, versionLyrics, creationDate, creationDate);
-
-                    StringHelper.showToast(getString(R.string.toastr_song_and_version_added), AddVersionActivity.this);
-                }
-                else
-                {
-                    // Song already exists, add a new version for this song
+                    // Song already exists, user is planning to add a new version for this song
                     // Version name must be unique in the context of this song
                     if (!dbHandler.isVersionNameUnique(songId[0], versionName))
                     {
                         StringHelper.showToast(getString(R.string.toastr_unique_version_name), AddVersionActivity.this);
                         return;
                     }
-                    // Add new version of song to DB
-                    versionId[0] = dbHandler.addNewVersion(versionName, songId[0], versionDescription, versionLyrics, creationDate, creationDate);
                 }
 
-                // Go to view version screen
-                Intent i = new Intent(AddVersionActivity.this, ViewVersionActivity.class);
-                // Pass data through intent
-                i.putExtra(StringHelper.VersionData_Intent_ID, versionId[0]);
+                // Go to 'Add Version Data' page
+                Intent i = new Intent(AddVersionActivity.this, AddVersionDataActivity.class);
+                // Passing song name through intent
+                i.putExtra(StringHelper.SongData_Intent_Name, songName);
+                i.putExtra(StringHelper.VersionData_Intent_Name, versionName);
                 startActivity(i);
             }
         });
 
-        // Back to song button is clicked
+        // Back to previous page
         backToSongBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override

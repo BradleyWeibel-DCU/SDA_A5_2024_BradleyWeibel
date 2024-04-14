@@ -36,5 +36,6 @@
     <string name="toastr_missing_version_name">Please enter a version name...</string>
     <string name="toastr_unique_version_name">Please enter a unique version name for this song...</string>
     <string name="toastr_new_version_created">New song version created...</string>
+    <string name="toastr_version_updated">Song version updated...</string>
     <string name="delete_version_warning">Doubly sure you want to delete this version of your song?</string>
 </resources>

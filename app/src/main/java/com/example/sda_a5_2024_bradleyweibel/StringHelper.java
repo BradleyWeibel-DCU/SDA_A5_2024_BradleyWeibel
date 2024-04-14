@@ -22,6 +22,9 @@ public class StringHelper
     public final static String VersionData_Intent_ID = "version_id";
     public final static String VersionData_Intent_Name = "version_name";
 
+    // Directories
+    public static String filePath = "/storage/emulated/0/Android/data/com.example.sda_a5_2024_bradleyweibel/files/Pictures";
+
     // Show a customized toast message
     public static void showToast(String message, Context context)
     {
