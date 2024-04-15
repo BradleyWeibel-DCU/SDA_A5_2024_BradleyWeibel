@@ -27,9 +27,6 @@
             android:name=".AddVersionActivity"
             android:exported="false" />
         <activity
-            android:name=".AddVersionDataActivity"
-            android:exported="false" />
-        <activity
             android:name=".ViewSongAndVersionsActivity"
             android:exported="false" />
         <activity

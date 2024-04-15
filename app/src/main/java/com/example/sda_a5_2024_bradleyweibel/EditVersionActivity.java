@@ -34,7 +34,7 @@ public class EditVersionActivity extends AppCompatActivity
     // UI elements
     private TextView songNameTxt;
     private EditText versionNameEdt, versionDescriptionEdt, versionLyricsEdt;
-    private FloatingActionButton saveBtn, deleteBtn, backToVersionBtn;
+    private FloatingActionButton saveBtn, deleteBtn, backToViewVersionBtn;
     private ImageButton galleryImageBtn, newImageBtn, galleryVideoBtn, newVideoBtn, galleryAudioBtn, newAudioBtn;
     private LinearLayout imageContainerLyt;
 
@@ -73,7 +73,7 @@ public class EditVersionActivity extends AppCompatActivity
         //newAudioBtn = findViewById(R.id.idAddNewAudioBtn);
         saveBtn = findViewById(R.id.idBtnSaveVersion);
         deleteBtn = findViewById(R.id.idBtnDeleteVersion);
-        backToVersionBtn = findViewById(R.id.idBtnBack);
+        backToViewVersionBtn = findViewById(R.id.idBtnBack);
 
         // Get all intent data
         versionId = getIntent().getIntExtra(StringHelper.VersionData_Intent_ID, 0);
@@ -94,9 +94,7 @@ public class EditVersionActivity extends AppCompatActivity
         songNameTxt.setText(songName);
         versionNameEdt.setText(originalVersionName);
         if (wasPreviousScreenImageViewer)
-        {
             versionNameEdt.setText(newVersionName);
-        }
         else
         {
             // Previous screen was not an image viewer, overwrite intent data with DB data
@@ -177,7 +175,7 @@ public class EditVersionActivity extends AppCompatActivity
         });
 
         // Back to edit version button is clicked
-        backToVersionBtn.setOnClickListener(new View.OnClickListener()
+        backToViewVersionBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)

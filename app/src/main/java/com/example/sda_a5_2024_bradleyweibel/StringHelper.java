@@ -33,6 +33,7 @@ public class StringHelper
     // Names
     public static String Image_Prefix = "IMG_";
     public static String Image_Suffix_With_Dot = ".jpg";
+    public static String Placeholder_Version_Name = "-PlaceHolderForNewVersionName-";
 
     // Authorities
     public final static String App_Authority = "com.example.sda_a5_2024_bradleyweibel";
