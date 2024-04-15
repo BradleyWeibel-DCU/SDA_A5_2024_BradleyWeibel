@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,8 +23,9 @@ public class ViewVersionDataActivity extends AppCompatActivity
     private LinearLayout imageContainerLyt;
 
     // General variables
+    private Boolean imagesPresent;
     private Integer versionId, imageCounter;
-    private String songName, versionName;
+    private String songName, versionName, versionDescription, versionLyrics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,19 +49,45 @@ public class ViewVersionDataActivity extends AppCompatActivity
         dbHandler = new DBHandler(ViewVersionDataActivity.this);
         // Get version data from DB
         versionData = dbHandler.getSongVersion(versionId);
-        // Get names
+        // Get values
         songName = dbHandler.getSongName(versionData.getVersionSongId());
         versionName = versionData.getVersionName();
-
-        // Insert values into UI elements
-        songNameTxt.setText(songName);
-        versionNameTxt.setText(versionData.getVersionName());
-        versionDescriptionTxt.setText(versionData.getVersionDescription());
-        versionLyricsTxt.setText(versionData.getVersionLyrics());
+        versionDescription = versionData.getVersionDescription();
+        versionLyrics = versionData.getVersionLyrics();
 
         // Image handling
         imageCounter = 1;
+        imagesPresent = false;
         getVersionImages();
+
+        // UI elements handling
+        songNameTxt.setText(songName);
+        versionNameTxt.setText(versionName);
+        if (versionDescription.equals(""))
+        {
+            // No description text saved, remove elements
+            TextView header = findViewById(R.id.idTxtDescriptionHeader);
+            ((ViewGroup) header.getParent()).removeView(header);
+            ((ViewGroup) versionDescriptionTxt.getParent()).removeView(versionDescriptionTxt);
+        }
+        else
+            versionDescriptionTxt.setText(versionDescription);
+        if (versionLyrics.equals(""))
+        {
+            // No lyric text saved, remove elements
+            TextView header = findViewById(R.id.idTxtLyricsHeader);
+            ((ViewGroup) header.getParent()).removeView(header);
+            ((ViewGroup) versionLyricsTxt.getParent()).removeView(versionLyricsTxt);
+        }
+        else
+            versionLyricsTxt.setText(versionLyrics);
+        if (!imagesPresent)
+        {
+            // No images saved, remove elements
+            TextView header = findViewById(R.id.idTxtImagesHeader);
+            ((ViewGroup) header.getParent()).removeView(header);
+            ((ViewGroup) imageContainerLyt.getParent()).removeView(imageContainerLyt);
+        }
 
         // Edit the version button is clicked
         editVersionBtn.setOnClickListener(new View.OnClickListener()
@@ -90,15 +118,18 @@ public class ViewVersionDataActivity extends AppCompatActivity
         });
     }
 
+    // --------------------------------------------- Image handling
     // Get list of already created images for this version
     private void getVersionImages()
     {
         File file = new File(StringHelper.filePath);
         File[] files = file.listFiles();
-        if (files != null) {
+        if (files != null)
+        {
             String fullPathString = StringHelper.filePath + "/";
             String imagePrefix = StringHelper.Image_Prefix + songName + "_" + versionName + "_";
-            for (File currentFile : files) {
+            for (File currentFile : files)
+            {
                 String currentFileName = currentFile.getPath().replace(fullPathString, "");
                 if (currentFileName.startsWith(imagePrefix))
                 {
@@ -118,14 +149,13 @@ public class ViewVersionDataActivity extends AppCompatActivity
                     imageView.setOnClickListener(v -> { viewImage(v.getTag().toString()); });
                     // Insert ImageView into UI
                     imageContainerLyt.addView(imageView);
-
                     // Move to next image
                     imageCounter+=1;
+                    imagesPresent = true;
                 }
             }
         }
     }
-
     private void viewImage(String imagePath)
     {
         // Song name
@@ -137,6 +167,7 @@ public class ViewVersionDataActivity extends AppCompatActivity
         startActivity(i);
     }
 
+    // ---------------------------------------------- Helpers
     private int imageViewDPSizeInPX()
     {
         float dip = 130f;

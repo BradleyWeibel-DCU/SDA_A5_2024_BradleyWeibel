@@ -72,9 +72,6 @@ public class AddVersionDataActivity extends AppCompatActivity
         createBtn = findViewById(R.id.idBtnAddVersion);
         backToVersionBtn = findViewById(R.id.idBtnBackToAddVersion);
 
-        // Creating a new DB handler class and passing our context to it
-        dbHandler = new DBHandler(AddVersionDataActivity.this);
-
         // Get all intent data
         songName = getIntent().getStringExtra(StringHelper.SongData_Intent_Name);
         versionName = getIntent().getStringExtra(StringHelper.VersionData_Intent_Name);
@@ -96,6 +93,9 @@ public class AddVersionDataActivity extends AppCompatActivity
             versionLyricsEdt.setText(versionLyrics);
             getVersionImages();
         }
+
+        // Creating a new DB handler class and passing our context to it
+        dbHandler = new DBHandler(AddVersionDataActivity.this);
 
         final Integer[] songId = {dbHandler.getSongId(songName)};
         final Integer[] versionId = {0};
@@ -119,8 +119,6 @@ public class AddVersionDataActivity extends AppCompatActivity
                     songId[0] = dbHandler.addNewSong(songName, creationDate, creationDate);
                     // Add new version of song to DB
                     versionId[0] = dbHandler.addNewVersion(versionName, songId[0], versionDescription, versionLyrics, creationDate, creationDate);
-
-                    // TODO: add version name to newly added images for this song
 
                     StringHelper.showToast(getString(R.string.toastr_song_and_version_added), AddVersionDataActivity.this);
                 }
@@ -165,7 +163,7 @@ public class AddVersionDataActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                if (isCameraPermissionGranted() && isWriteExternalPermissionGranted() && isReadExternalPermissionGranted())
+                if (isCameraPermissionGranted() && isWriteExternalPermissionGranted())
                     openCamera();
                 else
                 {
@@ -173,8 +171,6 @@ public class AddVersionDataActivity extends AppCompatActivity
                         askCameraPermission();
                     else if (!isWriteExternalPermissionGranted())
                         askWriteStoragePermission();
-                    else if (!isReadExternalPermissionGranted())
-                        askReadStoragePermission();
                 }
             }
         });
@@ -184,17 +180,34 @@ public class AddVersionDataActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                if (isWriteExternalPermissionGranted() && isReadExternalPermissionGranted())
+                if (isWriteExternalPermissionGranted())
                     openGallery();
                 else
-                {
-                    if (!isWriteExternalPermissionGranted())
-                        askWriteStoragePermission();
-                    else if (!isReadExternalPermissionGranted())
-                        askReadStoragePermission();
-                }
+                    askWriteStoragePermission();
             }
         });
+    }
+
+    // Get list of already created images for this version
+    private void getVersionImages()
+    {
+        File file = new File(StringHelper.filePath);
+        File[] files = file.listFiles();
+        if (files != null)
+        {
+            String fullPathString = StringHelper.filePath + "/";
+            for (File currentFile : files)
+            {
+                String currentFileName = currentFile.getPath().replace(fullPathString, "");
+                if (currentFileName.startsWith(imageStandardNamePrefix))
+                {
+                    // Image belonging to this song and version found
+                    File imageFile = new File(currentFile.getPath());
+                    currentPhotoPath = currentFile.getPath();
+                    insertNewImageIntoUI(Uri.fromFile(imageFile));
+                }
+            }
+        }
     }
 
     // --------------------------------------------- Creating new images in UI
@@ -205,7 +218,8 @@ public class AddVersionDataActivity extends AppCompatActivity
         if (takePictureIntent.resolveActivity(getPackageManager()) != null)
         {
             File photoFile = null;
-            try {
+            try
+            {
                 photoFile = createImageFile();
             }
             catch (IOException ex) {}
@@ -213,8 +227,7 @@ public class AddVersionDataActivity extends AppCompatActivity
             // If file was successfully created
             if (photoFile != null)
             {
-                // TODO: move authority to StringHelper
-                Uri photoURI = FileProvider.getUriForFile(this, "com.example.sda_a5_2024_bradleyweibel", photoFile);
+                Uri photoURI = FileProvider.getUriForFile(this, StringHelper.App_Authority, photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
@@ -225,19 +238,6 @@ public class AddVersionDataActivity extends AppCompatActivity
         Intent choosePictureIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(choosePictureIntent, REQUEST_CHOOSE_PHOTO);
     }
-
-    // Create image and save in phones storage
-    private File createImageFile() throws IOException
-    {
-        String imageFileName = imageStandardNamePrefix + imageCounter;
-        // Location: Phone > Android > data > com.example.sda_a5_2024_bradleyweibel > files > Pictures
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
     // After a photo/video has been taken/chosen
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -263,7 +263,7 @@ public class AddVersionDataActivity extends AppCompatActivity
             File newFile = null;
             try
             {
-                String fileExt = getFileExt(imageLocation);
+                String fileExt = getFileExtension(imageLocation);
                 File tempImageFile = File.createTempFile(imageFileName, "." + fileExt, storageDir);
                 newFile = new File(tempImageFile.getAbsolutePath());
 
@@ -272,7 +272,8 @@ public class AddVersionDataActivity extends AppCompatActivity
                 OutputStream outputStream = new FileOutputStream(newFile);
                 byte[] buffer = new byte[1024];
                 int bytesRead;
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                while ((bytesRead = inputStream.read(buffer)) != -1)
+                {
                     outputStream.write(buffer, 0, bytesRead);
                 }
                 outputStream.close();
@@ -292,6 +293,18 @@ public class AddVersionDataActivity extends AppCompatActivity
         }
     }
 
+    // Create image and save in phones storage
+    private File createImageFile() throws IOException
+    {
+        String imageFileName = imageStandardNamePrefix + imageCounter;
+        // Location: Phone > Android > data > com.example.sda_a5_2024_bradleyweibel > files > Pictures
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(imageFileName, StringHelper.Image_Suffix_With_Dot, storageDir);
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+    // Create UI element to show image
     private void insertNewImageIntoUI(Uri fileLocation)
     {
         // Create new ImageView
@@ -311,40 +324,7 @@ public class AddVersionDataActivity extends AppCompatActivity
         imageCounter+=1;
     }
 
-    private String getFileExt(Uri imageContentUri)
-    {
-        ContentResolver c = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(c.getType(imageContentUri));
-    }
-
-    private int imageViewDPSizeInPX()
-    {
-        float dip = 130f;
-        Resources r = getResources();
-        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
-        int result = Math.round(px);
-        return result;
-    }
-
-    private void removeAllNewImages()
-    {
-        File file = new File(StringHelper.filePath);
-        File[] files = file.listFiles();
-        if (files != null) {
-            String fullPathString = StringHelper.filePath + "/";
-            for (File currentFile : files) {
-                String currentFileName = currentFile.getPath().replace(fullPathString, "");
-                if (currentFileName.startsWith(imageStandardNamePrefix))
-                {
-                    // Image belonging to this song and version found
-                    File imageFile = new File(currentFile.getPath());
-                    imageFile.delete();
-                }
-            }
-        }
-    }
-
+    // Open screen with large image
     private void viewImage(String imagePath)
     {
         versionDescription = versionDescriptionEdt.getText().toString().trim();
@@ -361,17 +341,32 @@ public class AddVersionDataActivity extends AppCompatActivity
         startActivity(i);
     }
 
+    // --------------------------------------------- Cleanup
+    private void removeAllNewImages()
+    {
+        File file = new File(StringHelper.filePath);
+        File[] files = file.listFiles();
+        if (files != null)
+        {
+            String fullPathString = StringHelper.filePath + "/";
+            for (File currentFile : files)
+            {
+                String currentFileName = currentFile.getPath().replace(fullPathString, "");
+                if (currentFileName.startsWith(imageStandardNamePrefix))
+                {
+                    // Image belonging to this song and version found
+                    File imageFile = new File(currentFile.getPath());
+                    imageFile.delete();
+                }
+            }
+        }
+    }
 
     // --------------------------------------------- Permission handling
-    // Check if permissions are already granted
     private Boolean isCameraPermissionGranted() { return ContextCompat.checkSelfPermission(AddVersionDataActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED; }
     private Boolean isWriteExternalPermissionGranted() { return ContextCompat.checkSelfPermission(AddVersionDataActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED; }
-    private Boolean isReadExternalPermissionGranted() { return ContextCompat.checkSelfPermission(AddVersionDataActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED; }
-
-    // Asking for permission
     private void askCameraPermission() { ActivityCompat.requestPermissions(AddVersionDataActivity.this, new String[] {Manifest.permission.CAMERA}, REQUEST_CODE); }
     private void askWriteStoragePermission() { ActivityCompat.requestPermissions(AddVersionDataActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE); }
-    private void askReadStoragePermission() { ActivityCompat.requestPermissions(AddVersionDataActivity.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE); }
 
     // Trigger on response to permission prompt from User
     @Override
@@ -384,38 +379,24 @@ public class AddVersionDataActivity extends AppCompatActivity
                 askCameraPermission();
             else if (!isWriteExternalPermissionGranted())
                 askWriteStoragePermission();
-            else if (!isReadExternalPermissionGranted())
-                askReadStoragePermission();
         }
         else
-        {
-            // TODO
-            StringHelper.showToast("Please accept all permission prompts to use these features", AddVersionDataActivity.this);
-        }
+            StringHelper.showToast(getString(R.string.permissions_toastr_warning), AddVersionDataActivity.this);
     }
 
-
-
-
-
-
-    // Get list of already created images for this version
-    private void getVersionImages()
+    // --------------------------------------------- Helpers
+    private String getFileExtension(Uri imageContentUri)
     {
-        File file = new File(StringHelper.filePath);
-        File[] files = file.listFiles();
-        if (files != null) {
-            String fullPathString = StringHelper.filePath + "/";
-            for (File currentFile : files) {
-                String currentFileName = currentFile.getPath().replace(fullPathString, "");
-                if (currentFileName.startsWith(imageStandardNamePrefix))
-                {
-                    // Image belonging to this song and version found
-                    File imageFile = new File(currentFile.getPath());
-                    currentPhotoPath = currentFile.getPath();
-                    insertNewImageIntoUI(Uri.fromFile(imageFile));
-                }
-            }
-        }
+        ContentResolver c = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(c.getType(imageContentUri));
+    }
+    private int imageViewDPSizeInPX()
+    {
+        float dip = 130f;
+        Resources r = getResources();
+        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
+        int result = Math.round(px);
+        return result;
     }
 }

@@ -11,6 +11,7 @@
     <string name="save">Save changes</string>
     <string name="creation_date">[Creation Date]</string>
     <string name="modified_date">[Modified Date]</string>
+    <string name="permissions_toastr_warning">Please accept all permission prompts to use these features</string>
 
     <!-- Home screen -->
     <string name="search_songs">filter...</string>

@@ -51,7 +51,6 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/idTxtSongName"
                 android:layout_marginStart="17dp"
                 android:layout_marginEnd="10dp"
                 android:gravity="start"
@@ -63,7 +62,6 @@
                 android:id="@+id/idTxtVersionName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textView2"
                 android:layout_marginStart="17dp"
                 android:layout_marginEnd="10dp"
                 android:gravity="start"
@@ -73,10 +71,9 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/idTxtDescriptionHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/idTxtVersionName"
                 android:layout_marginStart="17dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="10dp"
@@ -89,7 +86,6 @@
                 android:id="@+id/idTxtVersionDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textView3"
                 android:layout_marginStart="17dp"
                 android:layout_marginEnd="10dp"
                 android:gravity="start"
@@ -99,10 +95,9 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/idTxtLyricsHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/idTxtVersionDescription"
                 android:layout_marginStart="17dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="10dp"
@@ -115,7 +110,6 @@
                 android:id="@+id/idTxtVersionLyrics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textView4"
                 android:layout_marginStart="17dp"
                 android:layout_marginEnd="10dp"
                 android:gravity="start"
@@ -125,11 +119,11 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/idTxtImagesHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="17dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="10dp"
                 android:gravity="start"
                 android:text="@string/images"

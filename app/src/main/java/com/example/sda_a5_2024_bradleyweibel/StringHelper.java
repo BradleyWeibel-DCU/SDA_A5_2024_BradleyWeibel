@@ -29,8 +29,13 @@ public class StringHelper
 
     // Directories
     public static String filePath = "/storage/emulated/0/Android/data/com.example.sda_a5_2024_bradleyweibel/files/Pictures";
+
+    // Names
     public static String Image_Prefix = "IMG_";
-    public static String ImageView_ID_Prefix = "idImageView";
+    public static String Image_Suffix_With_Dot = ".jpg";
+
+    // Authorities
+    public final static String App_Authority = "com.example.sda_a5_2024_bradleyweibel";
 
     // Show a customized toast message
     public static void showToast(String message, Context context)
