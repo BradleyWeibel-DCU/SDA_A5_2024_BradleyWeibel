@@ -1,6 +1,7 @@
 package com.example.sda_a5_2024_bradleyweibel;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -10,6 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.TypedValue;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -22,7 +24,10 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class EditVersionDataActivity extends AppCompatActivity
@@ -39,13 +44,15 @@ public class EditVersionDataActivity extends AppCompatActivity
     private DBHandler dbHandler;
     private VersionModal versionData;
     private Boolean wasPreviousScreenImageViewer;
-    private String songName, newVersionName, originalVersionName, versionDescription, versionLyrics, currentPhotoPath;
+    private String songName, newVersionName, originalVersionName, versionDescription, versionLyrics, currentPhotoPath, imageStandardNamePrefix;
     private ArrayList<String> listOfNewImageNames;
 
     // Static keys
     private static final int REQUEST_CODE = 100;
-    private static final int REQUEST_TAKE_PHOTO = 2;
-    private static final int REQUEST_TAKE_VIDEO = 3;
+    private static final int REQUEST_CHOOSE_PHOTO = 101;
+    private static final int REQUEST_TAKE_PHOTO = 102;
+    private static final int REQUEST_CHOOSE_VIDEO = 103;
+    private static final int REQUEST_TAKE_VIDEO = 104;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -100,6 +107,7 @@ public class EditVersionDataActivity extends AppCompatActivity
 
         // Image handling
         imageCounter = 1;
+        imageStandardNamePrefix = StringHelper.Image_Prefix + songName + "_" + originalVersionName + "_";
         getVersionImages();
 
         // On click listener for save version changes button
@@ -186,6 +194,23 @@ public class EditVersionDataActivity extends AppCompatActivity
                 }
             }
         });
+        // User wants to select a gallery image
+        galleryImageBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (isWriteExternalPermissionGranted() && isReadExternalPermissionGranted())
+                    openGallery();
+                else
+                {
+                    if (!isWriteExternalPermissionGranted())
+                        askWriteStoragePermission();
+                    else if (!isReadExternalPermissionGranted())
+                        askReadStoragePermission();
+                }
+            }
+        });
     }
 
     // Get list of already created images for this version
@@ -202,23 +227,8 @@ public class EditVersionDataActivity extends AppCompatActivity
                 {
                     // Image belonging to this song and version found
                     File imageFile = new File(currentFile.getPath());
-
-                    // Create new ImageView
-                    ImageView imageView = new ImageView(EditVersionDataActivity.this);
-                    // Set the parameters
-                    int dimensions = imageViewDPSizeInPX();
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dimensions, dimensions);
-                    // Set the margin in linearlayout
-                    params.setMargins(0, 10, 0, 10);
-                    imageView.setLayoutParams(params);
-                    imageView.setImageURI(Uri.fromFile(imageFile));
-                    imageView.setTag(currentFile.getPath());
-                    imageView.setOnClickListener(v -> { viewImage(v.getTag().toString()); });
-                    // Insert ImageView into UI
-                    imageContainerLyt.addView(imageView);
-
-                    // Move to next image
-                    imageCounter+=1;
+                    currentPhotoPath = currentFile.getPath();
+                    insertNewImageIntoUI(Uri.fromFile(imageFile));
                 }
             }
         }
@@ -275,21 +285,33 @@ public class EditVersionDataActivity extends AppCompatActivity
         }
     }
 
+    private void openGallery()
+    {
+        Intent choosePictureIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(choosePictureIntent, REQUEST_CHOOSE_PHOTO);
+    }
+
     // Create image and save in phones storage
     private File createImageFile() throws IOException
     {
         // Name of image
-        String imageFileName = StringHelper.Image_Prefix + songName + "_" + originalVersionName + "_" + imageCounter;
+        String imageFileName = imageStandardNamePrefix + imageCounter;
         // Location: Phone > Android > data > com.example.sda_a5_2024_bradleyweibel > files > Pictures
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
+        addNewImageToList();
+        return image;
+    }
+
+    private void addNewImageToList()
+    {
+        // Differentiate these new images by saving their names
         String fullPathString = StringHelper.filePath + "/";
         String currentFileName = currentPhotoPath.replace(fullPathString, "");
         // Add name of image to list of newly created images
         listOfNewImageNames.add(currentFileName);
-        return image;
     }
 
     // After a photo/video has been taken and the tick clicked in UI
@@ -300,25 +322,45 @@ public class EditVersionDataActivity extends AppCompatActivity
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK)
         {
-            // Image was successfully taken with the camera and created
+            // Image was successfully taken with the camera and created in file location
             File imageFile = new File(currentPhotoPath);
+            Uri fileLocation = Uri.fromFile(imageFile);
+            insertNewImageIntoUI(fileLocation);
+        }
+        else if (requestCode == REQUEST_CHOOSE_PHOTO && resultCode == RESULT_OK)
+        {
+            // Photo was chosen from gallery
+            // The following code was developed side-by-side with the help of ChatGPT after hours of failing to figure this out
+            // <<<<<<< Start of Chat GPT code >>>>>>>>
+            // Get the uri of the chosen image
+            Uri imageLocation = data.getData();
+            String imageFileName = imageStandardNamePrefix + imageCounter;
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File newFile = null;
+            try
+            {
+                String fileExt = getFileExt(imageLocation);
+                File tempImageFile = File.createTempFile(imageFileName, "." + fileExt, storageDir);
+                newFile = new File(tempImageFile.getAbsolutePath());
 
-            // Create new ImageView
-            ImageView imageView = new ImageView(EditVersionDataActivity.this);
-            // Set the parameters
-            int dimensions = imageViewDPSizeInPX();
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dimensions, dimensions);
-            // Set the margin in linearlayout
-            params.setMargins(0, 10, 0, 10);
-            imageView.setLayoutParams(params);
-            imageView.setImageURI(Uri.fromFile(imageFile));
-            imageView.setTag(currentPhotoPath);
-            imageView.setOnClickListener(v -> { viewImage(v.getTag().toString()); });
-            // Insert ImageView into UI
-            imageContainerLyt.addView(imageView);
-
-            // Move to next image
-            imageCounter+=1;
+                // Copy the image data from the selected URI to the new file
+                InputStream inputStream = getContentResolver().openInputStream(imageLocation);
+                OutputStream outputStream = new FileOutputStream(newFile);
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                outputStream.close();
+                inputStream.close();
+            }
+            catch (IOException e) {}
+            // Set the 'currentPhotoPath' to the path of the newly created image file
+            if (newFile != null)
+                currentPhotoPath = newFile.getAbsolutePath();
+            // <<<<<<< End of Chat GPT code >>>>>>>>
+            addNewImageToList();
+            insertNewImageIntoUI(imageLocation);
         }
         else if (requestCode == REQUEST_TAKE_VIDEO && resultCode == RESULT_OK)
         {
@@ -326,6 +368,31 @@ public class EditVersionDataActivity extends AppCompatActivity
         }
     }
 
+    private String getFileExt(Uri imageContentUri)
+    {
+        ContentResolver c = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(c.getType(imageContentUri));
+    }
+
+    private void insertNewImageIntoUI(Uri fileLocation)
+    {
+        // Create new ImageView
+        ImageView imageView = new ImageView(EditVersionDataActivity.this);
+        // Set the parameters
+        int dimensions = imageViewDPSizeInPX();
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dimensions, dimensions);
+        // Set the margin in linearlayout
+        params.setMargins(0, 10, 0, 10);
+        imageView.setLayoutParams(params);
+        imageView.setImageURI(fileLocation);
+        imageView.setTag(currentPhotoPath);
+        imageView.setOnClickListener(v -> { viewImage(v.getTag().toString()); });
+        // Insert ImageView into UI
+        imageContainerLyt.addView(imageView);
+        // Move to next image
+        imageCounter+=1;
+    }
 
 
     // --------------------------------------------- Cleanup
@@ -390,9 +457,7 @@ public class EditVersionDataActivity extends AppCompatActivity
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
         {
-            if (isCameraPermissionGranted() && isWriteExternalPermissionGranted() && isReadExternalPermissionGranted())
-                openCamera();
-            else if (!isCameraPermissionGranted())
+            if (!isCameraPermissionGranted())
                 askCameraPermission();
             else if (!isWriteExternalPermissionGranted())
                 askWriteStoragePermission();

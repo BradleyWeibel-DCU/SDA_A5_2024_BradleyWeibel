@@ -1,6 +1,7 @@
 package com.example.sda_a5_2024_bradleyweibel;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -10,6 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.TypedValue;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -22,7 +24,10 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class AddVersionDataActivity extends AppCompatActivity
 {
@@ -37,12 +42,14 @@ public class AddVersionDataActivity extends AppCompatActivity
     private Integer imageCounter;
     private DBHandler dbHandler;
     private Boolean wasPreviousScreenImageViewer;
-    private String songName, versionName, currentPhotoPath, versionDescription, versionLyrics;
+    private String songName, versionName, currentPhotoPath, versionDescription, versionLyrics, imageStandardNamePrefix;
 
     // Static keys
     private static final int REQUEST_CODE = 100;
-    private static final int REQUEST_TAKE_PHOTO = 2;
-    private static final int REQUEST_TAKE_VIDEO = 3;
+    private static final int REQUEST_CHOOSE_PHOTO = 101;
+    private static final int REQUEST_TAKE_PHOTO = 102;
+    private static final int REQUEST_CHOOSE_VIDEO = 103;
+    private static final int REQUEST_TAKE_VIDEO = 104;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -65,9 +72,6 @@ public class AddVersionDataActivity extends AppCompatActivity
         createBtn = findViewById(R.id.idBtnAddVersion);
         backToVersionBtn = findViewById(R.id.idBtnBackToAddVersion);
 
-        // Initiate counter used for image handling
-        imageCounter = 1;
-
         // Creating a new DB handler class and passing our context to it
         dbHandler = new DBHandler(AddVersionDataActivity.this);
 
@@ -78,6 +82,10 @@ public class AddVersionDataActivity extends AppCompatActivity
         versionDescription = getIntent().getStringExtra(StringHelper.VersionData_Intent_Description);
         versionLyrics = getIntent().getStringExtra(StringHelper.VersionData_Intent_Lyrics);
         wasPreviousScreenImageViewer = getIntent().getBooleanExtra(StringHelper.VersionData_Intent_View_Screen, false);
+
+        // Initiate image variables
+        imageCounter = 1;
+        imageStandardNamePrefix = StringHelper.Image_Prefix + songName + "_" + versionName + "_";
 
         // Populate UI elements
         songNameTxt.setText(songName);
@@ -151,7 +159,7 @@ public class AddVersionDataActivity extends AppCompatActivity
         });
 
         // --------------------------- Image handling
-        // User clicks button wanting to take a new photo
+        // User wants to take a new photo
         newImageBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -164,6 +172,23 @@ public class AddVersionDataActivity extends AppCompatActivity
                     if (!isCameraPermissionGranted())
                         askCameraPermission();
                     else if (!isWriteExternalPermissionGranted())
+                        askWriteStoragePermission();
+                    else if (!isReadExternalPermissionGranted())
+                        askReadStoragePermission();
+                }
+            }
+        });
+        // User wants to select a gallery image
+        galleryImageBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (isWriteExternalPermissionGranted() && isReadExternalPermissionGranted())
+                    openGallery();
+                else
+                {
+                    if (!isWriteExternalPermissionGranted())
                         askWriteStoragePermission();
                     else if (!isReadExternalPermissionGranted())
                         askReadStoragePermission();
@@ -195,11 +220,16 @@ public class AddVersionDataActivity extends AppCompatActivity
             }
         }
     }
+    private void openGallery()
+    {
+        Intent choosePictureIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(choosePictureIntent, REQUEST_CHOOSE_PHOTO);
+    }
 
     // Create image and save in phones storage
     private File createImageFile() throws IOException
     {
-        String imageFileName = StringHelper.Image_Prefix + songName + "_" + versionName + "_" + imageCounter;
+        String imageFileName = imageStandardNamePrefix + imageCounter;
         // Location: Phone > Android > data > com.example.sda_a5_2024_bradleyweibel > files > Pictures
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
@@ -208,7 +238,7 @@ public class AddVersionDataActivity extends AppCompatActivity
         return image;
     }
 
-    // After a photo/video has been taken and the tick clicked in UI
+    // After a photo/video has been taken/chosen
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -216,30 +246,76 @@ public class AddVersionDataActivity extends AppCompatActivity
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK)
         {
-            // Image was successfully taken with the camera and created
+            // Image was successfully taken with the camera and created in file location
             File imageFile = new File(currentPhotoPath);
+            Uri fileLocation = Uri.fromFile(imageFile);
+            insertNewImageIntoUI(fileLocation);
+        }
+        else if (requestCode == REQUEST_CHOOSE_PHOTO && resultCode == RESULT_OK)
+        {
+            // Photo was chosen from gallery
+            // The following code was developed side-by-side with the help of ChatGPT after hours of failing to figure this out
+            // <<<<<<< Start of Chat GPT code >>>>>>>>
+            // Get the uri of the chosen image
+            Uri imageLocation = data.getData();
+            String imageFileName = imageStandardNamePrefix + imageCounter;
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File newFile = null;
+            try
+            {
+                String fileExt = getFileExt(imageLocation);
+                File tempImageFile = File.createTempFile(imageFileName, "." + fileExt, storageDir);
+                newFile = new File(tempImageFile.getAbsolutePath());
 
-            // Create new ImageView
-            ImageView imageView = new ImageView(AddVersionDataActivity.this);
-            // Set the parameters
-            int dimensions = imageViewDPSizeInPX();
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dimensions, dimensions);
-            // Set the margin in linearlayout
-            params.setMargins(0, 10, 0, 10);
-            imageView.setLayoutParams(params);
-            imageView.setImageURI(Uri.fromFile(imageFile));
-            imageView.setTag(currentPhotoPath);
-            imageView.setOnClickListener(v -> { viewImage(v.getTag().toString()); });
-            // Insert ImageView into UI
-            imageContainerLyt.addView(imageView);
+                // Copy the image data from the selected URI to the new file
+                InputStream inputStream = getContentResolver().openInputStream(imageLocation);
+                OutputStream outputStream = new FileOutputStream(newFile);
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                outputStream.close();
+                inputStream.close();
+            }
+            catch (IOException e) {}
+            // Set the 'currentPhotoPath' to the path of the newly created image file
+            if (newFile != null)
+                currentPhotoPath = newFile.getAbsolutePath();
+            // <<<<<<< End of Chat GPT code >>>>>>>>
 
-            // Move to next image
-            imageCounter+=1;
+            insertNewImageIntoUI(imageLocation);
         }
         else if (requestCode == REQUEST_TAKE_VIDEO && resultCode == RESULT_OK)
         {
             // Video was successfully taken with the camera
         }
+    }
+
+    private void insertNewImageIntoUI(Uri fileLocation)
+    {
+        // Create new ImageView
+        ImageView imageView = new ImageView(AddVersionDataActivity.this);
+        // Set the parameters
+        int dimensions = imageViewDPSizeInPX();
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dimensions, dimensions);
+        // Set the margin in linearlayout
+        params.setMargins(0, 10, 0, 10);
+        imageView.setLayoutParams(params);
+        imageView.setImageURI(fileLocation);
+        imageView.setTag(currentPhotoPath);
+        imageView.setOnClickListener(v -> { viewImage(v.getTag().toString()); });
+        // Insert ImageView into UI
+        imageContainerLyt.addView(imageView);
+        // Move to next image
+        imageCounter+=1;
+    }
+
+    private String getFileExt(Uri imageContentUri)
+    {
+        ContentResolver c = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(c.getType(imageContentUri));
     }
 
     private int imageViewDPSizeInPX()
@@ -257,10 +333,9 @@ public class AddVersionDataActivity extends AppCompatActivity
         File[] files = file.listFiles();
         if (files != null) {
             String fullPathString = StringHelper.filePath + "/";
-            String imagePrefix = StringHelper.Image_Prefix + songName + "_" + versionName + "_";
             for (File currentFile : files) {
                 String currentFileName = currentFile.getPath().replace(fullPathString, "");
-                if (currentFileName.startsWith(imagePrefix))
+                if (currentFileName.startsWith(imageStandardNamePrefix))
                 {
                     // Image belonging to this song and version found
                     File imageFile = new File(currentFile.getPath());
@@ -305,9 +380,7 @@ public class AddVersionDataActivity extends AppCompatActivity
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
         {
-            if (isCameraPermissionGranted() && isWriteExternalPermissionGranted() && isReadExternalPermissionGranted())
-                openCamera();
-            else if (!isCameraPermissionGranted())
+            if (!isCameraPermissionGranted())
                 askCameraPermission();
             else if (!isWriteExternalPermissionGranted())
                 askWriteStoragePermission();
@@ -333,30 +406,14 @@ public class AddVersionDataActivity extends AppCompatActivity
         File[] files = file.listFiles();
         if (files != null) {
             String fullPathString = StringHelper.filePath + "/";
-            String imagePrefix = StringHelper.Image_Prefix + songName + "_" + versionName + "_";
             for (File currentFile : files) {
                 String currentFileName = currentFile.getPath().replace(fullPathString, "");
-                if (currentFileName.startsWith(imagePrefix))
+                if (currentFileName.startsWith(imageStandardNamePrefix))
                 {
                     // Image belonging to this song and version found
                     File imageFile = new File(currentFile.getPath());
-
-                    // Create new ImageView
-                    ImageView imageView = new ImageView(AddVersionDataActivity.this);
-                    // Set the parameters
-                    int dimensions = imageViewDPSizeInPX();
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dimensions, dimensions);
-                    // Set the margin in linearlayout
-                    params.setMargins(0, 10, 0, 10);
-                    imageView.setLayoutParams(params);
-                    imageView.setImageURI(Uri.fromFile(imageFile));
-                    imageView.setTag(currentFile.getPath());
-                    imageView.setOnClickListener(v -> { viewImage(v.getTag().toString()); });
-                    // Insert ImageView into UI
-                    imageContainerLyt.addView(imageView);
-
-                    // Move to next image
-                    imageCounter+=1;
+                    currentPhotoPath = currentFile.getPath();
+                    insertNewImageIntoUI(Uri.fromFile(imageFile));
                 }
             }
         }
