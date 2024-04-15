@@ -45,9 +45,6 @@
             android:name=".EditVersionActivity"
             android:exported="false" />
         <activity
-            android:name=".EditVersionDataActivity"
-            android:exported="false" />
-        <activity
             android:name=".DeleteSongOrVersionActivity"
             android:exported="false" />
         <activity

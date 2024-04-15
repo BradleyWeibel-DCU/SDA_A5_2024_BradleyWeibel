@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/screen_background"
-    tools:context=".AddSongActivity">
+    tools:context=".AddVersionDataActivity">
 
     <ImageView
         android:id="@+id/lyricistImage"
@@ -32,29 +32,170 @@
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/lyricistImage" />
 
-    <EditText
-        android:id="@+id/idEdtVersionName"
+    <ScrollView
+        android:id="@+id/scrollView1"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/edit_text_shape_orange"
-        android:layout_centerVertical="true"
-        android:textStyle="bold"
-        android:textColor="@color/highlighted_text_yellow"
-        android:gravity="center"
-        android:hint="@string/version_name"
-        android:textColorHint="@color/standard_text_dark_grey" />
+        android:layout_height="wrap_content"
+        android:paddingTop="24dp"
+        android:layout_alignBaseline="@+id/idTxtSongName">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/idTxtSongName"
+                android:layout_marginStart="17dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="start"
+                android:text="@string/version"
+                android:textColor="@color/standard_text_dark_grey"
+                android:textSize="17dp" />
+
+            <EditText
+                android:id="@+id/idEdtVersionName"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/edit_text_shape_orange"
+                android:hint="@string/version_name"
+                android:paddingLeft="10dp"
+                android:textColor="@color/highlighted_text_yellow"
+                android:textColorHint="@color/standard_text_dark_grey"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/idEdtVersionName"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="start"
+                android:text="@string/description"
+                android:textColor="@color/standard_text_dark_grey"
+                android:textSize="17dp" />
+
+            <EditText
+                android:id="@+id/idEdtVersionDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView3"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/edit_text_shape_orange"
+                android:hint="@string/version_description"
+                android:inputType="textMultiLine"
+                android:minLines="2"
+                android:gravity="start"
+                android:paddingLeft="10dp"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp"
+                android:textColor="@color/highlighted_text_yellow"
+                android:textColorHint="@color/standard_text_dark_grey"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/idEdtVersionDescription"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="start"
+                android:text="@string/lyrics"
+                android:textColor="@color/standard_text_dark_grey"
+                android:textSize="17dp" />
+
+            <EditText
+                android:id="@+id/idEdtVersionLyrics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView4"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/edit_text_shape_orange"
+                android:hint="@string/version_lyrics"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:gravity="start"
+                android:paddingLeft="10dp"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp"
+                android:textColor="@color/highlighted_text_yellow"
+                android:textColorHint="@color/standard_text_dark_grey"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="start"
+                android:text="@string/images"
+                android:textColor="@color/standard_text_dark_grey"
+                android:textSize="17dp" />
+
+            <LinearLayout
+                android:id="@+id/imageContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="5dp">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="10dp">
+
+                <ImageButton
+                    android:id="@+id/idAddGalleryImageBtn"
+                    android:layout_width="57sp"
+                    android:layout_height="57sp"
+                    android:layout_marginStart="13dp"
+                    android:background="@drawable/edit_text_shape_orange"
+                    app:srcCompat="@drawable/add_gallery_image" />
+
+                <ImageButton
+                    android:id="@+id/idAddNewImageBtn"
+                    android:layout_width="57sp"
+                    android:layout_height="57sp"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/edit_text_shape_orange"
+                    app:srcCompat="@drawable/add_new_image" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/idBtnNext"
+        android:id="@+id/idBtnSaveVersion"
         android:layout_width="57dp"
         android:layout_height="57dp"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="19dp"
         android:clickable="true"
-        android:contentDescription="@string/next"
+        android:contentDescription="@string/save"
         app:backgroundTint="@color/back_button"
         app:fabCustomSize="57dp"
         android:scaleType="center"
@@ -62,7 +203,7 @@
         app:srcCompat="@drawable/confirm_icon" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/idBtnDelete"
+        android:id="@+id/idBtnDeleteVersion"
         android:layout_width="57dp"
         android:layout_height="57dp"
         android:layout_alignParentEnd="true"
@@ -77,7 +218,7 @@
         app:srcCompat="@drawable/delete_bomb_icon" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/idBtnBackToViewVersion"
+        android:id="@+id/idBtnBack"
         android:layout_width="57dp"
         android:layout_height="57dp"
         android:layout_marginStart="16dp"

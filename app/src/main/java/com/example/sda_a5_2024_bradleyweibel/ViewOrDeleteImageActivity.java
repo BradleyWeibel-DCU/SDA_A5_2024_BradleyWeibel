@@ -68,8 +68,8 @@ public class ViewOrDeleteImageActivity extends AppCompatActivity
                 }
                 else
                 {
-                    // Previous screen was EditVersionData
-                    i = new Intent(ViewOrDeleteImageActivity.this, EditVersionDataActivity.class);
+                    // Previous screen was EditVersion
+                    i = new Intent(ViewOrDeleteImageActivity.this, EditVersionActivity.class);
                 }
                 i = populateIntentData(i);
                 startActivity(i);
@@ -97,8 +97,8 @@ public class ViewOrDeleteImageActivity extends AppCompatActivity
                 }
                 else
                 {
-                    // Previous screen was EditVersionData
-                    i = new Intent(ViewOrDeleteImageActivity.this, EditVersionDataActivity.class);
+                    // Previous screen was EditVersion
+                    i = new Intent(ViewOrDeleteImageActivity.this, EditVersionActivity.class);
                     i = populateIntentData(i);
                 }
                 startActivity(i);
