@@ -1,8 +1,11 @@
 package com.example.sda_a5_2024_bradleyweibel;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.core.content.ContextCompat;
@@ -59,6 +62,13 @@ public class StringHelper
 
     // Get current date in '09 Apr 2024' format
     public static String getFormattedDate() { return new SimpleDateFormat("dd MMM yyyy").format(new Date()); }
+
+    // Get file extension of image/video - used for saving
+    public static String getFileExtension(Uri fileContentUri, ContentResolver c)
+    {
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(c.getType(fileContentUri));
+    }
 }
 
 // TODO: Shared preference code, maybe it is needed later

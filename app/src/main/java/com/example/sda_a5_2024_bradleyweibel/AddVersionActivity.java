@@ -1,10 +1,8 @@
 package com.example.sda_a5_2024_bradleyweibel;
 
 import android.Manifest;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
@@ -14,7 +12,6 @@ import android.provider.MediaStore;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -46,13 +43,6 @@ public class AddVersionActivity extends AppCompatActivity
     private DBHandler dbHandler;
     private Boolean wasPreviousScreenAViewer;
     private String songName, versionName, versionDescription, versionLyrics, currentPhotoPath, imageStandardNamePrefix, currentVideoPath, videoStandardNamePrefix;
-
-    // Static keys
-    private static final int REQUEST_CODE = 100;
-    private static final int REQUEST_CHOOSE_PHOTO = 101;
-    private static final int REQUEST_TAKE_PHOTO = 102;
-    private static final int REQUEST_CHOOSE_VIDEO = 103;
-    private static final int REQUEST_TAKE_VIDEO = 104;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -325,14 +315,14 @@ public class AddVersionActivity extends AppCompatActivity
             {
                 Uri photoURI = FileProvider.getUriForFile(this, StringHelper.App_Authority, photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                startActivityForResult(takePictureIntent, NumberHelper.REQUEST_TAKE_PHOTO);
             }
         }
     }
     private void openImageGallery()
     {
         Intent choosePictureIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(choosePictureIntent, REQUEST_CHOOSE_PHOTO);
+        startActivityForResult(choosePictureIntent, NumberHelper.REQUEST_CHOOSE_PHOTO);
     }
 
     // Create image and save in phones storage
@@ -352,10 +342,10 @@ public class AddVersionActivity extends AppCompatActivity
         // Create new ImageView
         ImageView imageView = new ImageView(AddVersionActivity.this);
         // Set the parameters
-        int dimensions = imageViewDPSizeInPX();
+        int dimensions = NumberHelper.imageViewDPSizeInPX(getResources());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dimensions, dimensions);
         // Set the margin in linearlayout
-        params.setMargins(0, 10, 0, 10);
+        params.setMargins(NumberHelper.Image_Margin_Left, NumberHelper.Image_Margin_Top, NumberHelper.Image_Margin_Right, NumberHelper.Image_Margin_Bottom);
         imageView.setLayoutParams(params);
         imageView.setImageURI(fileLocation);
         imageView.setTag(currentPhotoPath);
@@ -393,7 +383,7 @@ public class AddVersionActivity extends AppCompatActivity
     private void openVideoGallery()
     {
         Intent chooseVideoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(chooseVideoIntent, REQUEST_CHOOSE_VIDEO);
+        startActivityForResult(chooseVideoIntent, NumberHelper.REQUEST_CHOOSE_VIDEO);
     }
 
     // Create UI element to show video
@@ -408,7 +398,7 @@ public class AddVersionActivity extends AppCompatActivity
             // Set the data source to the video location
             retriever.setDataSource(this, fileLocation);
             // Extract a frame at the specified time (e.g., 1 second)
-            Bitmap thumbnail = retriever.getFrameAtTime(1000000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+            Bitmap thumbnail = retriever.getFrameAtTime(NumberHelper.Video_Get_Frame_At_1_Second, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
             // Create a new ImageView
             ImageView imageView = new ImageView(this);
             imageView.setTag(currentVideoPath);
@@ -416,10 +406,11 @@ public class AddVersionActivity extends AppCompatActivity
             // Set the thumbnail as the image source
             imageView.setImageBitmap(thumbnail);
             // Limit the maximum height of the ImageView to 130dp
-            int maxHeightInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 130, getResources().getDisplayMetrics());
+            int maxHeightInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, NumberHelper.Video_Thumbnail_Height, getResources().getDisplayMetrics());
             // Set layout parameters
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, maxHeightInPx);
-            layoutParams.setMargins(0, 10, 0, 10); // Set margins (left, top, right, bottom)
+            // Set margins (left, top, right, bottom)
+            layoutParams.setMargins(NumberHelper.Video_Margin_Left, NumberHelper.Video_Margin_Top, NumberHelper.Video_Margin_Right, NumberHelper.Video_Margin_Bottom);
             imageView.setLayoutParams(layoutParams);
             // Add the ImageView to your layout
             videoContainerLyt.addView(imageView);
@@ -463,14 +454,14 @@ public class AddVersionActivity extends AppCompatActivity
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK)
+        if (requestCode == NumberHelper.REQUEST_TAKE_PHOTO && resultCode == RESULT_OK)
         {
             // Image was successfully taken with the camera and created in file location
             File imageFile = new File(currentPhotoPath);
             Uri fileLocation = Uri.fromFile(imageFile);
             insertNewImageIntoUI(fileLocation);
         }
-        else if (requestCode == REQUEST_CHOOSE_PHOTO && resultCode == RESULT_OK)
+        else if (requestCode == NumberHelper.REQUEST_CHOOSE_PHOTO && resultCode == RESULT_OK)
         {
             // Photo was chosen from gallery
             // The following code was developed side-by-side with the help of ChatGPT after hours of failing to figure this out
@@ -482,7 +473,7 @@ public class AddVersionActivity extends AppCompatActivity
             File newFile = null;
             try
             {
-                String fileExt = getFileExtension(imageLocation);
+                String fileExt = StringHelper.getFileExtension(imageLocation, getContentResolver());
                 File tempImageFile = File.createTempFile(imageFileName, "." + fileExt, storageDir);
                 newFile = new File(tempImageFile.getAbsolutePath());
 
@@ -506,12 +497,12 @@ public class AddVersionActivity extends AppCompatActivity
 
             insertNewImageIntoUI(imageLocation);
         }
-        else if (requestCode == REQUEST_TAKE_VIDEO && resultCode == RESULT_OK)
+        else if (requestCode == NumberHelper.REQUEST_TAKE_VIDEO && resultCode == RESULT_OK)
         {
             // Video was successfully taken with the camera
             StringHelper.showToast("Video successfully taken with the camera", AddVersionActivity.this);
         }
-        else if (requestCode == REQUEST_CHOOSE_VIDEO && resultCode == RESULT_OK)
+        else if (requestCode == NumberHelper.REQUEST_CHOOSE_VIDEO && resultCode == RESULT_OK)
         {
             // The following code was developed side-by-side with the help of ChatGPT
             // <<<<<<< Start of Chat GPT aided code >>>>>>>>
@@ -522,7 +513,7 @@ public class AddVersionActivity extends AppCompatActivity
             File newFile = null;
             try
             {
-                String fileExt = getFileExtension(videoLocation);
+                String fileExt = StringHelper.getFileExtension(videoLocation, getContentResolver());
                 File tempVideoFile = File.createTempFile(videoFileName, "." + fileExt, storageDir);
                 newFile = new File(tempVideoFile.getAbsolutePath());
 
@@ -646,9 +637,9 @@ public class AddVersionActivity extends AppCompatActivity
     private Boolean isCameraPermissionGranted() { return ContextCompat.checkSelfPermission(AddVersionActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED; }
     private Boolean isWriteExternalPermissionGranted() { return ContextCompat.checkSelfPermission(AddVersionActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED; }
     private Boolean isAudioPermissionGranted() { return ContextCompat.checkSelfPermission(AddVersionActivity.this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED; }
-    private void askCameraPermission() { ActivityCompat.requestPermissions(AddVersionActivity.this, new String[] {Manifest.permission.CAMERA}, REQUEST_CODE); }
-    private void askWriteStoragePermission() { ActivityCompat.requestPermissions(AddVersionActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE); }
-    private void askRecordAudioPermission() { ActivityCompat.requestPermissions(AddVersionActivity.this, new String[] {Manifest.permission.RECORD_AUDIO}, REQUEST_CODE); }
+    private void askCameraPermission() { ActivityCompat.requestPermissions(AddVersionActivity.this, new String[] {Manifest.permission.CAMERA}, NumberHelper.REQUEST_CODE); }
+    private void askWriteStoragePermission() { ActivityCompat.requestPermissions(AddVersionActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, NumberHelper.REQUEST_CODE); }
+    private void askRecordAudioPermission() { ActivityCompat.requestPermissions(AddVersionActivity.this, new String[] {Manifest.permission.RECORD_AUDIO}, NumberHelper.REQUEST_CODE); }
 
     // Trigger on response to permission prompt from User
     @Override
@@ -666,21 +657,5 @@ public class AddVersionActivity extends AppCompatActivity
         }
         else
             StringHelper.showToast(getString(R.string.permissions_toastr_warning), AddVersionActivity.this);
-    }
-
-    // --------------------------------------------- Helpers
-    private String getFileExtension(Uri fileContentUri)
-    {
-        ContentResolver c = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(c.getType(fileContentUri));
-    }
-    private int imageViewDPSizeInPX()
-    {
-        float dip = 130f;
-        Resources r = getResources();
-        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
-        int result = Math.round(px);
-        return result;
     }
 }

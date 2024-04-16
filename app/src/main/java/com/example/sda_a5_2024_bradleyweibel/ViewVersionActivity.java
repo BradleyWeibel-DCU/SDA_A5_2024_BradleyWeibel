@@ -153,10 +153,10 @@ public class ViewVersionActivity extends AppCompatActivity
                     // Create new ImageView
                     ImageView imageView = new ImageView(ViewVersionActivity.this);
                     // Set the parameters
-                    int dimensions = imageViewDPSizeInPX();
+                    int dimensions = NumberHelper.imageViewDPSizeInPX(getResources());
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dimensions, dimensions);
                     // Set the margin in linearlayout
-                    params.setMargins(0, 10, 0, 10);
+                    params.setMargins(NumberHelper.Image_Margin_Left, NumberHelper.Image_Margin_Top, NumberHelper.Video_Margin_Right, NumberHelper.Video_Margin_Bottom);
                     imageView.setLayoutParams(params);
                     imageView.setImageURI(Uri.fromFile(imageFile));
                     imageView.setTag(currentFile.getPath());
@@ -206,7 +206,7 @@ public class ViewVersionActivity extends AppCompatActivity
                         // Set the data source to the video location
                         retriever.setDataSource(this, Uri.fromFile(videoFile));
                         // Extract a frame at the specified time (e.g., 1 second)
-                        Bitmap thumbnail = retriever.getFrameAtTime(1000000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+                        Bitmap thumbnail = retriever.getFrameAtTime(NumberHelper.Video_Get_Frame_At_1_Second, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
                         // Create a new ImageView
                         ImageView imageView = new ImageView(this);
                         imageView.setTag(currentFile.getPath());
@@ -214,10 +214,11 @@ public class ViewVersionActivity extends AppCompatActivity
                         // Set the thumbnail as the image source
                         imageView.setImageBitmap(thumbnail);
                         // Limit the maximum height of the ImageView to 130dp
-                        int maxHeightInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 130, getResources().getDisplayMetrics());
+                        int maxHeightInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, NumberHelper.Video_Thumbnail_Height, getResources().getDisplayMetrics());
                         // Set layout parameters
                         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, maxHeightInPx);
-                        layoutParams.setMargins(0, 10, 0, 10); // Set margins (left, top, right, bottom)
+                        // Set margins (left, top, right, bottom)
+                        layoutParams.setMargins(NumberHelper.Video_Margin_Left, NumberHelper.Video_Margin_Top, NumberHelper.Video_Margin_Right, NumberHelper.Video_Margin_Bottom);
                         imageView.setLayoutParams(layoutParams);
                         // Add the ImageView to your layout
                         videoContainerLyt.addView(imageView);
@@ -247,15 +248,5 @@ public class ViewVersionActivity extends AppCompatActivity
         i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
         i.putExtra(StringHelper.VideoData_Intent_Path, videoPath);
         startActivity(i);
-    }
-
-    // ---------------------------------------------- Helpers
-    private int imageViewDPSizeInPX()
-    {
-        float dip = 130f;
-        Resources r = getResources();
-        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
-        int result = Math.round(px);
-        return result;
     }
 }
