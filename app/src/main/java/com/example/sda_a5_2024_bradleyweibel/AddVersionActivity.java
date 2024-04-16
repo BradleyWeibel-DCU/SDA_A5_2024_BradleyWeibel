@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
@@ -341,13 +342,32 @@ public class AddVersionActivity extends AppCompatActivity
     {
         // Create new ImageView
         ImageView imageView = new ImageView(AddVersionActivity.this);
+
+        // The following code was developed with the aid of ChatGPT after constant failed attempts
+        // <<<<<<< Start of Chat GPT aided code >>>>>>>>
+        // Calculate the dimensions for scaling down the bitmap
+        int targetWidth = NumberHelper.imageViewDPSizeInPX(getResources());
+        int targetHeight = NumberHelper.imageViewDPSizeInPX(getResources());
+        // Decode the bitmap from the file, scaled down to the target dimensions
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(currentPhotoPath, options);
+        int imageWidth = options.outWidth;
+        int imageHeight = options.outHeight;
+        int scaleFactor = Math.min(imageWidth / targetWidth, imageHeight / targetHeight);
+        options.inJustDecodeBounds = false;
+        options.inSampleSize = scaleFactor;
+        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, options);
+        // <<<<<<< End of Chat GPT aided code >>>>>>>>
+
         // Set the parameters
         int dimensions = NumberHelper.imageViewDPSizeInPX(getResources());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dimensions, dimensions);
         // Set the margin in linearlayout
         params.setMargins(NumberHelper.Image_Margin_Left, NumberHelper.Image_Margin_Top, NumberHelper.Image_Margin_Right, NumberHelper.Image_Margin_Bottom);
         imageView.setLayoutParams(params);
-        imageView.setImageURI(fileLocation);
+        // Insert the bitmap rather than the full image
+        imageView.setImageBitmap(bitmap);
         imageView.setTag(currentPhotoPath);
         imageView.setOnClickListener(v -> { viewImage(v.getTag().toString()); });
         // Insert ImageView into UI
@@ -492,10 +512,11 @@ public class AddVersionActivity extends AppCompatActivity
             catch (IOException e) {}
             // Set the 'currentPhotoPath' to the path of the newly created image file
             if (newFile != null)
+            {
                 currentPhotoPath = newFile.getAbsolutePath();
+                insertNewImageIntoUI(imageLocation);
+            }
             // <<<<<<< End of Chat GPT aided code >>>>>>>>
-
-            insertNewImageIntoUI(imageLocation);
         }
         else if (requestCode == NumberHelper.REQUEST_TAKE_VIDEO && resultCode == RESULT_OK)
         {
@@ -532,16 +553,15 @@ public class AddVersionActivity extends AppCompatActivity
             catch (IOException e) {}
             // Set the current video path to the path of the newly created file
             if (newFile != null)
-                currentVideoPath = newFile.getAbsolutePath();
-            // <<<<<<< End of Chat GPT aided code >>>>>>>>
-
-            try
             {
-                insertNewVideoIntoUI(videoLocation);
+                currentVideoPath = newFile.getAbsolutePath();
+                try
+                {
+                    insertNewVideoIntoUI(videoLocation);
+                }
+                catch (IOException e) {}
             }
-            catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            // <<<<<<< End of Chat GPT aided code >>>>>>>>
         }
     }
 

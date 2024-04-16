@@ -1,8 +1,8 @@
 package com.example.sda_a5_2024_bradleyweibel;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
@@ -150,6 +150,23 @@ public class ViewVersionActivity extends AppCompatActivity
                     // Image belonging to this song and version found
                     File imageFile = new File(currentFile.getPath());
 
+                    // The following code was developed with the aid of ChatGPT after constant failed attempts
+                    // <<<<<<< Start of Chat GPT aided code >>>>>>>>
+                    // Calculate the dimensions for scaling down the bitmap
+                    int targetWidth = NumberHelper.imageViewDPSizeInPX(getResources());
+                    int targetHeight = NumberHelper.imageViewDPSizeInPX(getResources());
+                    // Decode the bitmap from the file, scaled down to the target dimensions
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inJustDecodeBounds = true;
+                    BitmapFactory.decodeFile(imageFile.getAbsolutePath(), options);
+                    int imageWidth = options.outWidth;
+                    int imageHeight = options.outHeight;
+                    int scaleFactor = Math.min(imageWidth / targetWidth, imageHeight / targetHeight);
+                    options.inJustDecodeBounds = false;
+                    options.inSampleSize = scaleFactor;
+                    Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), options);
+                    // <<<<<<< End of Chat GPT code >>>>>>>>
+
                     // Create new ImageView
                     ImageView imageView = new ImageView(ViewVersionActivity.this);
                     // Set the parameters
@@ -158,7 +175,8 @@ public class ViewVersionActivity extends AppCompatActivity
                     // Set the margin in linearlayout
                     params.setMargins(NumberHelper.Image_Margin_Left, NumberHelper.Image_Margin_Top, NumberHelper.Video_Margin_Right, NumberHelper.Video_Margin_Bottom);
                     imageView.setLayoutParams(params);
-                    imageView.setImageURI(Uri.fromFile(imageFile));
+                    // Insert the bitmap rather than the full image
+                    imageView.setImageBitmap(bitmap);
                     imageView.setTag(currentFile.getPath());
                     imageView.setOnClickListener(v -> { viewImage(v.getTag().toString()); });
                     // Insert ImageView into UI
@@ -170,7 +188,6 @@ public class ViewVersionActivity extends AppCompatActivity
     }
     private void viewImage(String imagePath)
     {
-        // Song name
         Intent i = new Intent(ViewVersionActivity.this, ViewOrDeleteImageActivity.class);
         // Passing the needed variables that will be needed to return and reopen this screen
         i.putExtra(StringHelper.SongData_Intent_Name, songName);
@@ -222,7 +239,7 @@ public class ViewVersionActivity extends AppCompatActivity
                         imageView.setLayoutParams(layoutParams);
                         // Add the ImageView to your layout
                         videoContainerLyt.addView(imageView);
-                        // <<<<<<< End of Chat GPT code >>>>>>>>
+                        // <<<<<<< End of Chat GPT aided code >>>>>>>>
                     }
                     catch (Exception e) {}
                     finally
@@ -241,7 +258,6 @@ public class ViewVersionActivity extends AppCompatActivity
     }
     private void viewVideo(String videoPath)
     {
-        // Song name
         Intent i = new Intent(ViewVersionActivity.this, ViewOrDeleteVideoActivity.class);
         // Passing the needed variables that will be needed to return and reopen this screen
         i.putExtra(StringHelper.SongData_Intent_Name, songName);
