@@ -39,6 +39,7 @@ public class StringHelper
     public static String Image_Prefix = "IMG_";
     public static String Video_Prefix = "VID_";
     public static String Image_Suffix_With_Dot = ".jpg";
+    public static String Video_Suffix_With_Dot = ".mp4";
     public static String Placeholder_Version_Name = "-PlaceHolderForNewVersionName-";
 
     // Authorities

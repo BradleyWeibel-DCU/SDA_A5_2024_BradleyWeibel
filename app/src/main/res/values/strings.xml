@@ -11,7 +11,8 @@
     <string name="save">Save changes</string>
     <string name="creation_date">[Creation Date]</string>
     <string name="modified_date">[Modified Date]</string>
-    <string name="permissions_toastr_warning">Please accept all permission prompts to use these features</string>
+    <string name="toastr_permissions_warning">Please accept all permission prompts to use these features</string>
+    <string name="toastr_no_camera_found">No camera was found...</string>
 
     <!-- Home screen -->
     <string name="search_songs">filter...</string>

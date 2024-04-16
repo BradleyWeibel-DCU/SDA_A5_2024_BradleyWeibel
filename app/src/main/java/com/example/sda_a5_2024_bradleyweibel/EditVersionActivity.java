@@ -9,6 +9,7 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.TypedValue;
 import android.view.View;
@@ -25,6 +26,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -204,7 +206,7 @@ public class EditVersionActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 if (isCameraPermissionGranted() && isWriteExternalPermissionGranted())
-                    openCamera();
+                    openImageCamera();
                 else
                 {
                     if (!isCameraPermissionGranted())
@@ -309,8 +311,7 @@ public class EditVersionActivity extends AppCompatActivity
     }
 
     // --------------------------------------------- Creating new images in UI
-    // Permission granted, proceed with image capture (and later saving)
-    private void openCamera()
+    private void openImageCamera()
     {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null)
@@ -330,6 +331,8 @@ public class EditVersionActivity extends AppCompatActivity
                 startActivityForResult(takePictureIntent, NumberHelper.REQUEST_TAKE_PHOTO);
             }
         }
+        else
+            StringHelper.showToast(getString(R.string.toastr_no_camera_found), EditVersionActivity.this);
     }
     private void openImageGallery()
     {
@@ -411,8 +414,11 @@ public class EditVersionActivity extends AppCompatActivity
     // --------------------------------------------- Creating new videos in UI
     private void openVideoCamera()
     {
-        // TODO
-        StringHelper.showToast("Open video camera", EditVersionActivity.this);
+        Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        if (takeVideoIntent.resolveActivity(getPackageManager()) != null)
+            startActivityForResult(takeVideoIntent, NumberHelper.REQUEST_TAKE_VIDEO);
+        else
+            StringHelper.showToast(getString(R.string.toastr_no_camera_found), EditVersionActivity.this);
     }
     private void openVideoGallery()
     {
@@ -536,8 +542,45 @@ public class EditVersionActivity extends AppCompatActivity
         }
         else if (requestCode == NumberHelper.REQUEST_TAKE_VIDEO && resultCode == RESULT_OK)
         {
-            // Video was successfully taken with the camera
-            StringHelper.showToast("Video successfully taken with the camera", EditVersionActivity.this);
+            // Video was successfully taken with the video camera
+            // The following code was developed with input from ChatGPT
+            // <<<<<<< Start of Chat GPT aided code >>>>>>>>
+            Uri videoLocation = data.getData();
+            if (videoLocation != null)
+            {
+                try
+                {
+                    // Get a file descriptor from the video URI
+                    ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(videoLocation, "r");
+                    if (parcelFileDescriptor != null)
+                    {
+                        // Create an input stream from the file descriptor
+                        FileInputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor());
+                        // Create a file in external storage (Movies directory)
+                        File storageDir = getExternalFilesDir(Environment.DIRECTORY_MOVIES);
+                        String videoFileName = videoStandardNamePrefix + videoCounter + StringHelper.Video_Suffix_With_Dot;
+                        File externalFile = new File(storageDir, videoFileName);
+                        // Create an output stream to the external file
+                        FileOutputStream outputStream = new FileOutputStream(externalFile);
+                        // Copy the video data from the input stream to the output stream
+                        byte[] buffer = new byte[1024];
+                        int length;
+                        while ((length = inputStream.read(buffer)) > 0)
+                        {
+                            outputStream.write(buffer, 0, length);
+                        }
+                        // Close the streams
+                        inputStream.close();
+                        outputStream.close();
+                        // <<<<<<< End of Chat GPT aided code >>>>>>>>
+
+                        currentVideoPath = externalFile.getAbsolutePath();
+                        addNewVideoToList();
+                        insertNewVideoIntoUI(videoLocation);
+                    }
+                }
+                catch (IOException e) {}
+            }
         }
         else if (requestCode == NumberHelper.REQUEST_CHOOSE_VIDEO && resultCode == RESULT_OK)
         {
@@ -694,7 +737,7 @@ public class EditVersionActivity extends AppCompatActivity
                 askRecordAudioPermission();
         }
         else
-            StringHelper.showToast(getString(R.string.permissions_toastr_warning), EditVersionActivity.this);
+            StringHelper.showToast(getString(R.string.toastr_permissions_warning), EditVersionActivity.this);
     }
 
     // --------------------------------------------- Helpers
