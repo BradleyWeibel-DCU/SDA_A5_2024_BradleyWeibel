@@ -63,6 +63,7 @@ public class DeleteSongOrVersionActivity extends AppCompatActivity
 
                     // TODO: remove all images, videos and audio relating to the song
                     removeAllImages(songName, "");
+                    removeAllVideos(songName, "");
                 }
                 else
                 {
@@ -75,6 +76,7 @@ public class DeleteSongOrVersionActivity extends AppCompatActivity
 
                     // TODO: remove all images, videos and audio relating to this version
                     removeAllImages(songName, versionName);
+                    removeAllVideos(songName, versionName);
                 }
                 startActivity(i);
             }
@@ -111,20 +113,44 @@ public class DeleteSongOrVersionActivity extends AppCompatActivity
 
     public void removeAllImages(String thisSongName, String thisVersionName)
     {
-        File file = new File(StringHelper.filePath);
+        File file = new File(StringHelper.Image_Folder_Path);
         File[] files = file.listFiles();
-        if (files != null) {
-            String fullPathString = StringHelper.filePath + "/";
+        if (files != null)
+        {
+            String fullPathString = StringHelper.Image_Folder_Path + "/";
             String imagePrefix = StringHelper.Image_Prefix + thisSongName + "_";
             if (!thisVersionName.equals(""))
                 imagePrefix = imagePrefix + thisVersionName + "_";
-            for (File currentFile : files) {
+            for (File currentFile : files)
+            {
                 String currentFileName = currentFile.getPath().replace(fullPathString, "");
                 if (currentFileName.startsWith(imagePrefix))
                 {
                     // Image belonging to this song and version found
                     File imageFile = new File(currentFile.getPath());
                     imageFile.delete();
+                }
+            }
+        }
+    }
+    public void removeAllVideos(String thisSongName, String thisVersionName)
+    {
+        File file = new File(StringHelper.Video_Folder_Path);
+        File[] files = file.listFiles();
+        if (files != null)
+        {
+            String fullPathString = StringHelper.Video_Folder_Path + "/";
+            String videoPrefix = StringHelper.Video_Prefix + thisSongName + "_";
+            if (!thisVersionName.equals(""))
+                videoPrefix = videoPrefix + thisVersionName + "_";
+            for (File currentFile : files)
+            {
+                String currentFileName = currentFile.getPath().replace(fullPathString, "");
+                if (currentFileName.startsWith(videoPrefix))
+                {
+                    // Video belonging to this song and version found
+                    File videoFile = new File(currentFile.getPath());
+                    videoFile.delete();
                 }
             }
         }

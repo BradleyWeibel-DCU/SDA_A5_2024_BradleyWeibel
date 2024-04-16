@@ -143,13 +143,12 @@
                 android:textSize="17dp" />
 
             <LinearLayout
-                android:id="@+id/imageContainer"
+                android:id="@+id/idLytImageContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center_horizontal"
                 android:layout_marginTop="5dp">
-
             </LinearLayout>
 
             <LinearLayout
@@ -185,9 +184,19 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:gravity="start"
-                android:text="@string/video"
+                android:text="@string/videos"
                 android:textColor="@color/standard_text_dark_grey"
                 android:textSize="17dp" />
+
+            <LinearLayout
+                android:id="@+id/idLytVideoContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="5dp">
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

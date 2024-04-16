@@ -66,6 +66,7 @@ public class EditSongActivity extends AppCompatActivity
 
                 // TODO: rename all images, videos and audio clips with new song name
                 renameImages();
+                renameVideos();
 
                 // Go to 'View Song and Versions' page
                 Intent i = new Intent(EditSongActivity.this, ViewSongAndVersionsActivity.class);
@@ -107,12 +108,14 @@ public class EditSongActivity extends AppCompatActivity
 
     private void renameImages()
     {
-        File file = new File(StringHelper.filePath);
+        File file = new File(StringHelper.Image_Folder_Path);
         File[] files = file.listFiles();
-        if (files != null) {
-            String fullPathString = StringHelper.filePath + "/";
+        if (files != null)
+        {
+            String fullPathString = StringHelper.Image_Folder_Path + "/";
             String imagePrefix = StringHelper.Image_Prefix + originalSongName + "_";
-            for (File currentFile : files) {
+            for (File currentFile : files)
+            {
                 String currentFileName = currentFile.getPath().replace(fullPathString, "");
                 if (currentFileName.startsWith(imagePrefix))
                 {
@@ -120,9 +123,33 @@ public class EditSongActivity extends AppCompatActivity
                     File imageFile = new File(currentFile.getPath());
                     String newFileName = currentFile.getPath();
                     newFileName = newFileName.replace(imagePrefix, StringHelper.Image_Prefix + newSongName + "_");
-                    // Rename file with new version name
+                    // Rename file with new name
                     File newNameImageFile = new File(newFileName);
                     imageFile.renameTo(newNameImageFile);
+                }
+            }
+        }
+    }
+    private void renameVideos()
+    {
+        File file = new File(StringHelper.Video_Folder_Path);
+        File[] files = file.listFiles();
+        if (files != null)
+        {
+            String fullPathString = StringHelper.Video_Folder_Path + "/";
+            String videoPrefix = StringHelper.Video_Prefix + originalSongName + "_";
+            for (File currentFile : files)
+            {
+                String currentFileName = currentFile.getPath().replace(fullPathString, "");
+                if (currentFileName.startsWith(videoPrefix))
+                {
+                    // Video belonging to this song and version found
+                    File videoFile = new File(currentFile.getPath());
+                    String newFileName = currentFile.getPath();
+                    newFileName = newFileName.replace(videoPrefix, StringHelper.Video_Prefix + newSongName + "_");
+                    // Rename file with new name
+                    File newNameVideoFile = new File(newFileName);
+                    videoFile.renameTo(newNameVideoFile);
                 }
             }
         }

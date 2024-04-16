@@ -8,6 +8,7 @@
         android:required="false" />
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -30,10 +31,13 @@
             android:name=".ViewSongAndVersionsActivity"
             android:exported="false" />
         <activity
-            android:name=".ViewVersionDataActivity"
+            android:name=".ViewVersionActivity"
             android:exported="false" />
         <activity
             android:name=".ViewOrDeleteImageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ViewOrDeleteVideoActivity"
             android:exported="false" />
         <activity
             android:name=".EditSongActivity"

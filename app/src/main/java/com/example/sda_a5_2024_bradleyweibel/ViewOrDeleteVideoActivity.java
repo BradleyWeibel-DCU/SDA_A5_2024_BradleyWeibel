@@ -4,33 +4,37 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.File;
 
-public class ViewOrDeleteImageActivity extends AppCompatActivity
+public class ViewOrDeleteVideoActivity extends AppCompatActivity
 {
     // UI elements
-    private ImageView imageViewer;
+    private VideoView videoViewer;
+    private LinearLayout videoContainerLyt;
     private TextView songNameTxt;
     private FloatingActionButton backBtn, deleteBtn;
 
     // General elements
     private Integer versionId;
     private Boolean wasPreviousScreenAddVersionData;
-    private String songName, versionName, versionDescription, versionLyrics, imagePath;
+    private String songName, versionName, versionDescription, versionLyrics, videoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_or_delete_image);
+        setContentView(R.layout.activity_view_or_delete_video);
 
         // Attaching local variables to UI elements
         songNameTxt = findViewById(R.id.idTxtSongName);
-        imageViewer = findViewById(R.id.idImgImageViewer);
+        videoContainerLyt = findViewById(R.id.idLytVideoContainer);
+        videoViewer = findViewById(R.id.idVidVideoViewer);
         deleteBtn = findViewById(R.id.idBtnDelete);
         backBtn = findViewById(R.id.idBtnBack);
 
@@ -41,13 +45,27 @@ public class ViewOrDeleteImageActivity extends AppCompatActivity
         versionDescription = getIntent().getStringExtra(StringHelper.VersionData_Intent_Description);
         versionLyrics = getIntent().getStringExtra(StringHelper.VersionData_Intent_Lyrics);
         wasPreviousScreenAddVersionData = getIntent().getBooleanExtra(StringHelper.VersionData_Intent_Add_Screen, false);
-        imagePath = getIntent().getStringExtra(StringHelper.ImageData_Intent_Path);
+        videoPath = getIntent().getStringExtra(StringHelper.VideoData_Intent_Path);
 
         // Populate UI elements
         songNameTxt.setText(songName);
-        File imageFile = new File(imagePath);
-        imageViewer.setImageURI(Uri.fromFile(imageFile));
-        // Don't show the delete button if the previous screen was ViewVersionData
+        File videoFile = new File(videoPath);
+        videoViewer.setVideoURI(Uri.fromFile(videoFile));
+
+        // The following code was developed side-by-side with the help of ChatGPT
+        // <<<<<<< Start of Chat GPT aided code >>>>>>>>
+        // Create media controller
+        MediaController mediaController = new MediaController(this);
+        // Set media controller to video view
+        videoViewer.setMediaController(mediaController);
+        // Set video view to media controller
+        mediaController.setMediaPlayer(videoViewer);
+        // Focusable to false to avoid stealing focus from other UI elements
+        mediaController.setAnchorView(videoViewer);
+        videoViewer.start();
+        // <<<<<<< End of Chat GPT aided code >>>>>>>>
+
+        // Don't show the delete button if the previous screen was ViewVersion
         if (versionDescription == null)
             deleteBtn.setVisibility(View.INVISIBLE);
 
@@ -57,19 +75,19 @@ public class ViewOrDeleteImageActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                // Delete image
-                imageFile.delete();
+                // Delete video
+                videoFile.delete();
 
                 Intent i;
                 if (wasPreviousScreenAddVersionData)
                 {
                     // Previous screen was AddVersionData
-                    i = new Intent(ViewOrDeleteImageActivity.this, AddVersionActivity.class);
+                    i = new Intent(ViewOrDeleteVideoActivity.this, AddVersionActivity.class);
                 }
                 else
                 {
                     // Previous screen was EditVersion
-                    i = new Intent(ViewOrDeleteImageActivity.this, EditVersionActivity.class);
+                    i = new Intent(ViewOrDeleteVideoActivity.this, EditVersionActivity.class);
                 }
                 i = populateIntentData(i);
                 startActivity(i);
@@ -85,20 +103,20 @@ public class ViewOrDeleteImageActivity extends AppCompatActivity
                 Intent i;
                 if (versionDescription == null)
                 {
-                    // Previous screen was ViewVersionData
-                    i = new Intent(ViewOrDeleteImageActivity.this, ViewVersionActivity.class);
+                    // Previous screen was ViewVersion
+                    i = new Intent(ViewOrDeleteVideoActivity.this, ViewVersionActivity.class);
                     i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
                 }
                 else if (wasPreviousScreenAddVersionData)
                 {
                     // Previous screen was AddVersionData
-                    i = new Intent(ViewOrDeleteImageActivity.this, AddVersionActivity.class);
+                    i = new Intent(ViewOrDeleteVideoActivity.this, AddVersionActivity.class);
                     i = populateIntentData(i);
                 }
                 else
                 {
                     // Previous screen was EditVersion
-                    i = new Intent(ViewOrDeleteImageActivity.this, EditVersionActivity.class);
+                    i = new Intent(ViewOrDeleteVideoActivity.this, EditVersionActivity.class);
                     i = populateIntentData(i);
                 }
                 startActivity(i);
