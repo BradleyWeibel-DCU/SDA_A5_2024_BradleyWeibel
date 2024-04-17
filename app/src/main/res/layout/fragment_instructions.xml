@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/screen_background"
+    tools:context=".InstructionsFragment">
+
+    <LinearLayout
+        android:id="@+id/welcome_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/welcomeHeaderImageView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/welcome_photo_1" />
+
+        <ImageView
+            android:id="@+id/drumsIcon"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="17dp"
+            app:srcCompat="@drawable/drums" />
+
+        <TextView
+            android:id="@+id/header1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:gravity="center"
+            android:text="@string/getting_started_banner"
+            android:textColor="@color/highlighted_text_orange"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:text="@string/getting_started_message"
+            android:textColor="@color/standard_text_dark_grey"
+            android:textSize="15sp"/>
+
+        <ImageView
+            android:id="@+id/ideaIcon"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="17dp"
+            app:srcCompat="@drawable/idea" />
+
+        <TextView
+            android:id="@+id/header2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:gravity="center"
+            android:text="@string/how_to_create_banner"
+            android:textColor="@color/highlighted_text_orange"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/text2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:text="@string/how_to_create_message"
+            android:textColor="@color/standard_text_dark_grey"
+            android:textSize="15sp"/>
+
+        <ImageView
+            android:id="@+id/explosionIcon"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="17dp"
+            app:srcCompat="@drawable/nuclear_bomb_orange" />
+
+        <TextView
+            android:id="@+id/header3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/how_to_delete_banner"
+            android:textColor="@color/highlighted_text_orange"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/text3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:text="@string/how_to_delete_message"
+            android:textColor="@color/standard_text_dark_grey"
+            android:textSize="15sp"/>
+
+        <ImageView
+            android:id="@+id/mapIcon"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="17dp"
+            app:srcCompat="@drawable/map" />
+
+        <TextView
+            android:id="@+id/header4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/where_to_find_banner"
+            android:textColor="@color/highlighted_text_orange"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/text4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:text="@string/where_to_find_message"
+            android:textColor="@color/standard_text_dark_grey"
+            android:textSize="15sp"/>
+
+        <ImageView
+            android:id="@+id/zombieIcon"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="17dp"
+            app:srcCompat="@drawable/zombie" />
+
+        <TextView
+            android:id="@+id/header5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/zombie_files_banner"
+            android:textColor="@color/highlighted_text_orange"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/text5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="17dp"
+            android:gravity="center"
+            android:text="@string/zombie_files_message"
+            android:textColor="@color/standard_text_dark_grey"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+
+</ScrollView>

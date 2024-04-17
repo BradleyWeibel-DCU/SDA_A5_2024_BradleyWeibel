@@ -7,6 +7,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -14,12 +16,17 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
 {
+    // UI elements
+    private RecyclerView songsRV;
+    private EditText searchBarEdt;
+    private TextView headerTxt;
+    private ImageView headerImg;
+    private FloatingActionButton addSongBtn;
+
+    // General variables
     private ArrayList<SongModal> songModalArrayList;
     private DBHandler dbHandler;
     private SongRVAdapter songRVAdapter;
-    private RecyclerView songsRV;
-    private EditText searchBarEdt;
-    private FloatingActionButton addSongBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,6 +35,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         // Attaching local variables to UI elements
+        headerImg = findViewById(R.id.idImgLyricist);
+        headerTxt = findViewById(R.id.idTxtLyricistHeader);
         addSongBtn = findViewById(R.id.idBtnAddSong);
         searchBarEdt = findViewById(R.id.idEdtSearchSongs);
 
@@ -48,6 +57,30 @@ public class MainActivity extends AppCompatActivity
 
         // Setting adapter to recycler view
         songsRV.setAdapter(songRVAdapter);
+
+        // User has clicked the Lyricist Image, open help screen
+        headerImg.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // Opening a new activity via an intent
+                Intent i = new Intent(MainActivity.this, HelpActivity.class);
+                startActivity(i);
+            }
+        });
+
+        // User has clicked the Lyricist header, open help screen
+        headerTxt.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // Opening a new activity via an intent
+                Intent i = new Intent(MainActivity.this, HelpActivity.class);
+                startActivity(i);
+            }
+        });
 
         // Add new song button is pushed
         addSongBtn.setOnClickListener(new View.OnClickListener()

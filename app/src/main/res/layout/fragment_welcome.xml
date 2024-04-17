@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/screen_background"
+    tools:context=".WelcomeFragment">
+
+    <LinearLayout
+        android:id="@+id/welcome_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/welcomeHeaderImageView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/welcome_photo_2" />
+
+        <ImageView
+            android:id="@+id/guitarIcon"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_marginTop="17dp"
+            app:srcCompat="@drawable/guitar" />
+
+        <TextView
+            android:id="@+id/header1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:gravity="center"
+            android:text="@string/welcome_banner"
+            android:textColor="@color/highlighted_text_orange"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:text="@string/welcome_message"
+            android:textColor="@color/standard_text_dark_grey"
+            android:textSize="15sp"/>
+
+        <ImageView
+            android:id="@+id/signpostIcon"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="17dp"
+            app:srcCompat="@drawable/signpost" />
+
+        <TextView
+            android:id="@+id/header2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:gravity="center"
+            android:text="@string/about_banner"
+            android:textColor="@color/highlighted_text_orange"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/text2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:text="@string/about_message"
+            android:textColor="@color/standard_text_dark_grey"
+            android:textSize="15sp"/>
+
+        <ImageView
+            android:id="@+id/noInternetIcon"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:layout_marginTop="17dp"
+            app:srcCompat="@drawable/no_wifi" />
+
+        <TextView
+            android:id="@+id/header3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:gravity="center"
+            android:text="@string/security_banner"
+            android:textColor="@color/highlighted_text_orange"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/text3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:text="@string/security_message"
+            android:textColor="@color/standard_text_dark_grey"
+            android:textSize="15sp"/>
+
+        <ImageView
+            android:id="@+id/microphoneIcon"
+            android:layout_width="match_parent"
+            android:layout_height="29dp"
+            android:layout_marginTop="17dp"
+            app:srcCompat="@drawable/microphone" />
+
+        <TextView
+            android:id="@+id/header4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:gravity="center"
+            android:text="@string/acknowledgements_banner"
+            android:textColor="@color/highlighted_text_orange"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/text4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="17dp"
+            android:gravity="center"
+            android:text="@string/acknowledgements_message"
+            android:textColor="@color/standard_text_dark_grey"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+
+</ScrollView>

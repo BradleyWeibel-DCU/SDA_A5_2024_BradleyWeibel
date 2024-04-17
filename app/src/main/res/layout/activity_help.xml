@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/idImgLyricist"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/solar_eclipse_image"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/idHelpTabHeaders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/screen_background"
+        android:elevation="4dp"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_below="@+id/idImgLyricist"
+        android:layout_marginTop="15dp"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/highlighted_text_orange"
+        app:tabTextColor="@color/standard_text_dark_grey" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/idHelpPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/idHelpTabHeaders"
+        android:background="@color/screen_background"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/idBtnBackToHome"
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="19dp"
+        android:clickable="true"
+        android:contentDescription="@string/back_to_home"
+        android:scaleType="center"
+        app:maxImageSize="32dp"
+        app:srcCompat="@drawable/back_arrow_icon"
+        app:backgroundTint="@color/back_button"/>
+
+</RelativeLayout>

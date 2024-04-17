@@ -26,6 +26,9 @@ public class NumberHelper
     public static final int Video_Margin_Bottom = 10;
     public static final int Video_Margin_Left = 0;
 
+    // General
+    public static final int Behaviour_Resume_Current_Tab = 1;
+
     // Get 130dp in pixels for imageView size in UI
     public static int imageViewDPSizeInPX(Resources r)
     {
