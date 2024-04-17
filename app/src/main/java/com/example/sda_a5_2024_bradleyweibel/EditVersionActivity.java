@@ -679,7 +679,7 @@ public class EditVersionActivity extends AppCompatActivity
             for (File currentFile : files)
             {
                 String currentFileName = currentFile.getPath().replace(fullPathString, "");
-                if (currentFileName.startsWith(videoStandardNamePrefix))
+                if (listOfNewVideoNames.contains(currentFileName))
                 {
                     // Video belonging to this song and version found
                     File videoFile = new File(currentFile.getPath());
