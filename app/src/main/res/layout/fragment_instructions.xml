@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginTop="17dp"
-            app:srcCompat="@drawable/drums" />
+            app:srcCompat="@drawable/drums_icon_orange" />
 
         <TextView
             android:id="@+id/header1"
@@ -60,13 +60,13 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginTop="17dp"
-            app:srcCompat="@drawable/idea" />
+            app:srcCompat="@drawable/confirm_tick_icon_orange" />
 
         <TextView
             android:id="@+id/header2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:text="@string/how_to_create_banner"
             android:textColor="@color/highlighted_text_orange"
@@ -89,7 +89,7 @@
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_marginTop="17dp"
-            app:srcCompat="@drawable/nuclear_bomb_orange" />
+            app:srcCompat="@drawable/delete_explosion_icon_orange" />
 
         <TextView
             android:id="@+id/header3"
@@ -118,7 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_marginTop="17dp"
-            app:srcCompat="@drawable/map" />
+            app:srcCompat="@drawable/map_icon_orange" />
 
         <TextView
             android:id="@+id/header4"
@@ -147,7 +147,7 @@
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_marginTop="17dp"
-            app:srcCompat="@drawable/zombie" />
+            app:srcCompat="@drawable/zombie_icon_orange" />
 
         <TextView
             android:id="@+id/header5"

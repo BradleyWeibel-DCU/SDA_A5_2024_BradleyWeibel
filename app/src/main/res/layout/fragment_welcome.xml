@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="32dp"
             android:layout_marginTop="17dp"
-            app:srcCompat="@drawable/guitar" />
+            app:srcCompat="@drawable/guitar_icon_orange" />
 
         <TextView
             android:id="@+id/header1"
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_marginTop="17dp"
-            app:srcCompat="@drawable/signpost" />
+            app:srcCompat="@drawable/signpost_icon_orange" />
 
         <TextView
             android:id="@+id/header2"
@@ -89,7 +89,7 @@
             android:layout_width="match_parent"
             android:layout_height="26dp"
             android:layout_marginTop="17dp"
-            app:srcCompat="@drawable/no_wifi" />
+            app:srcCompat="@drawable/no_internet_icon_orange" />
 
         <TextView
             android:id="@+id/header3"
@@ -118,7 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="29dp"
             android:layout_marginTop="17dp"
-            app:srcCompat="@drawable/microphone" />
+            app:srcCompat="@drawable/microphone_icon_orange" />
 
         <TextView
             android:id="@+id/header4"

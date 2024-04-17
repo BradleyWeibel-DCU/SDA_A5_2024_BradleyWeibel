@@ -63,7 +63,7 @@
         app:fabCustomSize="58dp"
         android:scaleType="center"
         app:maxImageSize="41dp"
-        app:srcCompat="@drawable/delete_explosion_icon" />
+        app:srcCompat="@drawable/delete_explosion_icon_black" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/idBtnBack"
@@ -74,8 +74,8 @@
         android:clickable="true"
         android:contentDescription="@string/back_to_home"
         android:scaleType="center"
-        app:maxImageSize="32dp"
-        app:srcCompat="@drawable/back_arrow_icon"
+        app:maxImageSize="47dp"
+        app:srcCompat="@drawable/back_arrow_icon_black"
         app:backgroundTint="@color/back_button"/>
 
 </RelativeLayout>

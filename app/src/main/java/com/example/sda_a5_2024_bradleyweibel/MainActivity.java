@@ -117,9 +117,9 @@ public class MainActivity extends AppCompatActivity
 
                 // Set searching image in search bar
                 if (songSearchTerm.equals(""))
-                    searchBarEdt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.search_icon, 0, 0, 0);
+                    searchBarEdt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.search_hollow_icon_orange, 0, 0, 0);
                 else
-                    searchBarEdt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.searching_icon, 0, 0, 0);
+                    searchBarEdt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.search_full_icon_orange, 0, 0, 0);
             }
 
             @Override

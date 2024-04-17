@@ -171,7 +171,7 @@
                     android:layout_height="57sp"
                     android:layout_marginStart="13dp"
                     android:background="@drawable/edit_text_shape_orange"
-                    app:srcCompat="@drawable/add_gallery_image" />
+                    app:srcCompat="@drawable/add_gallery_image_icon_orange" />
 
                 <ImageButton
                     android:id="@+id/idAddNewImageBtn"
@@ -179,7 +179,7 @@
                     android:layout_height="57sp"
                     android:layout_marginStart="5dp"
                     android:background="@drawable/edit_text_shape_orange"
-                    app:srcCompat="@drawable/add_new_image" />
+                    app:srcCompat="@drawable/add_new_image_icon_orange" />
 
             </LinearLayout>
 
@@ -218,7 +218,7 @@
                     android:layout_height="57sp"
                     android:layout_marginStart="13dp"
                     android:background="@drawable/edit_text_shape_orange"
-                    app:srcCompat="@drawable/add_gallery_video" />
+                    app:srcCompat="@drawable/add_gallery_video_icon_orange" />
 
                 <ImageButton
                     android:id="@+id/idAddNewVideoBtn"
@@ -226,7 +226,7 @@
                     android:layout_height="57sp"
                     android:layout_marginStart="5dp"
                     android:background="@drawable/edit_text_shape_orange"
-                    app:srcCompat="@drawable/add_new_video" />
+                    app:srcCompat="@drawable/add_new_video_icon_orange" />
 
             </LinearLayout>
 
@@ -247,7 +247,7 @@
         app:fabCustomSize="57dp"
         android:scaleType="center"
         app:maxImageSize="45dp"
-        app:srcCompat="@drawable/confirm_icon" />
+        app:srcCompat="@drawable/confirm_tick_icon_black" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/idBtnDeleteVersion"
@@ -261,8 +261,8 @@
         android:contentDescription="@string/delete"
         app:fabCustomSize="57dp"
         android:scaleType="center"
-        app:maxImageSize="38dp"
-        app:srcCompat="@drawable/delete_bomb_icon" />
+        app:maxImageSize="60dp"
+        app:srcCompat="@drawable/delete_bomb_icon_black" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/idBtnBack"
@@ -273,8 +273,8 @@
         android:clickable="true"
         android:contentDescription="@string/back"
         android:scaleType="center"
-        app:maxImageSize="32dp"
-        app:srcCompat="@drawable/back_arrow_icon"
+        app:maxImageSize="47dp"
+        app:srcCompat="@drawable/back_arrow_icon_black"
         app:backgroundTint="@color/back_button"/>
 
 </RelativeLayout>
