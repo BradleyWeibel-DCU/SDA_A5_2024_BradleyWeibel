@@ -200,6 +200,7 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
 
                 Intent i = new Intent(RecordOrPlayAudioActivity.this, RecordOrPlayAudioActivity.class);
                 i = populateIntentData(i);
+                i.putExtra(StringHelper.SongData_Intent_Name, songName);
                 startActivity(i);
             }
         });
