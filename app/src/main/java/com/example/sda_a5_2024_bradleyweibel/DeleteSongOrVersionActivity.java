@@ -61,9 +61,10 @@ public class DeleteSongOrVersionActivity extends AppCompatActivity
                     // Return to main menu
                     i = new Intent(DeleteSongOrVersionActivity.this, MainActivity.class);
 
-                    // TODO: remove all images, videos and audio relating to the song
+                    // Remove all images, videos and recordings relating to the song
                     removeAllImages(songName, "");
                     removeAllVideos(songName, "");
+                    removeAllRecordings(songName, "");
                 }
                 else
                 {
@@ -74,9 +75,10 @@ public class DeleteSongOrVersionActivity extends AppCompatActivity
                     // Passing the song name
                     i.putExtra(StringHelper.SongData_Intent_Name, songName);
 
-                    // TODO: remove all images, videos and audio relating to this version
+                    // Remove all images, videos and recordings relating to this version
                     removeAllImages(songName, versionName);
                     removeAllVideos(songName, versionName);
+                    removeAllRecordings(songName, versionName);
                 }
                 startActivity(i);
             }
@@ -151,6 +153,28 @@ public class DeleteSongOrVersionActivity extends AppCompatActivity
                     // Video belonging to this song and version found
                     File videoFile = new File(currentFile.getPath());
                     videoFile.delete();
+                }
+            }
+        }
+    }
+    public void removeAllRecordings(String thisSongName, String thisVersionName)
+    {
+        File file = new File(StringHelper.Audio_Folder_Path);
+        File[] files = file.listFiles();
+        if (files != null)
+        {
+            String fullPathString = StringHelper.Audio_Folder_Path + "/";
+            String audioPrefix = StringHelper.Audio_Prefix + thisSongName + "_";
+            if (!thisVersionName.equals(""))
+                audioPrefix = audioPrefix + thisVersionName + "_";
+            for (File currentFile : files)
+            {
+                String currentFileName = currentFile.getPath().replace(fullPathString, "");
+                if (currentFileName.startsWith(audioPrefix))
+                {
+                    // Recording belonging to this song and version found
+                    File audioFile = new File(currentFile.getPath());
+                    audioFile.delete();
                 }
             }
         }
