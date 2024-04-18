@@ -109,21 +109,13 @@ public class ViewOrDeleteImageActivity extends AppCompatActivity
     private Intent populateIntentData(Intent i)
     {
         if (wasPreviousScreenAddVersionData)
-        {
             i.putExtra(StringHelper.SongData_Intent_Name, songName);
-            i.putExtra(StringHelper.VersionData_Intent_Name, versionName);
-            i.putExtra(StringHelper.VersionData_Intent_Description, versionDescription);
-            i.putExtra(StringHelper.VersionData_Intent_Lyrics, versionLyrics);
-            i.putExtra(StringHelper.VersionData_Intent_View_Screen, true);
-        }
         else
-        {
             i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
-            i.putExtra(StringHelper.VersionData_Intent_Name, versionName);
-            i.putExtra(StringHelper.VersionData_Intent_Description, versionDescription);
-            i.putExtra(StringHelper.VersionData_Intent_Lyrics, versionLyrics);
-            i.putExtra(StringHelper.VersionData_Intent_View_Screen, true);
-        }
+        i.putExtra(StringHelper.VersionData_Intent_Name, versionName);
+        i.putExtra(StringHelper.VersionData_Intent_Description, versionDescription);
+        i.putExtra(StringHelper.VersionData_Intent_Lyrics, versionLyrics);
+        i.putExtra(StringHelper.VersionData_Intent_View_Screen, true);
         return i;
     }
 }

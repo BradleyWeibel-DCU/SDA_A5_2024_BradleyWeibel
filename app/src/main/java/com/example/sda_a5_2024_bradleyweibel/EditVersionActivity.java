@@ -40,15 +40,15 @@ public class EditVersionActivity extends AppCompatActivity
     private EditText versionNameEdt, versionDescriptionEdt, versionLyricsEdt;
     private FloatingActionButton saveBtn, deleteBtn, backToViewVersionBtn;
     private ImageButton galleryImageBtn, newImageBtn, galleryVideoBtn, newVideoBtn, galleryAudioBtn, newAudioBtn;
-    private LinearLayout imageContainerLyt, videoContainerLyt;
+    private LinearLayout imageContainerLyt, videoContainerLyt, recordingContainerLyt;
 
     // General variables
-    private Integer versionId, imageCounter, videoCounter;
+    private Integer versionId, imageCounter, videoCounter, audioCounter;
     private DBHandler dbHandler;
     private VersionModal versionData;
     private Boolean wasPreviousScreenAViewer;
-    private String songName, newVersionName, originalVersionName, versionDescription, versionLyrics, currentPhotoPath, imageStandardNamePrefix, currentVideoPath, videoStandardNamePrefix;
-    private ArrayList<String> listOfNewImageNames, listOfNewVideoNames;
+    private String songName, newVersionName, originalVersionName, versionDescription, versionLyrics, currentPhotoPath, imageStandardNamePrefix, currentVideoPath, videoStandardNamePrefix, currentAudioPath, audioStandardNamePrefix;
+    private ArrayList<String> listOfNewImageNames, listOfNewVideoNames, listOfNewAudioNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -67,8 +67,9 @@ public class EditVersionActivity extends AppCompatActivity
         videoContainerLyt = findViewById(R.id.idLytVideoContainer);
         galleryVideoBtn = findViewById(R.id.idAddGalleryVideoBtn);
         newVideoBtn = findViewById(R.id.idAddNewVideoBtn);
+        recordingContainerLyt = findViewById(R.id.idLytRecordingContainer);
         //galleryAudioBtn = findViewById(R.id.idAddGalleryAudioBtn);
-        //newAudioBtn = findViewById(R.id.idAddNewAudioBtn);
+        newAudioBtn = findViewById(R.id.idAddNewAudioBtn);
         saveBtn = findViewById(R.id.idBtnSaveVersion);
         deleteBtn = findViewById(R.id.idBtnDeleteVersion);
         backToViewVersionBtn = findViewById(R.id.idBtnBack);
@@ -80,6 +81,7 @@ public class EditVersionActivity extends AppCompatActivity
         versionDescription = getIntent().getStringExtra(StringHelper.VersionData_Intent_Description);
         versionLyrics = getIntent().getStringExtra(StringHelper.VersionData_Intent_Lyrics);
         wasPreviousScreenAViewer = getIntent().getBooleanExtra(StringHelper.VersionData_Intent_View_Screen, false);
+        listOfNewAudioNames = getIntent().getStringArrayListExtra(StringHelper.AudioData_Intent_List_Of_New_Recordings);
 
         // Creating a new DB handler class and passing our context to it
         dbHandler = new DBHandler(EditVersionActivity.this);
@@ -102,17 +104,23 @@ public class EditVersionActivity extends AppCompatActivity
         versionDescriptionEdt.setText(versionDescription);
         versionLyricsEdt.setText(versionLyrics);
 
-        // Image handling
+        // Images handling
         imageCounter = 1;
         imageStandardNamePrefix = StringHelper.Image_Prefix + songName + "_" + originalVersionName + "_";
         listOfNewImageNames = new ArrayList<String>();
         getVersionImages();
 
-        // Video handling
+        // Videos handling
         videoCounter = 1;
         videoStandardNamePrefix = StringHelper.Video_Prefix + songName + "_" + originalVersionName + "_";
         listOfNewVideoNames = new ArrayList<String>();
         getVersionVideos();
+
+        // Recordings handling
+        audioCounter = 1;
+        audioStandardNamePrefix = StringHelper.Audio_Prefix + songName + "_" + originalVersionName + "_";
+        listOfNewAudioNames = listOfNewAudioNames == null ? new ArrayList<String>() : listOfNewAudioNames;
+        getVersionRecordings();
 
         // On click listener for save version changes button
         saveBtn.setOnClickListener(new View.OnClickListener()
@@ -140,9 +148,10 @@ public class EditVersionActivity extends AppCompatActivity
                     }
                     else
                     {
-                        // TODO: update images, videos and audio with new name
+                        // Update images, videos and audio recordings with the new version name
                         renameImages();
                         renameVideos();
+                        renameRecordings();
                     }
                 }
 
@@ -166,9 +175,10 @@ public class EditVersionActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                // TODO: remove newly added but unsaved images, videos and audio clips
+                // Remove newly added but unsaved images, videos and audio recordings
                 removeAllNewImages();
                 removeAllNewVideos();
+                removeAllNewRecordings();
 
                 // Opening a new activity via an intent
                 Intent i = new Intent(EditVersionActivity.this, DeleteSongOrVersionActivity.class);
@@ -186,9 +196,10 @@ public class EditVersionActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                // TODO: remove newly added but unsaved images, videos and audio clips
+                // Remove newly added but unsaved images, videos and audio recordings
                 removeAllNewImages();
                 removeAllNewVideos();
+                removeAllNewRecordings();
 
                 // opening a new activity via a intent.
                 Intent i = new Intent(EditVersionActivity.this, ViewVersionActivity.class);
@@ -261,6 +272,25 @@ public class EditVersionActivity extends AppCompatActivity
                     askWriteStoragePermission();
             }
         });
+
+        // --------------------------------------------- Audio handling
+        // User wants to take a new recording
+        newAudioBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (isWriteExternalPermissionGranted() && isAudioPermissionGranted())
+                    openAudioRecorder();
+                else
+                {
+                    if (!isWriteExternalPermissionGranted())
+                        askWriteStoragePermission();
+                    else if (!isAudioPermissionGranted())
+                        askRecordAudioPermission();
+                }
+            }
+        });
     }
 
     // Get list of already created images, videos, audio clips for this version
@@ -305,6 +335,26 @@ public class EditVersionActivity extends AppCompatActivity
                         insertNewVideoIntoUI(Uri.fromFile(videoFile));
                     }
                     catch (IOException e) {}
+                }
+            }
+        }
+    }
+    private void getVersionRecordings()
+    {
+        File file = new File(StringHelper.Audio_Folder_Path);
+        File[] files = file.listFiles();
+        if (files != null)
+        {
+            String fullPathString = StringHelper.Audio_Folder_Path + "/";
+            String audioPrefix = StringHelper.Audio_Prefix + songName + "_" + originalVersionName + "_";
+            for (File currentFile : files)
+            {
+                String currentFileName = currentFile.getPath().replace(fullPathString, "");
+                if (currentFileName.startsWith(audioPrefix))
+                {
+                    // Recording belonging to this song and version found
+                    currentAudioPath = currentFile.getPath();
+                    insertNewRecordingIntoUI();
                 }
             }
         }
@@ -486,6 +536,63 @@ public class EditVersionActivity extends AppCompatActivity
         i.putExtra(StringHelper.VideoData_Intent_Path, videoPath);
         i.putExtra(StringHelper.VersionData_Intent_Add_Screen, false);
         startActivity(i);
+    }
+
+    // --------------------------------------------- Creating new audio recordings in UI
+    private void openAudioRecorder()
+    {
+        newVersionName = versionNameEdt.getText().toString().trim();
+        versionDescription = versionDescriptionEdt.getText().toString().trim();
+        versionLyrics = versionLyricsEdt.getText().toString().trim();
+
+        Intent i = new Intent(EditVersionActivity.this, RecordOrPlayAudioActivity.class);
+        // Passing the needed variables that will be needed to return and reopen this screen - no yet unsaved data the user has entered must be lost
+        i.putExtra(StringHelper.SongData_Intent_Name, songName);
+        i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
+        i.putExtra(StringHelper.VersionData_Intent_Name, newVersionName);
+        i.putExtra(StringHelper.VersionData_Intent_Description, versionDescription);
+        i.putExtra(StringHelper.VersionData_Intent_Lyrics, versionLyrics);
+        i.putExtra(StringHelper.AudioData_Intent_Counter_Value, audioCounter);
+        i.putExtra(StringHelper.AudioData_Intent_List_Of_New_Recordings, listOfNewAudioNames);
+        i.putExtra(StringHelper.VersionData_Intent_Add_Screen, false);
+        startActivity(i);
+    }
+    private void viewAudioRecording(String recordingPath)
+    {
+        newVersionName = versionNameEdt.getText().toString().trim();
+        versionDescription = versionDescriptionEdt.getText().toString().trim();
+        versionLyrics = versionLyricsEdt.getText().toString().trim();
+
+        Intent i = new Intent(EditVersionActivity.this, RecordOrPlayAudioActivity.class);
+        // Passing the needed variables that will be needed to return and reopen this screen - no yet unsaved data the user has entered must be lost
+        i.putExtra(StringHelper.SongData_Intent_Name, songName);
+        i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
+        i.putExtra(StringHelper.VersionData_Intent_Name, newVersionName);
+        i.putExtra(StringHelper.VersionData_Intent_Description, versionDescription);
+        i.putExtra(StringHelper.VersionData_Intent_Lyrics, versionLyrics);
+        i.putExtra(StringHelper.AudioData_Intent_Path, recordingPath);
+        i.putExtra(StringHelper.AudioData_Intent_List_Of_New_Recordings, listOfNewAudioNames);
+        i.putExtra(StringHelper.VersionData_Intent_Add_Screen, false);
+        startActivity(i);
+    }
+    // Create UI element to show recording
+    private void insertNewRecordingIntoUI()
+    {
+        // Create new ImageView
+        ImageView imageView = new ImageView(EditVersionActivity.this);
+        // Set the parameters
+        int dimensions = NumberHelper.imageViewDPSizeInPX(getResources());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dimensions, dimensions);
+        // Set the margin in linearlayout
+        params.setMargins(NumberHelper.Image_Margin_Left, NumberHelper.Image_Margin_Top, NumberHelper.Image_Margin_Right, NumberHelper.Image_Margin_Bottom);
+        imageView.setLayoutParams(params);
+        // Insert the image (alternate between two images)
+        imageView.setImageDrawable(getDrawable(NumberHelper.isNumberEven(audioCounter) ? R.drawable.audio_photo_1 : R.drawable.audio_photo_2));
+        imageView.setTag(currentAudioPath);
+        imageView.setOnClickListener(v -> { viewAudioRecording(v.getTag().toString()); });
+        // Insert ImageView into UI
+        recordingContainerLyt.addView(imageView);
+        audioCounter += 1;
     }
 
     // --------------------------------------------- After successful image, video, or audio action
@@ -708,6 +815,49 @@ public class EditVersionActivity extends AppCompatActivity
                     // Rename file with new version name
                     File newNameVideoFile = new File(newFileName);
                     videoFile.renameTo(newNameVideoFile);
+                }
+            }
+        }
+    }
+    private void removeAllNewRecordings()
+    {
+        File file = new File(StringHelper.Audio_Folder_Path);
+        File[] files = file.listFiles();
+        if (files != null)
+        {
+            String fullPathString = StringHelper.Audio_Folder_Path + "/";
+            for (File currentFile : files)
+            {
+                String currentFileName = currentFile.getPath().replace(fullPathString, "");
+                if (listOfNewAudioNames.contains(currentFileName))
+                {
+                    // Audio belonging to this song and version found
+                    File audioFile = new File(currentFile.getPath());
+                    audioFile.delete();
+                }
+            }
+        }
+    }
+    private void renameRecordings()
+    {
+        File file = new File(StringHelper.Audio_Folder_Path);
+        File[] files = file.listFiles();
+        if (files != null)
+        {
+            String fullPathString = StringHelper.Audio_Folder_Path + "/";
+            String newAudioNamePrefix = StringHelper.Audio_Prefix + songName + "_" + newVersionName + "_";
+            for (File currentFile : files)
+            {
+                String currentFileName = currentFile.getPath().replace(fullPathString, "");
+                if (currentFileName.startsWith(audioStandardNamePrefix))
+                {
+                    // Audio belonging to this song and version found
+                    File audioFile = new File(currentFile.getPath());
+                    String newFileName = currentFile.getPath();
+                    newFileName = newFileName.replace(audioStandardNamePrefix, newAudioNamePrefix);
+                    // Rename file with new version name
+                    File newNameAudioFile = new File(newFileName);
+                    audioFile.renameTo(newNameAudioFile);
                 }
             }
         }

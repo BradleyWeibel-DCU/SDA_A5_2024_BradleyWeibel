@@ -2,6 +2,7 @@ package com.example.sda_a5_2024_bradleyweibel;
 
 import android.content.res.Resources;
 import android.util.TypedValue;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class NumberHelper
 {
@@ -11,6 +12,8 @@ public class NumberHelper
     public static final int REQUEST_TAKE_PHOTO = 102;
     public static final int REQUEST_CHOOSE_VIDEO = 103;
     public static final int REQUEST_TAKE_VIDEO = 104;
+    public static final int REQUEST_CHOOSE_RECORDING = 105;
+    public static final int REQUEST_TAKE_RECORDING = 106;
 
     // UI element values
     // Images
@@ -36,5 +39,19 @@ public class NumberHelper
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
         int result = Math.round(px);
         return result;
+    }
+
+    public static Boolean isNumberEven(int number)
+    {
+        return number% 2 == 0;
+    }
+
+    public static String randomNumberGenerator()
+    {
+        // Define the range
+        int max = 1000000000;
+        int min = 1;
+        // Generate random numbers within 1 to 1 000 000 000
+        return String.valueOf(ThreadLocalRandom.current().nextInt(min, max + 1));
     }
 }

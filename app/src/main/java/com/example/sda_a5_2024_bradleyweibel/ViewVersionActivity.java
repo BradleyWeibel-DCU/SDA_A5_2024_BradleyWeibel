@@ -19,16 +19,17 @@ import java.io.IOException;
 
 public class ViewVersionActivity extends AppCompatActivity
 {
+    // UI elements
     private TextView songNameTxt, versionNameTxt, versionDescriptionTxt, versionLyricsTxt;
     private FloatingActionButton editVersionBtn, backToSongAndVersionsBtn;
-    private DBHandler dbHandler;
-    private VersionModal versionData;
-    private LinearLayout imageContainerLyt, videoContainerLyt;
+    private LinearLayout imageContainerLyt, videoContainerLyt, recordingContainerLyt;
 
     // General variables
-    private Boolean imagesPresent, videosPresent;
-    private Integer versionId;
+    private Boolean imagesPresent, videosPresent, recordingsPresent;
+    private Integer versionId, recordingsCounter;
     private String songName, versionName, versionDescription, versionLyrics;
+    private DBHandler dbHandler;
+    private VersionModal versionData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,6 +47,7 @@ public class ViewVersionActivity extends AppCompatActivity
         versionLyricsTxt = findViewById(R.id.idTxtVersionLyrics);
         imageContainerLyt = findViewById(R.id.idLytImageContainer);
         videoContainerLyt = findViewById(R.id.idLytVideoContainer);
+        recordingContainerLyt = findViewById(R.id.idLytRecordingsContainer);
         editVersionBtn = findViewById(R.id.idBtnEditVersion);
         backToSongAndVersionsBtn = findViewById(R.id.idBtnBackToSongAndVersions);
 
@@ -66,6 +68,11 @@ public class ViewVersionActivity extends AppCompatActivity
         // Video handling
         videosPresent = false;
         getVersionVideos();
+
+        // Recordings handling
+        recordingsCounter = 1;
+        recordingsPresent = false;
+        getVersionRecordings();
 
         // UI elements handling
         songNameTxt.setText(songName);
@@ -101,6 +108,13 @@ public class ViewVersionActivity extends AppCompatActivity
             TextView header = findViewById(R.id.idTxtVideosHeader);
             ((ViewGroup) header.getParent()).removeView(header);
             ((ViewGroup) videoContainerLyt.getParent()).removeView(videoContainerLyt);
+        }
+        if (!recordingsPresent)
+        {
+            // No recordings saved, remove elements
+            TextView header = findViewById(R.id.idTxtRecordingsHeader);
+            ((ViewGroup) header.getParent()).removeView(header);
+            ((ViewGroup) recordingContainerLyt.getParent()).removeView(recordingContainerLyt);
         }
 
         // Edit the version button is clicked
@@ -263,6 +277,52 @@ public class ViewVersionActivity extends AppCompatActivity
         i.putExtra(StringHelper.SongData_Intent_Name, songName);
         i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
         i.putExtra(StringHelper.VideoData_Intent_Path, videoPath);
+        startActivity(i);
+    }
+
+    // --------------------------------------------- Audio handling
+    // Get list of already created recordings for this version
+    private void getVersionRecordings()
+    {
+        File file = new File(StringHelper.Audio_Folder_Path);
+        File[] files = file.listFiles();
+        if (files != null)
+        {
+            String fullPathString = StringHelper.Audio_Folder_Path + "/";
+            String audioPrefix = StringHelper.Audio_Prefix + songName + "_" + versionName + "_";
+            for (File currentFile : files)
+            {
+                String currentFileName = currentFile.getPath().replace(fullPathString, "");
+                if (currentFileName.startsWith(audioPrefix))
+                {
+                    // Audio belonging to this song and version found
+                    // Create new ImageView
+                    ImageView imageView = new ImageView(ViewVersionActivity.this);
+                    // Set the parameters
+                    int dimensions = NumberHelper.imageViewDPSizeInPX(getResources());
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dimensions, dimensions);
+                    // Set the margin in linearlayout
+                    params.setMargins(NumberHelper.Image_Margin_Left, NumberHelper.Image_Margin_Top, NumberHelper.Image_Margin_Right, NumberHelper.Image_Margin_Bottom);
+                    imageView.setLayoutParams(params);
+                    // Insert the bitmap rather than the full image
+                    imageView.setImageDrawable(getDrawable(NumberHelper.isNumberEven(recordingsCounter) ? R.drawable.audio_photo_1 : R.drawable.audio_photo_2));
+                    imageView.setTag(currentFile.getPath());
+                    imageView.setOnClickListener(v -> { viewAudioRecording(v.getTag().toString()); });
+                    // Insert ImageView into UI
+                    recordingContainerLyt.addView(imageView);
+                    recordingsPresent = true;
+                    recordingsCounter += 1;
+                }
+            }
+        }
+    }
+    private void viewAudioRecording(String recordingPath)
+    {
+        Intent i = new Intent(ViewVersionActivity.this, RecordOrPlayAudioActivity.class);
+        // Passing the needed variables that will be needed to return and reopen this screen
+        i.putExtra(StringHelper.SongData_Intent_Name, songName);
+        i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
+        i.putExtra(StringHelper.AudioData_Intent_Path, recordingPath);
         startActivity(i);
     }
 }

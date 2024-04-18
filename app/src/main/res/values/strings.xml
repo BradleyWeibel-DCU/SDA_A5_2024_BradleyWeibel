@@ -11,8 +11,6 @@
     <string name="save">Save changes</string>
     <string name="creation_date">[Creation Date]</string>
     <string name="modified_date">[Modified Date]</string>
-    <string name="toastr_permissions_warning">Please accept all permission prompts to use these features</string>
-    <string name="toastr_no_camera_found">No camera was found...</string>
 
     <!-- Home screen -->
     <string name="search_songs">filter...</string>
@@ -25,7 +23,7 @@
     <string name="security_banner">Security</string>
     <string name="security_message">The security of your music was of serious concern. All data you store when using this app is on your phone and stays there. The app has no need to connect to the internet, giving piece of mind when using it. It can also be used regardless of connectivity mode. We all hate our data being sold or ideas stolen. With \' Lyricist\', your music is yours and yours alone...</string>
     <string name="acknowledgements_banner">Acknowledgements</string>
-    <string name="acknowledgements_message">The eclipse icon of this app was found using the creative commons filter on Google and can be found on \'Picryl\' and \'stockvault\'. A big thank you to these sites for letting us use images such as these. All the icons used in this app were either built into Google\'s Android, or were purchased from \'Noun Project\', a big thank you to them as well. A massive thank you to my friend Luke for his input on the app and the idea of each song having it\'s own versions - friggin\' genius. I would like to thank Dublin City University, as this app began it\'s life as a final university project and quickly turned into a passion project which I am proud to share you creators such as yourself. A final thank you to my lovely wife...</string>
+    <string name="acknowledgements_message">The eclipse icon of this app was found using the creative commons filter on Google and can be found on \'Picryl\' and \'stockvault\'. A big thank you to these sites for letting us use images such as these. All the icons used in this app were either built into Google\'s Android, or were purchased from \'Noun Project\', a big thank you to them as well. A massive thank you to my friend Luke for his input on the app and the idea of each song having it\'s own versions - friggin\' genius. I would like to thank Dublin City University, as this app began it\'s life as a final university project and quickly turned into a passion project which I am proud to share you creators such as yourself. A final thank you to my lovely wife, I love you very much ♡</string>
     <string name="getting_started_banner">Getting started</string>
     <string name="getting_started_message">This app organises music into songs, with each song containing various versions, each of which housing the components of the song. A very good friend who writes his own songs came up with this concept. This was done as firstly, songs have various versions (acoustic, rock, etc), and secondly, songs go through various forms as they develop - this app supports this. The app asks for your permission regarding 3 things (usage of the camera, storage, and audio recording) if you want to store more than just text, please accept all 3 and proceed...</string>
     <string name="how_to_create_banner">Creating</string>
@@ -54,10 +52,19 @@
     <string name="lyrics">Lyrics</string>
     <string name="images">Images</string>
     <string name="videos">Videos</string>
-    <string name="audio">Audio</string>
+    <string name="audio">Audio Recordings</string>
     <string name="toastr_missing_version_name">Please enter a version name...</string>
     <string name="toastr_unique_version_name">Please enter a unique version name for this song...</string>
     <string name="toastr_new_version_created">New song version created...</string>
     <string name="toastr_version_updated">Song version updated...</string>
+    <string name="toastr_permissions_warning">Please accept all permission prompts to use these features</string>
+    <string name="toastr_no_camera_found">No camera was found...</string>
+    <string name="toastr_no_recorder_found">No recording device was found...</string>
     <string name="delete_version_warning">Doubly sure you want to delete this version of your song?</string>
+
+    <!-- Audio handling -->
+    <string name="start_recording_message">Start recording...</string>
+    <string name="end_recording_message">...end recording</string>
+    <string name="play_recording_message">Play recording...</string>
+
 </resources>

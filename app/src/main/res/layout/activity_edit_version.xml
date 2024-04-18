@@ -230,6 +230,53 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="start"
+                android:text="@string/audio"
+                android:textColor="@color/standard_text_dark_grey"
+                android:textSize="17dp" />
+
+            <LinearLayout
+                android:id="@+id/idLytRecordingContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="5dp">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="10dp">
+
+                <ImageButton
+                    android:id="@+id/idAddGalleryAudioBtn"
+                    android:layout_width="57sp"
+                    android:layout_height="57sp"
+                    android:layout_marginStart="13dp"
+                    android:background="@drawable/edit_text_shape_orange"
+                    app:srcCompat="@drawable/add_gallery_audio_icon_orange" />
+
+                <ImageButton
+                    android:id="@+id/idAddNewAudioBtn"
+                    android:layout_width="57sp"
+                    android:layout_height="57sp"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/edit_text_shape_orange"
+                    app:srcCompat="@drawable/add_new_audio_icon_orange" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>

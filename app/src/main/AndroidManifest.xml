@@ -46,6 +46,9 @@
             android:name=".EditVersionActivity"
             android:exported="false" />
         <activity
+            android:name=".RecordOrPlayAudioActivity"
+            android:exported="false" />
+        <activity
             android:name=".DeleteSongOrVersionActivity"
             android:exported="false" />
         <activity

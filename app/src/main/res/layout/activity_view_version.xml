@@ -160,6 +160,27 @@
                 android:layout_marginTop="5dp">
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/idTxtRecordingsHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="start"
+                android:text="@string/audio"
+                android:textColor="@color/standard_text_dark_grey"
+                android:textSize="17dp" />
+
+            <LinearLayout
+                android:id="@+id/idLytRecordingsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="5dp">
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>

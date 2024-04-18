@@ -28,18 +28,25 @@ public class StringHelper
     public final static String VersionData_Intent_Lyrics = "version_lyrics";
     public final static String VersionData_Intent_Add_Screen = "version_from_add_screen";
     public final static String VersionData_Intent_View_Screen = "version_from_media_viewer_screen";
+    public final static String AudioData_Intent_Counter_Value = "audio_counter";
+    public final static String AudioData_Intent_List_Of_New_Recordings = "audio_list_new_recordings";
     public final static String ImageData_Intent_Path = "image_path";
     public final static String VideoData_Intent_Path = "video_path";
+    public final static String AudioData_Intent_Path = "audio_path";
 
     // Directories
+    // TODO maybe use dynamic folder finding?
     public static String Image_Folder_Path = "/storage/emulated/0/Android/data/com.example.sda_a5_2024_bradleyweibel/files/Pictures";
     public static String Video_Folder_Path = "/storage/emulated/0/Android/data/com.example.sda_a5_2024_bradleyweibel/files/Movies";
+    public static String Audio_Folder_Path = "/storage/emulated/0/Android/data/com.example.sda_a5_2024_bradleyweibel/files/Music";
 
     // Names
     public static String Image_Prefix = "IMG_";
     public static String Video_Prefix = "VID_";
+    public static String Audio_Prefix = "REC_";
     public static String Image_Suffix_With_Dot = ".jpg";
     public static String Video_Suffix_With_Dot = ".mp4";
+    public static String Audio_Suffix_With_Dot = ".acc";
     public static String Placeholder_Version_Name = "-PlaceHolderForNewVersionName-";
 
     // Authorities
