@@ -65,7 +65,7 @@ public class AddVersionActivity extends AppCompatActivity
         galleryVideoBtn = findViewById(R.id.idAddGalleryVideoBtn);
         newVideoBtn = findViewById(R.id.idAddNewVideoBtn);
         recordingContainerLyt = findViewById(R.id.idLytRecordingContainer);
-        //galleryAudioBtn = findViewById(R.id.idAddGalleryAudioBtn);
+        galleryAudioBtn = findViewById(R.id.idAddGalleryAudioBtn);
         newAudioBtn = findViewById(R.id.idAddNewAudioBtn);
         createBtn = findViewById(R.id.idBtnAddVersion);
         backBtn = findViewById(R.id.idBtnBack);
@@ -276,6 +276,18 @@ public class AddVersionActivity extends AppCompatActivity
                     else if (!isAudioPermissionGranted())
                         askRecordAudioPermission();
                 }
+            }
+        });
+        // User wants to select a gallery audio recording
+        galleryAudioBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (isWriteExternalPermissionGranted())
+                    openAudioGallery();
+                else
+                    askWriteStoragePermission();
             }
         });
     }
@@ -531,6 +543,11 @@ public class AddVersionActivity extends AppCompatActivity
         i.putExtra(StringHelper.VersionData_Intent_Add_Screen, true);
         startActivity(i);
     }
+    private void openAudioGallery()
+    {
+        Intent chooseAudioIntent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(chooseAudioIntent, NumberHelper.REQUEST_CHOOSE_RECORDING);
+    }
     private void viewAudioRecording(String recordingPath)
     {
         versionName = versionNameEdt.getText().toString().trim();
@@ -696,6 +713,39 @@ public class AddVersionActivity extends AppCompatActivity
                 catch (IOException e) {}
             }
             // <<<<<<< End of Chat GPT aided code >>>>>>>>
+        }
+        else if (requestCode == NumberHelper.REQUEST_CHOOSE_RECORDING && resultCode == RESULT_OK)
+        {
+            // Audio recording was successfully chosen from gallery
+            Uri audioLocation = data.getData();
+            String audioFileName = audioStandardNamePrefix + recordingCounter;
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_MUSIC);
+            File newFile = null;
+            try
+            {
+                String fileExt = StringHelper.getFileExtension(audioLocation, getContentResolver());
+                File tempVideoFile = File.createTempFile(audioFileName, "." + fileExt, storageDir);
+                newFile = new File(tempVideoFile.getAbsolutePath());
+
+                // Copy the audio recording data from the selected URI to the new file
+                InputStream inputStream = getContentResolver().openInputStream(audioLocation);
+                OutputStream outputStream = new FileOutputStream(newFile);
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1)
+                {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                outputStream.close();
+                inputStream.close();
+            }
+            catch (IOException e) {}
+            // Set the current video path to the path of the newly created file
+            if (newFile != null)
+            {
+                currentRecordingPath = newFile.getAbsolutePath();
+                insertNewRecordingIntoUI();
+            }
         }
     }
 

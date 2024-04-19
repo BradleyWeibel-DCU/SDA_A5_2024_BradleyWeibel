@@ -43,11 +43,11 @@ public class EditVersionActivity extends AppCompatActivity
     private LinearLayout imageContainerLyt, videoContainerLyt, recordingContainerLyt;
 
     // General variables
-    private Integer versionId, imageCounter, videoCounter, audioCounter;
+    private Integer versionId, imageCounter, videoCounter, recordingCounter;
     private DBHandler dbHandler;
     private VersionModal versionData;
     private Boolean wasPreviousScreenAViewer;
-    private String songName, newVersionName, originalVersionName, versionDescription, versionLyrics, currentPhotoPath, imageStandardNamePrefix, currentVideoPath, videoStandardNamePrefix, currentAudioPath, audioStandardNamePrefix;
+    private String songName, newVersionName, originalVersionName, versionDescription, versionLyrics, currentPhotoPath, imageStandardNamePrefix, currentVideoPath, videoStandardNamePrefix, currentRecordingPath, audioStandardNamePrefix;
     private ArrayList<String> listOfNewImageNames, listOfNewVideoNames, listOfNewAudioNames;
 
     @Override
@@ -68,7 +68,7 @@ public class EditVersionActivity extends AppCompatActivity
         galleryVideoBtn = findViewById(R.id.idAddGalleryVideoBtn);
         newVideoBtn = findViewById(R.id.idAddNewVideoBtn);
         recordingContainerLyt = findViewById(R.id.idLytRecordingContainer);
-        //galleryAudioBtn = findViewById(R.id.idAddGalleryAudioBtn);
+        galleryAudioBtn = findViewById(R.id.idAddGalleryAudioBtn);
         newAudioBtn = findViewById(R.id.idAddNewAudioBtn);
         saveBtn = findViewById(R.id.idBtnSaveVersion);
         deleteBtn = findViewById(R.id.idBtnDeleteVersion);
@@ -117,7 +117,7 @@ public class EditVersionActivity extends AppCompatActivity
         getVersionVideos();
 
         // Recordings handling
-        audioCounter = 1;
+        recordingCounter = 1;
         audioStandardNamePrefix = StringHelper.Audio_Prefix + songName + "_" + originalVersionName + "_";
         listOfNewAudioNames = listOfNewAudioNames == null ? new ArrayList<String>() : listOfNewAudioNames;
         getVersionRecordings();
@@ -291,6 +291,18 @@ public class EditVersionActivity extends AppCompatActivity
                 }
             }
         });
+        // User wants to select a gallery audio recording
+        galleryAudioBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (isWriteExternalPermissionGranted())
+                    openAudioGallery();
+                else
+                    askWriteStoragePermission();
+            }
+        });
     }
 
     // Get list of already created images, videos, audio clips for this version
@@ -353,7 +365,7 @@ public class EditVersionActivity extends AppCompatActivity
                 if (currentFileName.startsWith(audioPrefix))
                 {
                     // Recording belonging to this song and version found
-                    currentAudioPath = currentFile.getPath();
+                    currentRecordingPath = currentFile.getPath();
                     insertNewRecordingIntoUI();
                 }
             }
@@ -552,10 +564,15 @@ public class EditVersionActivity extends AppCompatActivity
         i.putExtra(StringHelper.VersionData_Intent_Name, newVersionName);
         i.putExtra(StringHelper.VersionData_Intent_Description, versionDescription);
         i.putExtra(StringHelper.VersionData_Intent_Lyrics, versionLyrics);
-        i.putExtra(StringHelper.AudioData_Intent_Counter_Value, audioCounter);
+        i.putExtra(StringHelper.AudioData_Intent_Counter_Value, recordingCounter);
         i.putExtra(StringHelper.AudioData_Intent_List_Of_New_Recordings, listOfNewAudioNames);
         i.putExtra(StringHelper.VersionData_Intent_Add_Screen, false);
         startActivity(i);
+    }
+    private void openAudioGallery()
+    {
+        Intent chooseAudioIntent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(chooseAudioIntent, NumberHelper.REQUEST_CHOOSE_RECORDING);
     }
     private void viewAudioRecording(String recordingPath)
     {
@@ -587,12 +604,12 @@ public class EditVersionActivity extends AppCompatActivity
         params.setMargins(NumberHelper.Image_Margin_Left, NumberHelper.Image_Margin_Top, NumberHelper.Image_Margin_Right, NumberHelper.Image_Margin_Bottom);
         imageView.setLayoutParams(params);
         // Insert the image (alternate between two images)
-        imageView.setImageDrawable(getDrawable(NumberHelper.isNumberEven(audioCounter) ? R.drawable.audio_photo_1 : R.drawable.audio_photo_2));
-        imageView.setTag(currentAudioPath);
+        imageView.setImageDrawable(getDrawable(NumberHelper.isNumberEven(recordingCounter) ? R.drawable.audio_photo_1 : R.drawable.audio_photo_2));
+        imageView.setTag(currentRecordingPath);
         imageView.setOnClickListener(v -> { viewAudioRecording(v.getTag().toString()); });
         // Insert ImageView into UI
         recordingContainerLyt.addView(imageView);
-        audioCounter += 1;
+        recordingCounter += 1;
     }
 
     // --------------------------------------------- After successful image, video, or audio action
@@ -729,6 +746,40 @@ public class EditVersionActivity extends AppCompatActivity
                 catch (IOException e) {}
             }
             // <<<<<<< End of Chat GPT aided code >>>>>>>>
+        }
+        else if (requestCode == NumberHelper.REQUEST_CHOOSE_RECORDING && resultCode == RESULT_OK)
+        {
+            // Audio recording was successfully chosen from gallery
+            Uri audioLocation = data.getData();
+            String audioFileName = audioStandardNamePrefix + recordingCounter;
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_MUSIC);
+            File newFile = null;
+            try
+            {
+                String fileExt = StringHelper.getFileExtension(audioLocation, getContentResolver());
+                File tempVideoFile = File.createTempFile(audioFileName, "." + fileExt, storageDir);
+                newFile = new File(tempVideoFile.getAbsolutePath());
+
+                // Copy the audio recording data from the selected URI to the new file
+                InputStream inputStream = getContentResolver().openInputStream(audioLocation);
+                OutputStream outputStream = new FileOutputStream(newFile);
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1)
+                {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                outputStream.close();
+                inputStream.close();
+            }
+            catch (IOException e) {}
+            // Set the current video path to the path of the newly created file
+            if (newFile != null)
+            {
+                currentRecordingPath = newFile.getAbsolutePath();
+                addNewAudioToList();
+                insertNewRecordingIntoUI();
+            }
         }
     }
 
@@ -906,5 +957,13 @@ public class EditVersionActivity extends AppCompatActivity
         String currentFileName = currentVideoPath.replace(fullPathString, "");
         // Add name of image to list of newly created images
         listOfNewVideoNames.add(currentFileName);
+    }
+    private void addNewAudioToList()
+    {
+        // Differentiate these new audio recordings by saving their names
+        String fullPathString = StringHelper.Audio_Folder_Path + "/";
+        String currentFileName = currentRecordingPath.replace(fullPathString, "");
+        // Add name of recording to list of newly created recordings
+        listOfNewAudioNames.add(currentFileName);
     }
 }

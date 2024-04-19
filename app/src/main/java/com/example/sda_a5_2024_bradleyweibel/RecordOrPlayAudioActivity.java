@@ -334,7 +334,7 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
 
     private void addNewAudioToList()
     {
-        // Differentiate these new videos by saving their names
+        // Differentiate these new audio recordings by saving their names
         String fullPathString = StringHelper.Audio_Folder_Path + "/";
         String currentFileName = recordingOutput.replace(fullPathString, "");
         // Add name of recording to list of newly created recordings
