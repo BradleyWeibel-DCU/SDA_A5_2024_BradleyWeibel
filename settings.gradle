@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "SDA_A5_2024_BradleyWeibel"
+rootProject.name = "Lyricist"
 include ':app'

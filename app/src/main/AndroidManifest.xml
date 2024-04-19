@@ -65,7 +65,7 @@
         </activity>
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.sda_a5_2024_bradleyweibel"
+            android:authorities="the.app.Lyricist"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
