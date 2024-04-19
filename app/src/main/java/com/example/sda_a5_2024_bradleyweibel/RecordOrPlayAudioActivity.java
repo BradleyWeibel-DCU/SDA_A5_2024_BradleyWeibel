@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 public class RecordOrPlayAudioActivity extends AppCompatActivity
 {
     // UI elements
-    private TextView songNameTxt, headerTxt;
+    private TextView songNameTxt, timerTxt, headerTxt;
     private LinearLayout recordLyt, listenLyt, reloadLyt;
     private ImageButton recordBtn, playBtn, stopBtn, reloadBtn;
     private FloatingActionButton backBtn, saveBtn, deleteBtn;
@@ -35,6 +36,11 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
     private String songName, versionName, versionDescription, versionLyrics, recordingOutput, recordingPath, audioNamePrefix;
     private ArrayList<String> listOfNewAudioNames;
 
+    // Used fore the UI timer
+    private int timerSeconds;
+    private Handler handler;
+    private Runnable timerRunnable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -43,6 +49,7 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
 
         // Attaching local variables to UI elements
         songNameTxt = findViewById(R.id.idTxtSongName);
+        timerTxt = findViewById(R.id.idTxtTimer);
         headerTxt = findViewById(R.id.idTxtHeader);
         recordLyt = findViewById(R.id.idLytRecordContainer);
         listenLyt = findViewById(R.id.idLytPlayStopContainer);
@@ -230,6 +237,7 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
                 audioFileCounterValue += 1;
                 // Update UI header text
                 headerTxt.setText(getString(R.string.end_recording_message));
+                startAndShowTimer();
             }
             catch (IOException e) {}
         }
@@ -252,6 +260,8 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
             saveBtn.setVisibility(View.VISIBLE);
             reloadBtn.setVisibility(View.VISIBLE);
             recordBtn.setVisibility(View.VISIBLE);
+            // Stop timer in UI
+            stopTimer();
         }
     }
 
@@ -266,6 +276,7 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
                 // Change visibility of UI elements
                 playBtn.setVisibility(View.VISIBLE);
                 stopBtn.setVisibility(View.INVISIBLE);
+                stopTimer();
             }
         });
 
@@ -277,6 +288,7 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
             // Hide play btn
             playBtn.setVisibility(View.INVISIBLE);
             stopBtn.setVisibility(View.VISIBLE);
+            startAndShowTimer();
         }
         catch (IOException e) {}
     }
@@ -292,6 +304,7 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
             // show play button again
             playBtn.setVisibility(View.VISIBLE);
             stopBtn.setVisibility(View.INVISIBLE);
+            stopTimer();
         }
     }
 
@@ -326,6 +339,47 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         String currentFileName = recordingOutput.replace(fullPathString, "");
         // Add name of recording to list of newly created recordings
         listOfNewAudioNames.add(currentFileName);
+    }
+
+    private void setupTimer()
+    {
+        // I used ChatGPT to create this method and made a few improvements
+        // <<<<<<< Start of Chat GPT aided code >>>>>>>>
+        // Show timer in UI
+        handler = new Handler();
+        // Define the code to be run repeatedly
+        timerRunnable = new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                timerSeconds++;
+                // Calculate minutes and seconds
+                int minutes = timerSeconds / 60;
+                int remainingSeconds = timerSeconds % 60;
+                // Format the time
+                String time = String.format("%02d:%02d", minutes, remainingSeconds);
+                timerTxt.setText(time);
+                // Schedule the code to run again after 1 second
+                handler.postDelayed(this, 1000);
+            }
+        };
+        // <<<<<<< End of Chat GPT aided code >>>>>>>>
+    }
+
+    private void startAndShowTimer()
+    {
+        timerSeconds = 0;
+        timerTxt.setText("00:00");
+        setupTimer();
+        handler.postDelayed(timerRunnable, 1000);
+    }
+
+    private void stopTimer()
+    {
+        handler.removeCallbacks(timerRunnable);
+        handler = null;
+        timerRunnable = null;
     }
 
     private Intent populateIntentData(Intent i)
