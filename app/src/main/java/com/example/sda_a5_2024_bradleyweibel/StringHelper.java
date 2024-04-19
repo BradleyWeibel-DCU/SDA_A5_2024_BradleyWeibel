@@ -14,11 +14,6 @@ import java.util.Date;
 
 public class StringHelper
 {
-    // SharedPreference names
-    public final static String SongData_SharedPreferences = "SongDataPreferences";
-    // SharedPreference key names
-    public final static String SongData_Preference_Name = "song_name";
-
     // Intent data values
     public final static String SongData_Intent_ID = "song_id";
     public final static String SongData_Intent_Name = "song_name";
@@ -35,10 +30,15 @@ public class StringHelper
     public final static String AudioData_Intent_Path = "audio_path";
 
     // Directories
-    // TODO maybe use dynamic folder finding?
-    public static String Image_Folder_Path = "/storage/emulated/0/Android/data/com.example.sda_a5_2024_bradleyweibel/files/Pictures";
-    public static String Video_Folder_Path = "/storage/emulated/0/Android/data/com.example.sda_a5_2024_bradleyweibel/files/Movies";
-    public static String Audio_Folder_Path = "/storage/emulated/0/Android/data/com.example.sda_a5_2024_bradleyweibel/files/Music";
+    public static void setFolderPaths(String imageFolderPath, String videoFolderPath, String audioFolderPath)
+    {
+        Image_Folder_Path = imageFolderPath;
+        Video_Folder_Path = videoFolderPath;
+        Audio_Folder_Path = audioFolderPath;
+    }
+    public static String Image_Folder_Path = null; // Phone > Android > data > com.example.sda_a5_2024_bradleyweibel > files > PICTURES
+    public static String Video_Folder_Path = null; // Phone > Android > data > com.example.sda_a5_2024_bradleyweibel > files > MOVIES
+    public static String Audio_Folder_Path = null; // Phone > Android > data > com.example.sda_a5_2024_bradleyweibel > files > MUSIC
 
     // Names
     public static String Image_Prefix = "IMG_";
@@ -78,16 +78,3 @@ public class StringHelper
         return mime.getExtensionFromMimeType(c.getType(fileContentUri));
     }
 }
-
-// TODO: Shared preference code, maybe it is needed later
-// private SharedPreferences songData;
-
-// Get shared preferences
-//songData = this.getSharedPreferences(StringHelper.SongData_SharedPreferences, Context.MODE_PRIVATE);
-// Set song name in UI
-//songNameTxt.setText(songData.getString(StringHelper.SongData_Preference_Name, ""));
-
-// Clear or insert song name into shared preferences
-//SharedPreferences.Editor editor = songData.edit();
-//editor.putString(StringHelper.SongData_Preference_Name, "");
-//editor.apply();

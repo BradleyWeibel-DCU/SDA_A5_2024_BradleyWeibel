@@ -2,6 +2,7 @@ package com.example.sda_a5_2024_bradleyweibel;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,8 @@ public class DeleteSongOrVersionActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_song_or_version);
+        // Set file paths for saving images, videos, and audio recordings
+        StringHelper.setFolderPaths(String.valueOf(getExternalFilesDir(Environment.DIRECTORY_PICTURES)), String.valueOf(getExternalFilesDir(Environment.DIRECTORY_MOVIES)), String.valueOf(getExternalFilesDir(Environment.DIRECTORY_MUSIC)));
 
         // Attaching variables to UI elements
         songOrVersionTxt = findViewById(R.id.idTxtSongOrVersionName);

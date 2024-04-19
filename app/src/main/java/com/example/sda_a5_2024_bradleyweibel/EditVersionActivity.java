@@ -55,6 +55,8 @@ public class EditVersionActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_version);
+        // Set file paths for saving images, videos, and audio recordings
+        StringHelper.setFolderPaths(String.valueOf(getExternalFilesDir(Environment.DIRECTORY_PICTURES)), String.valueOf(getExternalFilesDir(Environment.DIRECTORY_MOVIES)), String.valueOf(getExternalFilesDir(Environment.DIRECTORY_MUSIC)));
 
         // Initializing all our variables
         songNameTxt = findViewById(R.id.idTxtSongName);
@@ -407,8 +409,7 @@ public class EditVersionActivity extends AppCompatActivity
     {
         // Name of image
         String imageFileName = imageStandardNamePrefix + imageCounter;
-        // Location: Phone > Android > data > com.example.sda_a5_2024_bradleyweibel > files > Pictures
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File storageDir = new File(StringHelper.Image_Folder_Path);
         File image = File.createTempFile(imageFileName, StringHelper.Image_Suffix_With_Dot, storageDir);
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
@@ -634,7 +635,7 @@ public class EditVersionActivity extends AppCompatActivity
             // Get the uri of the chosen image
             Uri imageLocation = data.getData();
             String imageFileName = imageStandardNamePrefix + imageCounter;
-            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File storageDir = new File(StringHelper.Image_Folder_Path);
             File newFile = null;
             try
             {
@@ -681,7 +682,7 @@ public class EditVersionActivity extends AppCompatActivity
                         // Create an input stream from the file descriptor
                         FileInputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor());
                         // Create a file in external storage (Movies directory)
-                        File storageDir = getExternalFilesDir(Environment.DIRECTORY_MOVIES);
+                        File storageDir = new File(StringHelper.Video_Folder_Path);
                         String videoFileName = videoStandardNamePrefix + videoCounter + StringHelper.Video_Suffix_With_Dot;
                         File externalFile = new File(storageDir, videoFileName);
                         // Create an output stream to the external file
@@ -713,7 +714,7 @@ public class EditVersionActivity extends AppCompatActivity
             // Video was successfully chosen from gallery
             Uri videoLocation = data.getData();
             String videoFileName = videoStandardNamePrefix + videoCounter;
-            File storageDir = getExternalFilesDir(Environment.DIRECTORY_MOVIES);
+            File storageDir = new File(StringHelper.Video_Folder_Path);
             File newFile = null;
             try
             {
@@ -752,7 +753,7 @@ public class EditVersionActivity extends AppCompatActivity
             // Audio recording was successfully chosen from gallery
             Uri audioLocation = data.getData();
             String audioFileName = audioStandardNamePrefix + recordingCounter;
-            File storageDir = getExternalFilesDir(Environment.DIRECTORY_MUSIC);
+            File storageDir = new File(StringHelper.Audio_Folder_Path);
             File newFile = null;
             try
             {

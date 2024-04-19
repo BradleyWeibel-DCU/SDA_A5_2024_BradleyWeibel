@@ -2,6 +2,7 @@ package com.example.sda_a5_2024_bradleyweibel;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,8 @@ public class EditSongActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_song);
+        // Set file paths for saving images, videos, and audio recordings
+        StringHelper.setFolderPaths(String.valueOf(getExternalFilesDir(Environment.DIRECTORY_PICTURES)), String.valueOf(getExternalFilesDir(Environment.DIRECTORY_MOVIES)), String.valueOf(getExternalFilesDir(Environment.DIRECTORY_MUSIC)));
 
         // Initializing all our variables
         songNameEdt = findViewById(R.id.idEdtSongName);
@@ -64,9 +67,10 @@ public class EditSongActivity extends AppCompatActivity
                 // Update song with new name
                 dbHandler.updateSong(songId, newSongName, modificationDate);
 
-                // TODO: rename all images, videos and audio clips with new song name
+                // Rename all images, videos and audio recordings with new song name
                 renameImages();
                 renameVideos();
+                renameRecordings();
 
                 // Go to 'View Song and Versions' page
                 Intent i = new Intent(EditSongActivity.this, ViewSongAndVersionsActivity.class);
@@ -119,7 +123,7 @@ public class EditSongActivity extends AppCompatActivity
                 String currentFileName = currentFile.getPath().replace(fullPathString, "");
                 if (currentFileName.startsWith(imagePrefix))
                 {
-                    // Image belonging to this song and version found
+                    // Image belonging to this song
                     File imageFile = new File(currentFile.getPath());
                     String newFileName = currentFile.getPath();
                     newFileName = newFileName.replace(imagePrefix, StringHelper.Image_Prefix + newSongName + "_");
@@ -143,13 +147,37 @@ public class EditSongActivity extends AppCompatActivity
                 String currentFileName = currentFile.getPath().replace(fullPathString, "");
                 if (currentFileName.startsWith(videoPrefix))
                 {
-                    // Video belonging to this song and version found
+                    // Video belonging to this song
                     File videoFile = new File(currentFile.getPath());
                     String newFileName = currentFile.getPath();
                     newFileName = newFileName.replace(videoPrefix, StringHelper.Video_Prefix + newSongName + "_");
                     // Rename file with new name
                     File newNameVideoFile = new File(newFileName);
                     videoFile.renameTo(newNameVideoFile);
+                }
+            }
+        }
+    }
+    private void renameRecordings()
+    {
+        File file = new File(StringHelper.Audio_Folder_Path);
+        File[] files = file.listFiles();
+        if (files != null)
+        {
+            String fullPathString = StringHelper.Audio_Folder_Path + "/";
+            String audioPrefix = StringHelper.Audio_Prefix + originalSongName + "_";
+            for (File currentFile : files)
+            {
+                String currentFileName = currentFile.getPath().replace(fullPathString, "");
+                if (currentFileName.startsWith(audioPrefix))
+                {
+                    // Audio belonging to this song
+                    File audioFile = new File(currentFile.getPath());
+                    String newFileName = currentFile.getPath();
+                    newFileName = newFileName.replace(audioPrefix, StringHelper.Audio_Prefix + newSongName + "_");
+                    // Rename file with new name
+                    File newNameAudioFile = new File(newFileName);
+                    audioFile.renameTo(newNameAudioFile);
                 }
             }
         }

@@ -46,6 +46,8 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_or_play_audio);
+        // Set file paths for saving images, videos, and audio recordings
+        StringHelper.setFolderPaths(String.valueOf(getExternalFilesDir(Environment.DIRECTORY_PICTURES)), String.valueOf(getExternalFilesDir(Environment.DIRECTORY_MOVIES)), String.valueOf(getExternalFilesDir(Environment.DIRECTORY_MUSIC)));
 
         // Attaching local variables to UI elements
         songNameTxt = findViewById(R.id.idTxtSongName);
@@ -84,7 +86,7 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
             // What version name must be used (depending on if the previous screen was an add or edit screen)
             String versionNamePlaceholder = wasPreviousScreenAddVersion ? StringHelper.Placeholder_Version_Name : versionData.getVersionName();
             audioNamePrefix = StringHelper.Audio_Prefix + songName + "_" + versionNamePlaceholder + "_" + audioFileCounterValue + NumberHelper.randomNumberGenerator();
-            File storageDirectory = getExternalFilesDir(Environment.DIRECTORY_MUSIC);
+            File storageDirectory = new File(StringHelper.Audio_Folder_Path);
             recordingOutput = storageDirectory + "/" + audioNamePrefix + StringHelper.Audio_Suffix_With_Dot;
         }
         else

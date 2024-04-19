@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,8 @@ public class ViewVersionActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_version);
+        // Set file paths for saving images, videos, and audio recordings
+        StringHelper.setFolderPaths(String.valueOf(getExternalFilesDir(Environment.DIRECTORY_PICTURES)), String.valueOf(getExternalFilesDir(Environment.DIRECTORY_MOVIES)), String.valueOf(getExternalFilesDir(Environment.DIRECTORY_MUSIC)));
 
         // Getting version data from the adapter class
         versionId = getIntent().getIntExtra(StringHelper.VersionData_Intent_ID, 0);
