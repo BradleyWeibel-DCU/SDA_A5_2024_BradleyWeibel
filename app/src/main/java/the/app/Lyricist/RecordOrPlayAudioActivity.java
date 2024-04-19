@@ -210,7 +210,6 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
 
                 Intent i = new Intent(RecordOrPlayAudioActivity.this, RecordOrPlayAudioActivity.class);
                 i = populateIntentData(i);
-                i.putExtra(StringHelper.SongData_Intent_Name, songName);
                 startActivity(i);
             }
         });
@@ -390,13 +389,12 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
 
     private Intent populateIntentData(Intent i)
     {
-        if (wasPreviousScreenAddVersion)
-            i.putExtra(StringHelper.SongData_Intent_Name, songName);
-        else
-            i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
+        i.putExtra(StringHelper.SongData_Intent_Name, songName);
+        i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
         i.putExtra(StringHelper.VersionData_Intent_Name, versionName);
         i.putExtra(StringHelper.VersionData_Intent_Description, versionDescription);
         i.putExtra(StringHelper.VersionData_Intent_Lyrics, versionLyrics);
+        i.putExtra(StringHelper.VersionData_Intent_Add_Screen, wasPreviousScreenAddVersion);
         i.putExtra(StringHelper.VersionData_Intent_View_Screen, true);
         i.putExtra(StringHelper.AudioData_Intent_Counter_Value, audioFileCounterValue);
         i.putExtra(StringHelper.AudioData_Intent_List_Of_New_Recordings, listOfNewAudioNames);
