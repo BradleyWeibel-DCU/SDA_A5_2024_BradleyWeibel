@@ -34,7 +34,7 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
     private VersionModal versionData;
     private Boolean wasPreviousScreenAddVersion;
     private String songName, versionName, versionDescription, versionLyrics, recordingOutput, recordingPath, audioNamePrefix;
-    private ArrayList<String> listOfNewAudioNames;
+    private ArrayList<String> listOfNewImageNames, listOfNewVideoNames, listOfNewAudioNames;
 
     // Used fore the UI timer
     private int timerSeconds;
@@ -73,6 +73,8 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         recordingPath = getIntent().getStringExtra(StringHelper.AudioData_Intent_Path);
         wasPreviousScreenAddVersion = getIntent().getBooleanExtra(StringHelper.VersionData_Intent_Add_Screen, false);
         audioFileCounterValue = getIntent().getIntExtra(StringHelper.AudioData_Intent_Counter_Value, 0);
+        listOfNewImageNames = getIntent().getStringArrayListExtra(StringHelper.ImageData_Intent_List_Of_New_Photos);
+        listOfNewVideoNames = getIntent().getStringArrayListExtra(StringHelper.VideoData_Intent_List_Of_New_Videos);
         listOfNewAudioNames = getIntent().getStringArrayListExtra(StringHelper.AudioData_Intent_List_Of_New_Recordings);
 
         recordingInProgress = false;
@@ -397,6 +399,8 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         i.putExtra(StringHelper.VersionData_Intent_Add_Screen, wasPreviousScreenAddVersion);
         i.putExtra(StringHelper.VersionData_Intent_View_Screen, true);
         i.putExtra(StringHelper.AudioData_Intent_Counter_Value, audioFileCounterValue);
+        i.putExtra(StringHelper.ImageData_Intent_List_Of_New_Photos, listOfNewImageNames);
+        i.putExtra(StringHelper.VideoData_Intent_List_Of_New_Videos, listOfNewVideoNames);
         i.putExtra(StringHelper.AudioData_Intent_List_Of_New_Recordings, listOfNewAudioNames);
         return i;
     }

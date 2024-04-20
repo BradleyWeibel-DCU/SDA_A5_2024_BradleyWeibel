@@ -24,6 +24,8 @@ public class StringHelper
     public final static String VersionData_Intent_Add_Screen = "version_from_add_screen";
     public final static String VersionData_Intent_View_Screen = "version_from_media_viewer_screen";
     public final static String AudioData_Intent_Counter_Value = "audio_counter";
+    public final static String ImageData_Intent_List_Of_New_Photos = "image_list_new_photos";
+    public final static String VideoData_Intent_List_Of_New_Videos = "video_list_new_videos";
     public final static String AudioData_Intent_List_Of_New_Recordings = "audio_list_new_recordings";
     public final static String ImageData_Intent_Path = "image_path";
     public final static String VideoData_Intent_Path = "video_path";

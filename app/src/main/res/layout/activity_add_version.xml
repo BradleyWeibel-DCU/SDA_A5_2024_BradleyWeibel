@@ -53,7 +53,7 @@
                 android:gravity="start"
                 android:text="@string/version"
                 android:textColor="@color/standard_text_dark_grey"
-                android:textSize="17sp" />
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/idEdtVersionName"
@@ -64,10 +64,11 @@
                 android:layout_marginEnd="10dp"
                 android:paddingLeft="10dp"
                 android:background="@drawable/edit_text_shape_orange"
-                android:textStyle="bold"
                 android:textColor="@color/highlighted_text_yellow"
                 android:hint="@string/version_name"
-                android:textColorHint="@color/standard_text_dark_grey" />
+                android:textColorHint="@color/standard_text_dark_grey"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/textView3"
@@ -79,7 +80,7 @@
                 android:gravity="start"
                 android:text="@string/description"
                 android:textColor="@color/standard_text_dark_grey"
-                android:textSize="17dp" />
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/idEdtVersionDescription"
@@ -98,6 +99,7 @@
                 android:paddingBottom="14dp"
                 android:textColor="@color/highlighted_text_yellow"
                 android:textColorHint="@color/standard_text_dark_grey"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -110,7 +112,7 @@
                 android:gravity="start"
                 android:text="@string/lyrics"
                 android:textColor="@color/standard_text_dark_grey"
-                android:textSize="17dp" />
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/idEdtVersionLyrics"
@@ -129,6 +131,7 @@
                 android:paddingBottom="14dp"
                 android:textColor="@color/highlighted_text_yellow"
                 android:textColorHint="@color/standard_text_dark_grey"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -141,7 +144,7 @@
                 android:gravity="start"
                 android:text="@string/images"
                 android:textColor="@color/standard_text_dark_grey"
-                android:textSize="17dp" />
+                android:textSize="15sp" />
 
             <LinearLayout
                 android:id="@+id/idLytImageContainer"
@@ -187,7 +190,7 @@
                 android:gravity="start"
                 android:text="@string/videos"
                 android:textColor="@color/standard_text_dark_grey"
-                android:textSize="17dp" />
+                android:textSize="15sp" />
 
             <LinearLayout
                 android:id="@+id/idLytVideoContainer"
@@ -234,7 +237,7 @@
                 android:gravity="start"
                 android:text="@string/audio"
                 android:textColor="@color/standard_text_dark_grey"
-                android:textSize="17dp" />
+                android:textSize="15sp" />
 
             <LinearLayout
                 android:id="@+id/idLytRecordingContainer"

@@ -83,6 +83,8 @@ public class EditVersionActivity extends AppCompatActivity
         versionDescription = getIntent().getStringExtra(StringHelper.VersionData_Intent_Description);
         versionLyrics = getIntent().getStringExtra(StringHelper.VersionData_Intent_Lyrics);
         wasPreviousScreenAViewer = getIntent().getBooleanExtra(StringHelper.VersionData_Intent_View_Screen, false);
+        listOfNewImageNames = getIntent().getStringArrayListExtra(StringHelper.ImageData_Intent_List_Of_New_Photos);
+        listOfNewVideoNames = getIntent().getStringArrayListExtra(StringHelper.VideoData_Intent_List_Of_New_Videos);
         listOfNewAudioNames = getIntent().getStringArrayListExtra(StringHelper.AudioData_Intent_List_Of_New_Recordings);
 
         // Creating a new DB handler class and passing our context to it
@@ -109,13 +111,13 @@ public class EditVersionActivity extends AppCompatActivity
         // Images handling
         imageCounter = 1;
         imageStandardNamePrefix = StringHelper.Image_Prefix + songName + "_" + originalVersionName + "_";
-        listOfNewImageNames = new ArrayList<String>();
+        listOfNewImageNames = listOfNewImageNames == null ? new ArrayList<String>() : listOfNewImageNames;
         getVersionImages();
 
         // Videos handling
         videoCounter = 1;
         videoStandardNamePrefix = StringHelper.Video_Prefix + songName + "_" + originalVersionName + "_";
-        listOfNewVideoNames = new ArrayList<String>();
+        listOfNewVideoNames = listOfNewVideoNames == null ? new ArrayList<String>() : listOfNewVideoNames;
         getVersionVideos();
 
         // Recordings handling
@@ -471,6 +473,9 @@ public class EditVersionActivity extends AppCompatActivity
         i.putExtra(StringHelper.VersionData_Intent_Lyrics, versionLyrics);
         i.putExtra(StringHelper.ImageData_Intent_Path, imagePath);
         i.putExtra(StringHelper.VersionData_Intent_Add_Screen, false);
+        i.putExtra(StringHelper.ImageData_Intent_List_Of_New_Photos, listOfNewImageNames);
+        i.putExtra(StringHelper.VideoData_Intent_List_Of_New_Videos, listOfNewVideoNames);
+        i.putExtra(StringHelper.AudioData_Intent_List_Of_New_Recordings, listOfNewAudioNames);
         startActivity(i);
     }
 
@@ -548,6 +553,9 @@ public class EditVersionActivity extends AppCompatActivity
         i.putExtra(StringHelper.VersionData_Intent_Lyrics, versionLyrics);
         i.putExtra(StringHelper.VideoData_Intent_Path, videoPath);
         i.putExtra(StringHelper.VersionData_Intent_Add_Screen, false);
+        i.putExtra(StringHelper.ImageData_Intent_List_Of_New_Photos, listOfNewImageNames);
+        i.putExtra(StringHelper.VideoData_Intent_List_Of_New_Videos, listOfNewVideoNames);
+        i.putExtra(StringHelper.AudioData_Intent_List_Of_New_Recordings, listOfNewAudioNames);
         startActivity(i);
     }
 
@@ -566,8 +574,10 @@ public class EditVersionActivity extends AppCompatActivity
         i.putExtra(StringHelper.VersionData_Intent_Description, versionDescription);
         i.putExtra(StringHelper.VersionData_Intent_Lyrics, versionLyrics);
         i.putExtra(StringHelper.AudioData_Intent_Counter_Value, recordingCounter);
-        i.putExtra(StringHelper.AudioData_Intent_List_Of_New_Recordings, listOfNewAudioNames);
         i.putExtra(StringHelper.VersionData_Intent_Add_Screen, false);
+        i.putExtra(StringHelper.ImageData_Intent_List_Of_New_Photos, listOfNewImageNames);
+        i.putExtra(StringHelper.VideoData_Intent_List_Of_New_Videos, listOfNewVideoNames);
+        i.putExtra(StringHelper.AudioData_Intent_List_Of_New_Recordings, listOfNewAudioNames);
         startActivity(i);
     }
     private void openAudioGallery()
@@ -591,6 +601,9 @@ public class EditVersionActivity extends AppCompatActivity
         i.putExtra(StringHelper.AudioData_Intent_Path, recordingPath);
         i.putExtra(StringHelper.AudioData_Intent_List_Of_New_Recordings, listOfNewAudioNames);
         i.putExtra(StringHelper.VersionData_Intent_Add_Screen, false);
+        i.putExtra(StringHelper.ImageData_Intent_List_Of_New_Photos, listOfNewImageNames);
+        i.putExtra(StringHelper.VideoData_Intent_List_Of_New_Videos, listOfNewVideoNames);
+        i.putExtra(StringHelper.AudioData_Intent_List_Of_New_Recordings, listOfNewAudioNames);
         startActivity(i);
     }
     // Create UI element to show recording

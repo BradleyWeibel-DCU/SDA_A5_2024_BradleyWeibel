@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.File;
+import java.util.ArrayList;
 
 public class ViewOrDeleteImageActivity extends AppCompatActivity
 {
@@ -21,6 +22,7 @@ public class ViewOrDeleteImageActivity extends AppCompatActivity
     private Integer versionId;
     private Boolean wasPreviousScreenAddVersionData;
     private String songName, versionName, versionDescription, versionLyrics, imagePath;
+    private ArrayList<String> listOfNewImageNames, listOfNewVideoNames, listOfNewAudioNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,6 +44,9 @@ public class ViewOrDeleteImageActivity extends AppCompatActivity
         versionLyrics = getIntent().getStringExtra(StringHelper.VersionData_Intent_Lyrics);
         wasPreviousScreenAddVersionData = getIntent().getBooleanExtra(StringHelper.VersionData_Intent_Add_Screen, false);
         imagePath = getIntent().getStringExtra(StringHelper.ImageData_Intent_Path);
+        listOfNewImageNames = getIntent().getStringArrayListExtra(StringHelper.ImageData_Intent_List_Of_New_Photos);
+        listOfNewVideoNames = getIntent().getStringArrayListExtra(StringHelper.VideoData_Intent_List_Of_New_Videos);
+        listOfNewAudioNames = getIntent().getStringArrayListExtra(StringHelper.AudioData_Intent_List_Of_New_Recordings);
 
         // Populate UI elements
         songNameTxt.setText(songName);
@@ -108,14 +113,15 @@ public class ViewOrDeleteImageActivity extends AppCompatActivity
 
     private Intent populateIntentData(Intent i)
     {
-        if (wasPreviousScreenAddVersionData)
-            i.putExtra(StringHelper.SongData_Intent_Name, songName);
-        else
-            i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
+        i.putExtra(StringHelper.SongData_Intent_Name, songName);
+        i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
         i.putExtra(StringHelper.VersionData_Intent_Name, versionName);
         i.putExtra(StringHelper.VersionData_Intent_Description, versionDescription);
         i.putExtra(StringHelper.VersionData_Intent_Lyrics, versionLyrics);
         i.putExtra(StringHelper.VersionData_Intent_View_Screen, true);
+        i.putExtra(StringHelper.ImageData_Intent_List_Of_New_Photos, listOfNewImageNames);
+        i.putExtra(StringHelper.VideoData_Intent_List_Of_New_Videos, listOfNewVideoNames);
+        i.putExtra(StringHelper.AudioData_Intent_List_Of_New_Recordings, listOfNewAudioNames);
         return i;
     }
 }
