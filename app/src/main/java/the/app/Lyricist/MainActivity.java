@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
 {
-    // UI elements
+    // Variables for UI elements
     private RecyclerView songsRV;
     private EditText searchBarEdt;
     private TextView headerTxt;
@@ -40,14 +40,14 @@ public class MainActivity extends AppCompatActivity
         addSongBtn = findViewById(R.id.idBtnAddSong);
         searchBarEdt = findViewById(R.id.idEdtSearchSongs);
 
-        // Initializing our all variables
+        // Initializing variables
         songModalArrayList = new ArrayList<>();
         dbHandler = new DBHandler(MainActivity.this);
 
-        // getting our song array list from db handler class
+        // Getting song array list from DB handler class
         songModalArrayList = dbHandler.readSongs();
 
-        // Passing our song array list to our adapter class
+        // Passing song array list to adapter class
         songRVAdapter = new SongRVAdapter(songModalArrayList, MainActivity.this);
         songsRV = findViewById(R.id.idRVSongs);
 
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
         songsRV.setLayoutManager(linearLayoutManager);
 
-        // Setting adapter to recycler view
+        // Setting adapter to recycler view in UI
         songsRV.setAdapter(songRVAdapter);
 
         // User has clicked the Lyricist Image, open help screen

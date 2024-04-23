@@ -11,11 +11,14 @@ import java.io.File;
 
 public class DeleteSongOrVersionActivity extends AppCompatActivity
 {
+    // Variables for UI elements
+    private TextView songOrVersionTxt, warningTxt;
+    private FloatingActionButton deleteBtn, backToSongAndVersionsBtn;
+
+    // General Variables
     private Boolean songWasPassed;
     private Integer songId, versionId;
     private String songName, versionName;
-    private TextView songOrVersionTxt, warningTxt;
-    private FloatingActionButton deleteBtn, backToSongAndVersionsBtn;
     private DBHandler dbHandler;
 
     @Override

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -15,13 +14,12 @@ import java.util.ArrayList;
 
 public class ViewOrDeleteVideoActivity extends AppCompatActivity
 {
-    // UI elements
+    // Variables for UI elements
     private VideoView videoViewer;
-    private LinearLayout videoContainerLyt;
     private TextView songNameTxt;
     private FloatingActionButton backBtn, deleteBtn;
 
-    // General elements
+    // General variables
     private Integer versionId;
     private Boolean wasPreviousScreenAddVersionData;
     private String songName, versionName, versionDescription, versionLyrics, videoPath;
@@ -35,7 +33,6 @@ public class ViewOrDeleteVideoActivity extends AppCompatActivity
 
         // Attaching local variables to UI elements
         songNameTxt = findViewById(R.id.idTxtSongName);
-        videoContainerLyt = findViewById(R.id.idLytVideoContainer);
         videoViewer = findViewById(R.id.idVidVideoViewer);
         deleteBtn = findViewById(R.id.idBtnDelete);
         backBtn = findViewById(R.id.idBtnBack);
@@ -86,7 +83,7 @@ public class ViewOrDeleteVideoActivity extends AppCompatActivity
                 Intent i;
                 if (wasPreviousScreenAddVersionData)
                 {
-                    // Previous screen was AddVersionData
+                    // Previous screen was AddVersion
                     i = new Intent(ViewOrDeleteVideoActivity.this, AddVersionActivity.class);
                 }
                 else
@@ -114,7 +111,7 @@ public class ViewOrDeleteVideoActivity extends AppCompatActivity
                 }
                 else if (wasPreviousScreenAddVersionData)
                 {
-                    // Previous screen was AddVersionData
+                    // Previous screen was AddVersion
                     i = new Intent(ViewOrDeleteVideoActivity.this, AddVersionActivity.class);
                     i = populateIntentData(i);
                 }

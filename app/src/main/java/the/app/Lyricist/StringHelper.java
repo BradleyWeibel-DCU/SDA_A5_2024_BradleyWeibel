@@ -14,7 +14,7 @@ import java.util.Date;
 
 public class StringHelper
 {
-    // Intent data values
+    // Intent data key values
     public final static String SongData_Intent_ID = "song_id";
     public final static String SongData_Intent_Name = "song_name";
     public final static String VersionData_Intent_ID = "version_id";
@@ -38,11 +38,11 @@ public class StringHelper
         Video_Folder_Path = videoFolderPath;
         Audio_Folder_Path = audioFolderPath;
     }
-    public static String Image_Folder_Path = null; // Phone > Android > data > the.app.Lyricist > files > PICTURES
-    public static String Video_Folder_Path = null; // Phone > Android > data > the.app.Lyricist > files > MOVIES
-    public static String Audio_Folder_Path = null; // Phone > Android > data > the.app.Lyricist > files > MUSIC
+    public static String Image_Folder_Path = null; // Once set: Phone > Android > data > the.app.Lyricist > files > PICTURES
+    public static String Video_Folder_Path = null; // Once set: Phone > Android > data > the.app.Lyricist > files > MOVIES
+    public static String Audio_Folder_Path = null; // Once set: Phone > Android > data > the.app.Lyricist > files > MUSIC
 
-    // Names
+    // Names of media files
     public static String Image_Prefix = "IMG_";
     public static String Video_Prefix = "VID_";
     public static String Audio_Prefix = "REC_";
@@ -73,7 +73,7 @@ public class StringHelper
     // Get current date in '09 Apr 2024' format
     public static String getFormattedDate() { return new SimpleDateFormat("dd MMM yyyy").format(new Date()); }
 
-    // Get file extension of image/video - used for saving
+    // Get file extension of image/video/recording - used for saving
     public static String getFileExtension(Uri fileContentUri, ContentResolver c)
     {
         MimeTypeMap mime = MimeTypeMap.getSingleton();

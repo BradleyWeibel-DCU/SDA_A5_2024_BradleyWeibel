@@ -56,6 +56,7 @@ public class VersionRVAdapter extends RecyclerView.Adapter<VersionRVAdapter.View
         });
     }
 
+    // Get size of array list
     @Override
     public int getItemCount() { return versionModalArrayList.size(); }
 

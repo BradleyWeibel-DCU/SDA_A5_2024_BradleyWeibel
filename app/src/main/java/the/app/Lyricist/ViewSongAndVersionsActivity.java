@@ -25,7 +25,7 @@ public class ViewSongAndVersionsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_song_and_versions);
 
-        // Getting song name which we passed in the adapter class
+        // Getting song name from the adapter class
         String songName = getIntent().getStringExtra(StringHelper.SongData_Intent_Name);
 
         // Attaching variables to UI elements
@@ -44,10 +44,10 @@ public class ViewSongAndVersionsActivity extends AppCompatActivity
         // Get id from SQLite DB
         Integer songId = dbHandler.getSongId(songName);
 
-        // getting our song array list from db handler class
+        // Getting song array list from db handler class
         versionModalArrayList = dbHandler.readVersions(songId);
 
-        // Passing our version array list to our adapter class
+        // Passing version array list to adapter class
         versionRVAdapter = new VersionRVAdapter(versionModalArrayList, ViewSongAndVersionsActivity.this);
         versionsRV = findViewById(R.id.idRVVersions);
 
@@ -78,7 +78,7 @@ public class ViewSongAndVersionsActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                // opening a new activity via a intent.
+                // Opening a new activity via a intent.
                 Intent i = new Intent(ViewSongAndVersionsActivity.this, AddVersionActivity.class);
                 // Pass song name through intent
                 i.putExtra(StringHelper.SongData_Intent_Name, songName);
@@ -92,7 +92,7 @@ public class ViewSongAndVersionsActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                // opening a new activity via a intent.
+                // Opening a new activity via a intent.
                 Intent i = new Intent(ViewSongAndVersionsActivity.this, MainActivity.class);
                 startActivity(i);
             }

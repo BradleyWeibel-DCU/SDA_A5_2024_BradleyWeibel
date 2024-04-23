@@ -50,6 +50,7 @@ public class ViewOrDeleteImageActivity extends AppCompatActivity
 
         // Populate UI elements
         songNameTxt.setText(songName);
+        // Get path to image file
         File imageFile = new File(imagePath);
         imageViewer.setImageURI(Uri.fromFile(imageFile));
         // Don't show the delete button if the previous screen was ViewVersionData
@@ -68,7 +69,7 @@ public class ViewOrDeleteImageActivity extends AppCompatActivity
                 Intent i;
                 if (wasPreviousScreenAddVersionData)
                 {
-                    // Previous screen was AddVersionData
+                    // Previous screen was AddVersion
                     i = new Intent(ViewOrDeleteImageActivity.this, AddVersionActivity.class);
                 }
                 else
@@ -90,13 +91,13 @@ public class ViewOrDeleteImageActivity extends AppCompatActivity
                 Intent i;
                 if (versionDescription == null)
                 {
-                    // Previous screen was ViewVersionData
+                    // Previous screen was ViewVersion
                     i = new Intent(ViewOrDeleteImageActivity.this, ViewVersionActivity.class);
                     i.putExtra(StringHelper.VersionData_Intent_ID, versionId);
                 }
                 else if (wasPreviousScreenAddVersionData)
                 {
-                    // Previous screen was AddVersionData
+                    // Previous screen was AddVersion
                     i = new Intent(ViewOrDeleteImageActivity.this, AddVersionActivity.class);
                     i = populateIntentData(i);
                 }

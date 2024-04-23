@@ -15,12 +15,12 @@ public class NumberHelper
     public static final int REQUEST_CHOOSE_RECORDING = 105;
 
     // UI element values
-    // Images
+    // Image handling
     public static final int Image_Margin_Top = 10;
     public static final int Image_Margin_Right = 0;
     public static final int Image_Margin_Bottom = 10;
     public static final int Image_Margin_Left = 0;
-    // Videos
+    // Video handling
     public static final int Video_Get_Frame_At_1_Second = 1000000;
     public static final int Video_Thumbnail_Height = 130;
     public static final int Video_Margin_Top = 10;

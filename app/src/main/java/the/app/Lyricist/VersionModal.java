@@ -2,7 +2,7 @@ package the.app.Lyricist;
 
 public class VersionModal
 {
-    // Variables for our Song
+    // Variables for our version
     private int id, versionSongId;
     private String versionName, versionDescription, versionLyrics, versionCreationDate, versionEditDate;
 
@@ -20,12 +20,8 @@ public class VersionModal
 
     // Setter methods
     public void setId(int id) { this.id = id; }
-    public void setVersionSongId(int versionSongId) { this.versionSongId = versionSongId; }
-    public void setVersionName(String versionName) { this.versionName = versionName; }
     public void setVersionDescription(String versionDescription) { this.versionDescription = versionDescription; }
     public void setVersionLyrics(String versionLyrics) { this.versionLyrics = versionLyrics; }
-    public void setVersionCreationDate(String versionCreationDate) { this.versionCreationDate = versionCreationDate; }
-    public void setVersionEditDate(String versionEditDate) { this.versionEditDate = versionEditDate; }
 
     // Constructor
     public VersionModal(Integer id, Integer versionSongId, String versionName, String versionCreationDate, String versionEditDate)

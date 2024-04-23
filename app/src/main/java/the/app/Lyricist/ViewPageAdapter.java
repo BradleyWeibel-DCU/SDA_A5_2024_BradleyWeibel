@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 public class ViewPageAdapter extends FragmentPagerAdapter
 {
-
     private Context context;
 
     ViewPageAdapter(FragmentManager fm, int behavior, Context nContext)
@@ -21,13 +20,12 @@ public class ViewPageAdapter extends FragmentPagerAdapter
     @Override
     public Fragment getItem(int position)
     {
-
         Fragment fragment = new Fragment();
 
-        //finds the tab position (note array starts at 0)
+        // Finds the tab position (note array starts at 0)
         position = position+1;
 
-        //finds the fragment
+        // Finds the fragment
         switch (position)
         {
             case 1:
@@ -40,6 +38,7 @@ public class ViewPageAdapter extends FragmentPagerAdapter
         return fragment;
     }
 
+    // Number of fragments
     @Override
     public int getCount()
     {
@@ -52,15 +51,15 @@ public class ViewPageAdapter extends FragmentPagerAdapter
         position = position+1;
         CharSequence tabTitle = "";
 
-        //finds the fragment
+        // Finds the fragment
         switch (position)
         {
             case 1:
-                //code
+                // Title of first fragment
                 tabTitle = "Welcome";
                 break;
             case 2:
-                //code
+                // Title of second fragment
                 tabTitle = "Instructions";
                 break;
         }

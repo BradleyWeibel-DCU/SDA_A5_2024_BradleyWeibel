@@ -6,6 +6,7 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -19,9 +20,9 @@ import java.util.ArrayList;
 
 public class RecordOrPlayAudioActivity extends AppCompatActivity
 {
-    // UI elements
+    // Variables for UI elements
     private TextView songNameTxt, timerTxt, headerTxt;
-    private LinearLayout recordLyt, listenLyt, reloadLyt;
+    private LinearLayout recordLyt, reloadLyt;
     private ImageButton recordBtn, playBtn, stopBtn, reloadBtn;
     private FloatingActionButton backBtn, saveBtn, deleteBtn;
 
@@ -54,7 +55,6 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         timerTxt = findViewById(R.id.idTxtTimer);
         headerTxt = findViewById(R.id.idTxtHeader);
         recordLyt = findViewById(R.id.idLytRecordContainer);
-        listenLyt = findViewById(R.id.idLytPlayStopContainer);
         reloadLyt = findViewById(R.id.idLytReloadContainer);
         recordBtn = findViewById(R.id.idBtnStartStopRecording);
         playBtn = findViewById(R.id.idBtnPlay);
@@ -243,7 +243,10 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
                 headerTxt.setText(getString(R.string.end_recording_message));
                 startAndShowTimer();
             }
-            catch (IOException e) {}
+            catch (IOException e)
+            {
+                Log.e("recordOrViewAudio","Failed to start recording audio");
+            }
         }
     }
 
@@ -294,7 +297,10 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
             stopBtn.setVisibility(View.VISIBLE);
             startAndShowTimer();
         }
-        catch (IOException e) {}
+        catch (IOException e)
+        {
+            Log.e("recordOrViewAudio", "Failed to start playing audio recording/song");
+        }
     }
 
     private void stopPlaying()

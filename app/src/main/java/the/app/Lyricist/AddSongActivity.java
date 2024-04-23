@@ -19,7 +19,7 @@ public class AddSongActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_song);
 
-        // Initializing all our variables
+        // Initializing variables
         songNameEdt = findViewById(R.id.idEdtSongName);
         nextBtn = findViewById(R.id.idBtnNext);
         backToHomeBtn = findViewById(R.id.idBtnBackToHome);
@@ -40,7 +40,7 @@ public class AddSongActivity extends AppCompatActivity
                 // Get song name from edit text field
                 String songName = songNameEdt.getText().toString().trim();
 
-                // validating if the text fields are empty or not.
+                // Validating if the text fields are empty or not
                 if (songName.isEmpty())
                 {
                     StringHelper.showToast(getString(R.string.toastr_missing_song_name), AddSongActivity.this);
@@ -66,7 +66,7 @@ public class AddSongActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                // opening a new activity via a intent.
+                // Opening a new activity via a intent.
                 Intent i = new Intent(AddSongActivity.this, MainActivity.class);
                 startActivity(i);
             }

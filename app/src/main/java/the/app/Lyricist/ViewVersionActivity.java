@@ -7,6 +7,7 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ import java.io.IOException;
 
 public class ViewVersionActivity extends AppCompatActivity
 {
-    // UI elements
+    // UI element variables
     private TextView songNameTxt, versionNameTxt, versionDescriptionTxt, versionLyricsTxt;
     private FloatingActionButton editVersionBtn, backToSongAndVersionsBtn;
     private LinearLayout imageContainerLyt, videoContainerLyt, recordingContainerLyt;
@@ -58,7 +59,7 @@ public class ViewVersionActivity extends AppCompatActivity
         dbHandler = new DBHandler(ViewVersionActivity.this);
         // Get version data from DB
         versionData = dbHandler.getSongVersion(versionId);
-        // Get values
+        // Get values from version data
         songName = dbHandler.getSongName(versionData.getVersionSongId());
         versionName = versionData.getVersionName();
         versionDescription = versionData.getVersionDescription();
@@ -82,7 +83,7 @@ public class ViewVersionActivity extends AppCompatActivity
         versionNameTxt.setText(versionName);
         if (versionDescription.equals(""))
         {
-            // No description text saved, remove elements
+            // No description text present, remove UI elements
             TextView header = findViewById(R.id.idTxtDescriptionHeader);
             ((ViewGroup) header.getParent()).removeView(header);
             ((ViewGroup) versionDescriptionTxt.getParent()).removeView(versionDescriptionTxt);
@@ -91,7 +92,7 @@ public class ViewVersionActivity extends AppCompatActivity
             versionDescriptionTxt.setText(versionDescription);
         if (versionLyrics.equals(""))
         {
-            // No lyric text saved, remove elements
+            // No lyric text present, remove UI elements
             TextView header = findViewById(R.id.idTxtLyricsHeader);
             ((ViewGroup) header.getParent()).removeView(header);
             ((ViewGroup) versionLyricsTxt.getParent()).removeView(versionLyricsTxt);
@@ -100,27 +101,27 @@ public class ViewVersionActivity extends AppCompatActivity
             versionLyricsTxt.setText(versionLyrics);
         if (!imagesPresent)
         {
-            // No images saved, remove elements
+            // No images present, remove UI elements
             TextView header = findViewById(R.id.idTxtImagesHeader);
             ((ViewGroup) header.getParent()).removeView(header);
             ((ViewGroup) imageContainerLyt.getParent()).removeView(imageContainerLyt);
         }
         if (!videosPresent)
         {
-            // No videos saved, remove elements
+            // No videos present, remove UI elements
             TextView header = findViewById(R.id.idTxtVideosHeader);
             ((ViewGroup) header.getParent()).removeView(header);
             ((ViewGroup) videoContainerLyt.getParent()).removeView(videoContainerLyt);
         }
         if (!recordingsPresent)
         {
-            // No recordings saved, remove elements
+            // No recordings present, remove UI elements
             TextView header = findViewById(R.id.idTxtRecordingsHeader);
             ((ViewGroup) header.getParent()).removeView(header);
             ((ViewGroup) recordingContainerLyt.getParent()).removeView(recordingContainerLyt);
         }
 
-        // Edit the version button is clicked
+        // Edit button is clicked
         editVersionBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -140,7 +141,7 @@ public class ViewVersionActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                // opening a new activity via a intent.
+                // Opening a new activity via a intent.
                 Intent i = new Intent(ViewVersionActivity.this, ViewSongAndVersionsActivity.class);
                 // Passing song name through intent
                 i.putExtra(StringHelper.SongData_Intent_Name, songName);
@@ -192,7 +193,7 @@ public class ViewVersionActivity extends AppCompatActivity
                     // Set the margin in linearlayout
                     params.setMargins(NumberHelper.Image_Margin_Left, NumberHelper.Image_Margin_Top, NumberHelper.Video_Margin_Right, NumberHelper.Video_Margin_Bottom);
                     imageView.setLayoutParams(params);
-                    // Insert the bitmap rather than the full image
+                    // Insert the bitmap into UI element
                     imageView.setImageBitmap(bitmap);
                     imageView.setTag(currentFile.getPath());
                     imageView.setOnClickListener(v -> { viewImage(v.getTag().toString()); });
@@ -258,7 +259,10 @@ public class ViewVersionActivity extends AppCompatActivity
                         videoContainerLyt.addView(imageView);
                         // <<<<<<< End of Chat GPT aided code >>>>>>>>
                     }
-                    catch (Exception e) {}
+                    catch (Exception e)
+                    {
+                        Log.e("viewVersionVideo", "Video UI insert failed");
+                    }
                     finally
                     {
                         // Release the MediaMetadataRetriever
@@ -266,7 +270,10 @@ public class ViewVersionActivity extends AppCompatActivity
                         {
                             retriever.release();
                         }
-                        catch (IOException e) {}
+                        catch (IOException e)
+                        {
+                            Log.e("viewVersionVideo", "Failed to release MediaMetadataRetriever");
+                        }
                     }
                     videosPresent = true;
                 }

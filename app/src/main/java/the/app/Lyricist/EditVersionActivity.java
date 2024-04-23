@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 
 public class EditVersionActivity extends AppCompatActivity
 {
-    // UI elements
+    // Variables for UI elements
     private TextView songNameTxt;
     private EditText versionNameEdt, versionDescriptionEdt, versionLyricsEdt;
     private FloatingActionButton saveBtn, deleteBtn, backToViewVersionBtn;
@@ -58,7 +59,7 @@ public class EditVersionActivity extends AppCompatActivity
         // Set file paths for saving images, videos, and audio recordings
         StringHelper.setFolderPaths(String.valueOf(getExternalFilesDir(Environment.DIRECTORY_PICTURES)), String.valueOf(getExternalFilesDir(Environment.DIRECTORY_MOVIES)), String.valueOf(getExternalFilesDir(Environment.DIRECTORY_MUSIC)));
 
-        // Initializing all our variables
+        // Initializing all our UI element variables
         songNameTxt = findViewById(R.id.idTxtSongName);
         versionNameEdt = findViewById(R.id.idEdtVersionName);
         versionDescriptionEdt = findViewById(R.id.idEdtVersionDescription);
@@ -78,8 +79,8 @@ public class EditVersionActivity extends AppCompatActivity
 
         // Get all intent data
         versionId = getIntent().getIntExtra(StringHelper.VersionData_Intent_ID, 0);
-        // If returning from Image viewer, more intent data is passed
-        newVersionName =getIntent().getStringExtra(StringHelper.VersionData_Intent_Name);
+        // If returning from Image/video/audio viewer, more intent data is passed
+        newVersionName = getIntent().getStringExtra(StringHelper.VersionData_Intent_Name);
         versionDescription = getIntent().getStringExtra(StringHelper.VersionData_Intent_Description);
         versionLyrics = getIntent().getStringExtra(StringHelper.VersionData_Intent_Lyrics);
         wasPreviousScreenAViewer = getIntent().getBooleanExtra(StringHelper.VersionData_Intent_View_Screen, false);
@@ -350,7 +351,10 @@ public class EditVersionActivity extends AppCompatActivity
                     {
                         insertNewVideoIntoUI(Uri.fromFile(videoFile));
                     }
-                    catch (IOException e) {}
+                    catch (IOException e)
+                    {
+                        Log.e("editVersionPage", "Failed to insert a previously created video into UI");
+                    }
                 }
             }
         }
@@ -387,7 +391,10 @@ public class EditVersionActivity extends AppCompatActivity
             {
                 photoFile = createImageFile();
             }
-            catch (IOException ex) {}
+            catch (IOException ex)
+            {
+                Log.e("editVersionPage", "Failed to create a new image file");
+            }
 
             // If file was successfully created
             if (photoFile != null)
@@ -528,7 +535,7 @@ public class EditVersionActivity extends AppCompatActivity
         }
         catch (Exception e)
         {
-            // Handle exceptions
+            Log.e("editVersionPage", "Failed to insert a new video into UI");
             e.printStackTrace();
         }
         finally
@@ -668,7 +675,10 @@ public class EditVersionActivity extends AppCompatActivity
                 outputStream.close();
                 inputStream.close();
             }
-            catch (IOException e) {}
+            catch (IOException e)
+            {
+                Log.e("editVersionPage", "Failed to insert a gallery image into UI");
+            }
             // Set the 'currentPhotoPath' to the path of the newly created image file
             if (newFile != null)
             {
@@ -717,7 +727,10 @@ public class EditVersionActivity extends AppCompatActivity
                         insertNewVideoIntoUI(videoLocation);
                     }
                 }
-                catch (IOException e) {}
+                catch (IOException e)
+                {
+                    Log.e("editVersionPage", "Failed to insert a new video into UI");
+                }
             }
         }
         else if (requestCode == NumberHelper.REQUEST_CHOOSE_VIDEO && resultCode == RESULT_OK)
@@ -747,7 +760,10 @@ public class EditVersionActivity extends AppCompatActivity
                 outputStream.close();
                 inputStream.close();
             }
-            catch (IOException e) {}
+            catch (IOException e)
+            {
+                Log.e("editVersionPage", "Failed to copy a gallery video into file folder");
+            }
             // Set the current video path to the path of the newly created file
             if (newFile != null)
             {
@@ -757,7 +773,10 @@ public class EditVersionActivity extends AppCompatActivity
                 {
                     insertNewVideoIntoUI(videoLocation);
                 }
-                catch (IOException e) {}
+                catch (IOException e)
+                {
+                    Log.e("editVersionPage", "Failed to insert a gallery video into UI");
+                }
             }
             // <<<<<<< End of Chat GPT aided code >>>>>>>>
         }
@@ -786,7 +805,10 @@ public class EditVersionActivity extends AppCompatActivity
                 outputStream.close();
                 inputStream.close();
             }
-            catch (IOException e) {}
+            catch (IOException e)
+            {
+                Log.e("editVersionPage", "Failed to copy a gallery recording/song into file folder");
+            }
             // Set the current video path to the path of the newly created file
             if (newFile != null)
             {

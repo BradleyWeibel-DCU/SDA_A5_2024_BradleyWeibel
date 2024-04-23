@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ import java.io.OutputStream;
 
 public class AddVersionActivity extends AppCompatActivity
 {
-    // UI elements
+    // Variables to UI elements
     private TextView songNameTxt;
     private EditText versionNameEdt, versionDescriptionEdt, versionLyricsEdt;
     private FloatingActionButton createBtn, backBtn;
@@ -333,7 +334,10 @@ public class AddVersionActivity extends AppCompatActivity
                     {
                         insertNewVideoIntoUI(Uri.fromFile(videoFile));
                     }
-                    catch (IOException e) {}
+                    catch (IOException e)
+                    {
+                        Log.e("addVersionPage", "Failed to insert previously created image into UI");
+                    }
                 }
             }
         }
@@ -369,7 +373,10 @@ public class AddVersionActivity extends AppCompatActivity
             {
                 photoFile = createImageFile();
             }
-            catch (IOException ex) {}
+            catch (IOException ex)
+            {
+                Log.e("addVersionPage", "Failed to create a new image file");
+            }
 
             // If file was successfully created
             if (photoFile != null)
@@ -503,7 +510,10 @@ public class AddVersionActivity extends AppCompatActivity
             videoCounter+=1;
             // <<<<<<< End of Chat GPT aided code >>>>>>>>
         }
-        catch (Exception e) {}
+        catch (Exception e)
+        {
+            Log.e("addVersionPage", "Failed to insert an image into UI");
+        }
         finally
         {
             // Release the MediaMetadataRetriever
@@ -628,7 +638,10 @@ public class AddVersionActivity extends AppCompatActivity
                 outputStream.close();
                 inputStream.close();
             }
-            catch (IOException e) {}
+            catch (IOException e)
+            {
+                Log.e("addVersionPage", "Failed to create file for gallery image");
+            }
             // Set the 'currentPhotoPath' to the path of the newly created image file
             if (newFile != null)
             {
@@ -674,7 +687,10 @@ public class AddVersionActivity extends AppCompatActivity
                         insertNewVideoIntoUI(videoLocation);
                     }
                 }
-                catch (IOException e) {}
+                catch (IOException e)
+                {
+                    Log.e("addVersionPage", "Failed to create and insert a video file in the UI");
+                }
             }
         }
         else if (requestCode == NumberHelper.REQUEST_CHOOSE_VIDEO && resultCode == RESULT_OK)
@@ -704,7 +720,10 @@ public class AddVersionActivity extends AppCompatActivity
                 outputStream.close();
                 inputStream.close();
             }
-            catch (IOException e) {}
+            catch (IOException e)
+            {
+                Log.e("addVersionPage", "Failed to create new video file");
+            }
             // Set the current video path to the path of the newly created file
             if (newFile != null)
             {
@@ -713,7 +732,10 @@ public class AddVersionActivity extends AppCompatActivity
                 {
                     insertNewVideoIntoUI(videoLocation);
                 }
-                catch (IOException e) {}
+                catch (IOException e)
+                {
+                    Log.e("addVersionPage", "Failed to insert video into UI");
+                }
             }
             // <<<<<<< End of Chat GPT aided code >>>>>>>>
         }
@@ -742,7 +764,10 @@ public class AddVersionActivity extends AppCompatActivity
                 outputStream.close();
                 inputStream.close();
             }
-            catch (IOException e) {}
+            catch (IOException e)
+            {
+                Log.e("addVersionPage", "Failed to create a audio file from gallery");
+            }
             // Set the current video path to the path of the newly created file
             if (newFile != null)
             {
