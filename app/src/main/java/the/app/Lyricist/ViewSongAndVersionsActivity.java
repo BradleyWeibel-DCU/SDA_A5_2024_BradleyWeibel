@@ -19,6 +19,14 @@ public class ViewSongAndVersionsActivity extends AppCompatActivity
     private VersionRVAdapter versionRVAdapter;
     private RecyclerView versionsRV;
 
+    /**
+     * Executes on initial load.
+     * Sets up the screen.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *                           previously being shut down then this Bundle contains the data it most
+     *                           recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -61,6 +69,12 @@ public class ViewSongAndVersionsActivity extends AppCompatActivity
         // Edit the song's name button is clicked
         editSongBtn.setOnClickListener(new View.OnClickListener()
         {
+            /**
+             * Executes after click of 'edit this song' button.
+             * Opens edit song screen.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v)
             {
@@ -75,6 +89,12 @@ public class ViewSongAndVersionsActivity extends AppCompatActivity
         // Add a new version button is clicked
         addVersionBtn.setOnClickListener(new View.OnClickListener()
         {
+            /**
+             * Executes after click of 'add version' button.
+             * Opens add version screen.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v)
             {
@@ -89,6 +109,12 @@ public class ViewSongAndVersionsActivity extends AppCompatActivity
         // Back to home
         backToHomeBtn.setOnClickListener(new View.OnClickListener()
         {
+            /**
+             * Executes after click on 'home' button.
+             * Returns to home screen.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v)
             {

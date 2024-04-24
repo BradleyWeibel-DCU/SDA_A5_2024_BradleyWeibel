@@ -10,12 +10,25 @@ public class ViewPageAdapter extends FragmentPagerAdapter
 {
     private Context context;
 
+    /**
+     * Method to create the initial state for the adapter.
+     *
+     * @param fm passed fragment manager.
+     * @param behavior passed int behaviour variable.
+     * @param nContext passed context of the screen.
+     */
     ViewPageAdapter(FragmentManager fm, int behavior, Context nContext)
     {
         super(fm, behavior);
         context = nContext;
     }
 
+    /**
+     * Method to populate the 2 fragment bodies and link them to the JAVA files.
+     *
+     * @param position
+     * @return
+     */
     @NonNull
     @Override
     public Fragment getItem(int position)
@@ -38,6 +51,9 @@ public class ViewPageAdapter extends FragmentPagerAdapter
         return fragment;
     }
 
+    /**
+     * @return returns the count of the fragments.
+     */
     // Number of fragments
     @Override
     public int getCount()
@@ -45,6 +61,12 @@ public class ViewPageAdapter extends FragmentPagerAdapter
         return 2;
     }
 
+    /**
+     * Method returns the title of the fragment.
+     *
+     * @param position The position of the title requested
+     * @return the name of the fragment.
+     */
     @Override
     public CharSequence getPageTitle(int position)
     {

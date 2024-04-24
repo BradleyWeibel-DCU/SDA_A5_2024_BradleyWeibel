@@ -24,6 +24,14 @@ public class ViewOrDeleteImageActivity extends AppCompatActivity
     private String songName, versionName, versionDescription, versionLyrics, imagePath;
     private ArrayList<String> listOfNewImageNames, listOfNewVideoNames, listOfNewAudioNames;
 
+    /**
+     * Executes on initial load.
+     * Sets up the screen.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *                           previously being shut down then this Bundle contains the data it most
+     *                           recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -60,6 +68,13 @@ public class ViewOrDeleteImageActivity extends AppCompatActivity
         // Delete button is clicked
         deleteBtn.setOnClickListener(new View.OnClickListener()
         {
+            /**
+             * Executes after click on 'delete' button.
+             * Deletes the image.
+             * Returns to previous screen.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v)
             {
@@ -85,6 +100,12 @@ public class ViewOrDeleteImageActivity extends AppCompatActivity
         // Back button is clicked
         backBtn.setOnClickListener(new View.OnClickListener()
         {
+            /**
+             * Executes after click on 'back' button.
+             * Returns to previous screen.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v)
             {
@@ -112,6 +133,12 @@ public class ViewOrDeleteImageActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Method populates the intent with needed data by other screens.
+     *
+     * @param i passed intent.
+     * @return intent populated with data.
+     */
     private Intent populateIntentData(Intent i)
     {
         i.putExtra(StringHelper.SongData_Intent_Name, songName);

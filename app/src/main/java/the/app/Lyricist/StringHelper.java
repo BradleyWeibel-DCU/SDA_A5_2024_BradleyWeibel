@@ -31,6 +31,13 @@ public class StringHelper
     public final static String VideoData_Intent_Path = "video_path";
     public final static String AudioData_Intent_Path = "audio_path";
 
+    /**
+     * Method used to dynamicall set the folder paths used for storing/accessing images, videos and audio files.
+     *
+     * @param imageFolderPath
+     * @param videoFolderPath
+     * @param audioFolderPath
+     */
     // Directories
     public static void setFolderPaths(String imageFolderPath, String videoFolderPath, String audioFolderPath)
     {
@@ -54,6 +61,12 @@ public class StringHelper
     // Authorities
     public final static String App_Authority = "the.app.Lyricist";
 
+    /**
+     * Method used for displaying custom toast messages.
+     *
+     * @param message passed string message to be shown.
+     * @param context passed context needed for method to work.
+     */
     // Show a customized toast message
     public static void showToast(String message, Context context)
     {
@@ -70,9 +83,21 @@ public class StringHelper
         toastr.show();
     }
 
+    /**
+     * Method used to return the current date of type string in the standard format.
+     *
+     * @return formatted string date
+     */
     // Get current date in '09 Apr 2024' format
     public static String getFormattedDate() { return new SimpleDateFormat("dd MMM yyyy").format(new Date()); }
 
+    /**
+     * Method used toi get the extension of a file.
+     *
+     * @param fileContentUri uri path of the file in question.
+     * @param c passed contentResolver needed for method to function.
+     * @return string extension of file.
+     */
     // Get file extension of image/video/recording - used for saving
     public static String getFileExtension(Uri fileContentUri, ContentResolver c)
     {

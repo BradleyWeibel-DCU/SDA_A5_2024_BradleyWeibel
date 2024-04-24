@@ -12,6 +12,14 @@ public class HelpActivity extends AppCompatActivity
 {
     private FloatingActionButton backToHomeBtn;
 
+    /**
+     * Executes when page is loaded.
+     * Sets up screen.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *                           previously being shut down then this Bundle contains the data it most
+     *                           recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -32,6 +40,11 @@ public class HelpActivity extends AppCompatActivity
         // Back to home button clicked
         backToHomeBtn.setOnClickListener(new View.OnClickListener()
         {
+            /**
+             * Executes after click on 'back' button.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v)
             {

@@ -31,6 +31,13 @@ public class NumberHelper
     // General
     public static final int Behaviour_Resume_Current_Tab = 1;
 
+    /**
+     * Method used to determine what the dynamic pixel equivalent value for 130dp is.
+     * Used for dynamic UI element sizing.
+     *
+     * @param r passed recourses needed for method to work.
+     * @return returned value in pixels.
+     */
     // Get 130dp in pixels for imageView size in UI
     public static int imageViewDPSizeInPX(Resources r)
     {
@@ -40,11 +47,23 @@ public class NumberHelper
         return result;
     }
 
+    /**
+     * Method used to determine if a number is even.
+     *
+     * @param number passed value to be tested.
+     * @return true or false.
+     */
     public static Boolean isNumberEven(int number)
     {
         return number% 2 == 0;
     }
 
+    /**
+     * Method used to generate a random number.
+     * Used for naming of recordings.
+     *
+     * @return random number.
+     */
     public static String randomNumberGenerator()
     {
         // Define the range

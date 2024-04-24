@@ -33,6 +33,14 @@ public class ViewVersionActivity extends AppCompatActivity
     private DBHandler dbHandler;
     private VersionModal versionData;
 
+    /**
+     * Executes on initial load.
+     * Sets up screen.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *                           previously being shut down then this Bundle contains the data it most
+     *                           recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -124,6 +132,12 @@ public class ViewVersionActivity extends AppCompatActivity
         // Edit button is clicked
         editVersionBtn.setOnClickListener(new View.OnClickListener()
         {
+            /**
+             * Executes after click on 'edit' button.
+             * Opens edit this version screen.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v)
             {
@@ -138,6 +152,12 @@ public class ViewVersionActivity extends AppCompatActivity
         // Back to song and versions screen
         backToSongAndVersionsBtn.setOnClickListener(new View.OnClickListener()
         {
+            /**
+             * Executes after click on 'back' button.
+             * Returns to previous screen.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v)
             {
@@ -150,6 +170,9 @@ public class ViewVersionActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Method to fetch all images of this version and display them in the UI.
+     */
     // --------------------------------------------- Image handling
     // Get list of already created images for this version
     private void getVersionImages()
@@ -204,6 +227,13 @@ public class ViewVersionActivity extends AppCompatActivity
             }
         }
     }
+
+    /**
+     * Method executes after a click on the image has been made.
+     * Opens screen to view larger image.
+     *
+     * @param imagePath
+     */
     private void viewImage(String imagePath)
     {
         Intent i = new Intent(ViewVersionActivity.this, ViewOrDeleteImageActivity.class);
@@ -214,6 +244,9 @@ public class ViewVersionActivity extends AppCompatActivity
         startActivity(i);
     }
 
+    /**
+     * Method to fetch all videos of this version and display them in the UI.
+     */
     // --------------------------------------------- Video handling
     // Get list of already created videos for this version
     private void getVersionVideos()
@@ -280,6 +313,13 @@ public class ViewVersionActivity extends AppCompatActivity
             }
         }
     }
+
+    /**
+     * Method executes after a click on the video-image has been made.
+     * Opens screen to view and play large format video.
+     *
+     * @param videoPath
+     */
     private void viewVideo(String videoPath)
     {
         Intent i = new Intent(ViewVersionActivity.this, ViewOrDeleteVideoActivity.class);
@@ -290,6 +330,9 @@ public class ViewVersionActivity extends AppCompatActivity
         startActivity(i);
     }
 
+    /**
+     * Method to fetch all audio files of this version and display them in the UI.
+     */
     // --------------------------------------------- Audio handling
     // Get list of already created recordings for this version
     private void getVersionRecordings()
@@ -326,6 +369,13 @@ public class ViewVersionActivity extends AppCompatActivity
             }
         }
     }
+
+    /**
+     * Method executes after a click on the audio file-image has been made.
+     * Opens screen to view and play the recording.
+     *
+     * @param recordingPath
+     */
     private void viewAudioRecording(String recordingPath)
     {
         Intent i = new Intent(ViewVersionActivity.this, RecordOrPlayAudioActivity.class);

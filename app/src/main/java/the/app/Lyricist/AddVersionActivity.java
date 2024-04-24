@@ -48,6 +48,13 @@ public class AddVersionActivity extends AppCompatActivity
     private Boolean wasPreviousScreenAViewer;
     private String songName, versionName, versionDescription, versionLyrics, currentPhotoPath, imageStandardNamePrefix, currentVideoPath, videoStandardNamePrefix, currentRecordingPath, audioStandardNamePrefix;
 
+    /**
+     * Executes on initial load for this screen and sets up screen for adding a new song version.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *                           previously being shut down then this Bundle contains the data it most
+     *                           recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -114,6 +121,14 @@ public class AddVersionActivity extends AppCompatActivity
         // Add on click listener for add song and version button
         createBtn.setOnClickListener(new View.OnClickListener()
         {
+            /**
+             * Triggered on click of the 'create' button.
+             * Validates that the version field is populated.
+             * Creates version with data.
+             * Renames images/videos/recordings if added.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v)
             {
@@ -172,6 +187,13 @@ public class AddVersionActivity extends AppCompatActivity
         // Back to version button is clicked
         backBtn.setOnClickListener(new View.OnClickListener()
         {
+            /**
+             * Triggered on click of the 'back' button.
+             * Removes all images/videos/recordings.
+             * Returns to previous screen.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v)
             {
@@ -203,6 +225,13 @@ public class AddVersionActivity extends AppCompatActivity
         // User wants to take a new photo
         newImageBtn.setOnClickListener(new View.OnClickListener()
         {
+            /**
+             * Triggered on click for insert new image button.
+             * Checks if permissions are accepted.
+             * Opens take picture intent.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v)
             {
@@ -220,6 +249,12 @@ public class AddVersionActivity extends AppCompatActivity
         // User wants to select a gallery image
         galleryImageBtn.setOnClickListener(new View.OnClickListener()
         {
+            /**
+             * Triggered on click of the showing the image gallery button.
+             * Checks if permissions are accepted and opens image gallery.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v)
             {
@@ -234,6 +269,13 @@ public class AddVersionActivity extends AppCompatActivity
         // User wants to take a new video
         newVideoBtn.setOnClickListener(new View.OnClickListener()
         {
+            /**
+             * Triggered on click of the take new video button.
+             * Checks if permissions are accepted.
+             * Opens intent to take a new video.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v)
             {
@@ -253,6 +295,13 @@ public class AddVersionActivity extends AppCompatActivity
         // User wants to select a gallery image
         galleryVideoBtn.setOnClickListener(new View.OnClickListener()
         {
+            /**
+             * Triggered on click of the gallery video button.
+             * Checks if permissions are accepted.
+             * Opens intent to gallery of videos.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v)
             {
@@ -267,6 +316,13 @@ public class AddVersionActivity extends AppCompatActivity
         // User wants to take a new recording
         newAudioBtn.setOnClickListener(new View.OnClickListener()
         {
+            /**
+             * Triggered on click of the make new recording button.
+             * Checks if permissions are accepted.
+             * Opens screen for recording audio.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v)
             {
@@ -284,6 +340,13 @@ public class AddVersionActivity extends AppCompatActivity
         // User wants to select a gallery audio recording
         galleryAudioBtn.setOnClickListener(new View.OnClickListener()
         {
+            /**
+             * Triggered on click of the gallery of audio button.
+             * Checks if permissions are accepted.
+             * Opens gallery of audio files.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v)
             {
@@ -295,6 +358,9 @@ public class AddVersionActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Fetches all images created previously for this unsaved version and populates the UI.
+     */
     // Get list of already created but unsaved images, videos, and audio clips for this version
     private void getVersionImages()
     {
@@ -315,6 +381,10 @@ public class AddVersionActivity extends AppCompatActivity
             }
         }
     }
+
+    /**
+     * Fetches all videos created previously for this unsaved version and populates the UI.
+     */
     private void getVersionVideos()
     {
         File file = new File(StringHelper.Video_Folder_Path);
@@ -342,6 +412,10 @@ public class AddVersionActivity extends AppCompatActivity
             }
         }
     }
+
+    /**
+     * Fetches all audio files created previously for this unsaved version and populates the UI.
+     */
     private void getVersionRecordings()
     {
         File file = new File(StringHelper.Audio_Folder_Path);
@@ -362,6 +436,10 @@ public class AddVersionActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Opens intent to take a new image.
+     * Creates temporary image file in file system to store the newly captured image.
+     */
     // --------------------------------------------- Creating new images in UI
     private void openImageCamera()
     {
@@ -389,12 +467,22 @@ public class AddVersionActivity extends AppCompatActivity
         else
             StringHelper.showToast(getString(R.string.toastr_no_camera_found), AddVersionActivity.this);
     }
+
+    /**
+     * Opens the image gallery intent.
+     */
     private void openImageGallery()
     {
         Intent choosePictureIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(choosePictureIntent, NumberHelper.REQUEST_CHOOSE_PHOTO);
     }
 
+    /**
+     * Creates temp file in file system for newly created image.
+     *
+     * @return file of newly create image in file system.
+     * @throws IOException
+     */
     // Create image and save in phones storage
     private File createImageFile() throws IOException
     {
@@ -406,6 +494,10 @@ public class AddVersionActivity extends AppCompatActivity
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }
+
+    /**
+     * Inserts image file into UI by using current image path string variable.
+     */
     // Create UI element to show image
     private void insertNewImageIntoUI()
     {
@@ -445,6 +537,11 @@ public class AddVersionActivity extends AppCompatActivity
         imageCounter+=1;
     }
 
+    /**
+     * Opens an enlarged image in a viewer screen.
+     *
+     * @param imagePath passed parameter for image to be viewed in viewer screen.
+     */
     // Open screen with large image
     private void viewImage(String imagePath)
     {
@@ -463,6 +560,9 @@ public class AddVersionActivity extends AppCompatActivity
         startActivity(i);
     }
 
+    /**
+     * Opens the intent to take a new video.
+     */
     // --------------------------------------------- Creating new videos in UI
     private void openVideoCamera()
     {
@@ -472,12 +572,22 @@ public class AddVersionActivity extends AppCompatActivity
         else
             StringHelper.showToast(getString(R.string.toastr_no_camera_found), AddVersionActivity.this);
     }
+
+    /**
+     * Opens the intent to view the gallery videos.
+     */
     private void openVideoGallery()
     {
         Intent chooseVideoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(chooseVideoIntent, NumberHelper.REQUEST_CHOOSE_VIDEO);
     }
 
+    /**
+     * Inserts a video file into the UI in the form of a clickable image.
+     *
+     * @param fileLocation passed parameter of the Uri path of the video file.
+     * @throws IOException
+     */
     // Create UI element to show video
     private void insertNewVideoIntoUI(Uri fileLocation) throws IOException
     {
@@ -520,6 +630,12 @@ public class AddVersionActivity extends AppCompatActivity
             retriever.release();
         }
     }
+
+    /**
+     * Video is clicked and will be viewed in a larger format in the viewer screen.
+     *
+     * @param videoPath passed path of video to be viewed.
+     */
     // Open screen with large video
     private void viewVideo(String videoPath)
     {
@@ -538,6 +654,9 @@ public class AddVersionActivity extends AppCompatActivity
         startActivity(i);
     }
 
+    /**
+     * Opens screen to record a new audio recording.
+     */
     // --------------------------------------------- Creating new audio recordings in UI
     private void openAudioRecorder()
     {
@@ -555,11 +674,21 @@ public class AddVersionActivity extends AppCompatActivity
         i.putExtra(StringHelper.VersionData_Intent_Add_Screen, true);
         startActivity(i);
     }
+
+    /**
+     * Opens the intent showing all audio files on device.
+     */
     private void openAudioGallery()
     {
         Intent chooseAudioIntent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(chooseAudioIntent, NumberHelper.REQUEST_CHOOSE_RECORDING);
     }
+
+    /**
+     * Listen to audio recording in viewer screen.
+     *
+     * @param recordingPath passed string path of audio recording.
+     */
     private void viewAudioRecording(String recordingPath)
     {
         versionName = versionNameEdt.getText().toString().trim();
@@ -576,6 +705,10 @@ public class AddVersionActivity extends AppCompatActivity
         i.putExtra(StringHelper.VersionData_Intent_Add_Screen, true);
         startActivity(i);
     }
+
+    /**
+     * Inserts clickable image representing the recording into the UI.
+     */
     // Create UI element to show recording
     private void insertNewRecordingIntoUI()
     {
@@ -596,6 +729,17 @@ public class AddVersionActivity extends AppCompatActivity
         recordingCounter += 1;
     }
 
+    /**
+     * Triggered after a gallery item (image/video/recording) has been chosen or taken (image/video).
+     *
+     * @param requestCode The integer request code originally supplied to
+     *                    startActivityForResult(), allowing you to identify who this
+     *                    result came from.
+     * @param resultCode  The integer result code returned by the child activity
+     *                    through its setResult().
+     * @param data        An Intent, which can return result data to the caller
+     *                    (various data can be attached to Intent "extras").
+     */
     // --------------------------------------------- After successful image, video, or audio action
     // After a photo/video has been taken/chosen (or an audio file has been chosen)
     @Override
@@ -777,6 +921,9 @@ public class AddVersionActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Remove all newly created images from file system.
+     */
     // --------------------------------------------- Cleanup
     private void removeAllNewImages()
     {
@@ -797,6 +944,10 @@ public class AddVersionActivity extends AppCompatActivity
             }
         }
     }
+
+    /**
+     * Rename all newly created images in file system.
+     */
     private void renameImages()
     {
         File file = new File(StringHelper.Image_Folder_Path);
@@ -821,6 +972,10 @@ public class AddVersionActivity extends AppCompatActivity
             }
         }
     }
+
+    /**
+     * Remove all newly created video files from file system.
+     */
     private void removeAllNewVideos()
     {
         File file = new File(StringHelper.Video_Folder_Path);
@@ -840,6 +995,10 @@ public class AddVersionActivity extends AppCompatActivity
             }
         }
     }
+
+    /**
+     * Rename all newly created videos in file system
+     */
     private void renameVideos()
     {
         File file = new File(StringHelper.Video_Folder_Path);
@@ -864,6 +1023,10 @@ public class AddVersionActivity extends AppCompatActivity
             }
         }
     }
+
+    /**
+     * Remove all newly created audio files from file system
+     */
     private void removeAllNewRecordings()
     {
         File file = new File(StringHelper.Audio_Folder_Path);
@@ -883,6 +1046,10 @@ public class AddVersionActivity extends AppCompatActivity
             }
         }
     }
+
+    /**
+     * Rename all newly created audio files in file system
+     */
     private void renameRecordings()
     {
         File file = new File(StringHelper.Audio_Folder_Path);
@@ -908,14 +1075,54 @@ public class AddVersionActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Determine if camera permission has been granted
+     *
+     * @return true of false
+     */
     // --------------------------------------------- Permission handling
     private Boolean isCameraPermissionGranted() { return ContextCompat.checkSelfPermission(AddVersionActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED; }
+
+    /**
+     * Determine if external storage permission has been granted
+     *
+     * @return true or false
+     */
     private Boolean isWriteExternalPermissionGranted() { return ContextCompat.checkSelfPermission(AddVersionActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED; }
+
+    /**
+     * Determine if audio permission has been granted.
+     *
+     * @return true or false
+     */
     private Boolean isAudioPermissionGranted() { return ContextCompat.checkSelfPermission(AddVersionActivity.this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED; }
+
+    /**
+     * Ask user for permission to use the camera
+     */
     private void askCameraPermission() { ActivityCompat.requestPermissions(AddVersionActivity.this, new String[] {Manifest.permission.CAMERA}, NumberHelper.REQUEST_CODE); }
+
+    /**
+     * Ask user for permission to write to the external storage.
+     */
     private void askWriteStoragePermission() { ActivityCompat.requestPermissions(AddVersionActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, NumberHelper.REQUEST_CODE); }
+
+    /**
+     * Ask user for permission to record audio.
+     */
     private void askRecordAudioPermission() { ActivityCompat.requestPermissions(AddVersionActivity.this, new String[] {Manifest.permission.RECORD_AUDIO}, NumberHelper.REQUEST_CODE); }
 
+    /**
+     * Triggered after the user accepts or denies a permission request.
+     * If denied, asks the user to accept all permissions.
+     * If granted, asks next unaccepted permission.
+     *
+     * @param requestCode  The request code passed
+     * @param permissions  The requested permissions. Never null.
+     * @param grantResults The grant results for the corresponding permissions
+     *                     which is either {@link android.content.pm.PackageManager#PERMISSION_GRANTED}
+     *                     or {@link android.content.pm.PackageManager#PERMISSION_DENIED}. Never null.
+     */
     // Trigger on response to permission prompt from User
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)

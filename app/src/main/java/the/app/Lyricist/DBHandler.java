@@ -30,12 +30,23 @@ public class DBHandler extends SQLiteOpenHelper
     private static final String VERSIONS_CREATION_DATE_COL = "CREATION_DATE";
     private static final String VERSIONS_EDIT_DATE_COL = "EDIT_DATE";
 
+    /**
+     * Establishes the DB context by using the DB name and version
+     *
+     * @param context
+     */
     // Constructor for database handler
     public DBHandler(Context context)
     {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
+    /**
+     * Creates the SQLite DB if not created yet.
+     * Triggers at startup.
+     *
+     * @param db The database.
+     */
     // Method is for creating a database by running a sqlite query
     @Override
     public void onCreate(SQLiteDatabase db)
@@ -65,6 +76,14 @@ public class DBHandler extends SQLiteOpenHelper
     }
 
 
+    /**
+     * Adds a new song to the  song table in the database.
+     *
+     * @param songName
+     * @param songCreationDate
+     * @param songEditDate
+     * @return
+     */
     // -------------------------------- Adding entry to DB --------------------------------
     // Method to add new song to our SONGS table
     public Integer addNewSong(String songName, String songCreationDate, String songEditDate)
@@ -89,6 +108,17 @@ public class DBHandler extends SQLiteOpenHelper
         return getSongId(songName);
     }
 
+    /**
+     * Adds a new version to the version table in the database.
+     *
+     * @param versionName
+     * @param versionSongId
+     * @param versionDescription
+     * @param versionLyrics
+     * @param versionCreationDate
+     * @param versionEditDate
+     * @return
+     */
     // Method to add new song-version to our VERSIONS table
     public Integer addNewVersion(String versionName, Integer versionSongId, String versionDescription, String versionLyrics, String versionCreationDate, String versionEditDate)
     {
@@ -115,6 +145,11 @@ public class DBHandler extends SQLiteOpenHelper
     }
 
 
+    /**
+     * Returns a list of all songs in the DB.
+     *
+     * @return list of songs in List<SongModal> form
+     */
     // -------------------------------- Reading from DB --------------------------------
     // Reading all songs
     public ArrayList<SongModal> readSongs()
@@ -150,6 +185,12 @@ public class DBHandler extends SQLiteOpenHelper
         return songModalArrayList;
     }
 
+    /**
+     * Search for all mathing songs
+     *
+     * @param songName name or partial song name to search for
+     * @return list of songs in List<SongModal> form
+     */
     // Reading all matching songs
     public ArrayList<SongModal> readSongs(String songName)
     {
@@ -187,6 +228,12 @@ public class DBHandler extends SQLiteOpenHelper
         return songModalArrayList;
     }
 
+    /**
+     * Return all versions of this song
+     *
+     * @param songId Versions below to this song
+     * @return list of versions in List<VersionModal> form
+     */
     // Reading all song-versions
     public ArrayList<VersionModal> readVersions(Integer songId)
     {
@@ -223,6 +270,12 @@ public class DBHandler extends SQLiteOpenHelper
         return versionModalArrayList;
     }
 
+    /**
+     * Return a particular song version from DB
+     *
+     * @param versionId version's id
+     * @return version
+     */
     // Get song version
     public VersionModal getSongVersion(Integer versionId)
     {
@@ -257,6 +310,12 @@ public class DBHandler extends SQLiteOpenHelper
         return versionModal;
     }
 
+    /**
+     * Return the id of a song
+     *
+     * @param songName name of song to be searched for
+     * @return integer id of song
+     */
     // Getting a song's ID from DB
     public Integer getSongId(String songName)
     {
@@ -285,6 +344,12 @@ public class DBHandler extends SQLiteOpenHelper
         return songId;
     }
 
+    /**
+     * Return name of song
+     *
+     * @param songId if of song to search for
+     * @return string name of the song
+     */
     // Getting a song's name from DB
     public String getSongName(Integer songId)
     {
@@ -310,6 +375,13 @@ public class DBHandler extends SQLiteOpenHelper
         return songName;
     }
 
+    /**
+     * Get the if of this version
+     *
+     * @param songId song id the version belongs to
+     * @param versionName name of this version
+     * @return integer id of version
+     */
     // Getting a version's ID from DB
     public Integer getVersionId(Integer songId, String versionName)
     {
@@ -335,6 +407,12 @@ public class DBHandler extends SQLiteOpenHelper
         return versionId;
     }
 
+    /**
+     * Is this sing name unique in the DB
+     *
+     * @param songName string name of song
+     * @return true or false
+     */
     // Is song name unique
     public Boolean isSongNameUnique(String songName)
     {
@@ -365,6 +443,13 @@ public class DBHandler extends SQLiteOpenHelper
         return songNameIsUnique;
     }
 
+    /**
+     * Is version name unique in the context of this song's versions.
+     *
+     * @param songId if of song
+     * @param versionName name of version
+     * @return true or false
+     */
     // Is version name unique in context of song's versions
     public Boolean isVersionNameUnique(Integer songId, String versionName)
     {
@@ -396,6 +481,13 @@ public class DBHandler extends SQLiteOpenHelper
     }
 
 
+    /**
+     * Update the song in the DB
+     *
+     * @param songId id of song
+     * @param songName new/old name of song
+     * @param songEditDate date of edit
+     */
     // -------------------------------- Updating entry in DB --------------------------------
     // Updating a song
     public void updateSong(Integer songId, String songName, String songEditDate) {
@@ -412,6 +504,16 @@ public class DBHandler extends SQLiteOpenHelper
         db.close();
     }
 
+    /**
+     * Update the version
+     *
+     * @param versionId version id
+     * @param versionName name of version
+     * @param songName name of the song
+     * @param versionDescription description of version
+     * @param versionLyrics lyrics of the version
+     * @param versionEditDate date of edit
+     */
     // Updating a song-version
     public void updateVersion(Integer versionId, String versionName, String songName, String versionDescription, String versionLyrics, String versionEditDate)
     {
@@ -442,6 +544,11 @@ public class DBHandler extends SQLiteOpenHelper
     }
 
 
+    /**
+     * Delete song and all housed versions
+     *
+     * @param songId id of song
+     */
     // -------------------------------- Deleting entry in DB --------------------------------
     // Deleting a song
     public void deleteSongAndVersions(Integer songId)
@@ -456,6 +563,11 @@ public class DBHandler extends SQLiteOpenHelper
         db.close();
     }
 
+    /**
+     * Delete version of song
+     *
+     * @param versionId id of version
+     */
     // Deleting a song-version
     public void deleteVersion(Integer versionId)
     {
@@ -467,6 +579,14 @@ public class DBHandler extends SQLiteOpenHelper
         db.close();
     }
 
+    /**
+     * Update version of DB.
+     * Clears the DB
+     *
+     * @param db         The database.
+     * @param oldVersion The old database version.
+     * @param newVersion The new database version.
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {

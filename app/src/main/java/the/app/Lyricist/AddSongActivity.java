@@ -13,6 +13,13 @@ public class AddSongActivity extends AppCompatActivity
     private FloatingActionButton nextBtn, backToHomeBtn;
     private DBHandler dbHandler;
 
+    /**
+     * Executes on initial load for this screen and sets up screen for adding a new song.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *                           previously being shut down then this Bundle contains the data it most
+     *                           recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -34,6 +41,12 @@ public class AddSongActivity extends AppCompatActivity
         // On click listener for the next screen button
         nextBtn.setOnClickListener(new View.OnClickListener()
         {
+            /**
+             * Triggered on click of the 'next' button.
+             * Validates text of Sing name and proceeds to next screen if conditions are met.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v)
             {
@@ -63,6 +76,11 @@ public class AddSongActivity extends AppCompatActivity
         // Back to home
         backToHomeBtn.setOnClickListener(new View.OnClickListener()
         {
+            /**
+             * Triggered on click to 'return to home' button.
+             *
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v)
             {
