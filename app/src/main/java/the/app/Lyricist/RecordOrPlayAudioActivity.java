@@ -42,14 +42,6 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
     private Handler handler;
     private Runnable timerRunnable;
 
-    /**
-     * Executed on screen load.
-     * Sets up screen.
-     *
-     * @param savedInstanceState If the activity is being re-initialized after
-     *                           previously being shut down then this Bundle contains the data it most
-     *                           recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -130,13 +122,6 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         // Delete button is clicked
         deleteBtn.setOnClickListener(new View.OnClickListener()
         {
-            /**
-             * Executes after click on 'delete' button.
-             * Deletes this recording.
-             * Returns to previous screen.
-             *
-             * @param v The view that was clicked.
-             */
             @Override
             public void onClick(View v)
             {
@@ -151,13 +136,6 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         // Save button is clicked
         saveBtn.setOnClickListener(new View.OnClickListener()
         {
-            /**
-             * Executes after click on 'save' button.
-             * Adds the recording to the list of new recordings.
-             * Returns to the previous screen.
-             *
-             * @param v The view that was clicked.
-             */
             @Override
             public void onClick(View v)
             {
@@ -173,13 +151,6 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         // Back button is clicked
         backBtn.setOnClickListener(new View.OnClickListener()
         {
-            /**
-             * Executes after click on 'back' button.
-             * Deletes recording.
-             * Returns to previous screen.
-             *
-             * @param v The view that was clicked.
-             */
             @Override
             public void onClick(View v)
             {
@@ -198,12 +169,6 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         // Record button is clicked
         recordBtn.setOnClickListener(new View.OnClickListener()
         {
-            /**
-             * Executes after click on 'record' button.
-             * Either starts or stops recording, depending on the state of the 'recordingInProgress' variable.
-             *
-             * @param v The view that was clicked.
-             */
             @Override
             public void onClick(View v)
             {
@@ -217,12 +182,6 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         // Play button is clicked
         playBtn.setOnClickListener(new View.OnClickListener()
         {
-            /**
-             * Executes after click on 'play' button.
-             * Plays the recording.
-             *
-             * @param v The view that was clicked.
-             */
             @Override
             public void onClick(View v)
             {
@@ -233,12 +192,6 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         // Stop button is clicked
         stopBtn.setOnClickListener(new View.OnClickListener()
         {
-            /**
-             * Executes after a click on the 'stop' button.
-             * Stops playing the recording.
-             *
-             * @param v The view that was clicked.
-             */
             @Override
             public void onClick(View v)
             {
@@ -249,13 +202,6 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         // Reload button is clicked
         reloadBtn.setOnClickListener(new View.OnClickListener()
         {
-            /**
-             * Executes after a click on the 'reload' button.
-             * Deletes the recording.
-             * Reloads the screen.
-             *
-             * @param v The view that was clicked.
-             */
             @Override
             public void onClick(View v)
             {
@@ -271,11 +217,6 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         });
     }
 
-    /**
-     * Starts recording audio.
-     * Changes text on screen.
-     * Starts a timer, showing how long the recording is running for.
-     */
     private void startRecording()
     {
         if (recorder == null)
@@ -309,11 +250,6 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Stops recording audio.
-     * Stops the timer.
-     * Changes UI elements to guide user.
-     */
     private void stopRecording()
     {
         if (null != recorder)
@@ -336,11 +272,6 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Plays the recording.
-     * Hides UI elements to guide the user.
-     * Starts a timer to show the user how long the recording is.
-     */
     private void playRecording()
     {
         player = new MediaPlayer();
@@ -372,11 +303,6 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Stops playing the recording.
-     * Stops the timer.
-     * Changes UI elements to guide the user.
-     */
     private void stopPlaying()
     {
         if (null != player)
@@ -392,10 +318,7 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Returns the user to the previous screen depending on variables' state.
-     * populates the intent with dat from other method.
-     */
+    // Returns the user to the previous screen depending on variables' state
     private void returnToPreviousScreen()
     {
         stopPlaying();
@@ -422,9 +345,7 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         startActivity(i);
     }
 
-    /**
-     * Adds the new audio recording's name to a list of new recordings.
-     */
+    // Adds the new audio recording's name to a list of new recordings
     private void addNewAudioToList()
     {
         // Differentiate these new audio recordings by saving their names
@@ -434,9 +355,7 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         listOfNewAudioNames.add(currentFileName);
     }
 
-    /**
-     * Sets up the timer used to show the user how long the recording is.
-     */
+    // Sets up the timer used to show the user how long the recording is
     private void setupTimer()
     {
         // I used ChatGPT to create this method and made a few improvements
@@ -463,9 +382,7 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         // <<<<<<< End of Chat GPT aided code >>>>>>>>
     }
 
-    /**
-     * Starts and shows the timer in the UI.
-     */
+    // Starts and shows the timer in the UI
     private void startAndShowTimer()
     {
         timerSeconds = 0;
@@ -474,9 +391,7 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         handler.postDelayed(timerRunnable, 1000);
     }
 
-    /**
-     * Stops the timer in the UI and cleans the memory recourses.
-     */
+    // Stops the timer in the UI and cleans the memory recourses
     private void stopTimer()
     {
         if (handler != null)
@@ -487,12 +402,7 @@ public class RecordOrPlayAudioActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Populated the intent with the data needed by the various pages.
-     *
-     * @param i passed intent
-     * @return returns the populated intent.
-     */
+    // Populated the intent with the data needed by the various pages
     private Intent populateIntentData(Intent i)
     {
         i.putExtra(StringHelper.SongData_Intent_Name, songName);

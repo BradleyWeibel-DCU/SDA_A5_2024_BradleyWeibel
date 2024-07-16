@@ -16,12 +16,6 @@ public class SongRVAdapter extends RecyclerView.Adapter<SongRVAdapter.ViewHolder
     private ArrayList<SongModal> songModalArrayList;
     private Context context;
 
-    /**
-     * Method used to create song adapter by assigning passed values to internal variables.
-     *
-     * @param songModalArrayList passed list of songs.
-     * @param context passed context.
-     */
     // Constructor
     public SongRVAdapter(ArrayList<SongModal> songModalArrayList, Context context)
     {
@@ -29,14 +23,6 @@ public class SongRVAdapter extends RecyclerView.Adapter<SongRVAdapter.ViewHolder
         this.context = context;
     }
 
-    /**
-     * Method to return the populated ViewHolder.
-     *
-     * @param parent   The ViewGroup into which the new View will be added after it is bound to
-     *                 an adapter position.
-     * @param viewType The view type of the new View.
-     * @return populated ViewHolder.
-     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
@@ -46,14 +32,6 @@ public class SongRVAdapter extends RecyclerView.Adapter<SongRVAdapter.ViewHolder
         return new ViewHolder(view);
     }
 
-    /**
-     * Method to sets UI elements of a single item in the recycle view with modal values at a specified position.
-     * Sets onclick for this single recycle view item (song) to open song on other screen.
-     *
-     * @param holder   The ViewHolder which should be updated to represent the contents of the
-     *                 item at the given position in the data set.
-     * @param position The position of the item within the adapter's data set.
-     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position)
     {
@@ -66,11 +44,6 @@ public class SongRVAdapter extends RecyclerView.Adapter<SongRVAdapter.ViewHolder
         // Add on click listener for recycler view item
         holder.itemView.setOnClickListener(new View.OnClickListener()
         {
-            /**
-             * Onclick for single recycle view item to open this song on other screen.
-             *
-             * @param v The view that was clicked.
-             */
             @Override
             public void onClick(View v)
             {
@@ -83,9 +56,6 @@ public class SongRVAdapter extends RecyclerView.Adapter<SongRVAdapter.ViewHolder
         });
     }
 
-    /**
-     * @return returns int size of collection of song objects from the DB.
-     */
     @Override
     public int getItemCount() { return songModalArrayList.size(); }
 
@@ -94,11 +64,7 @@ public class SongRVAdapter extends RecyclerView.Adapter<SongRVAdapter.ViewHolder
         // Creating variables for our text views
         private TextView songNameTV, songCreationDateTV, songEditDateTV;
 
-        /**
-         * Assigns UI elements to local variables to be given UI values in 'onBindViewHolder'.
-         *
-         * @param itemView
-         */
+        // Assigns UI elements to local variables to be given UI values in 'onBindViewHolder'
         public ViewHolder(@NonNull View itemView)
         {
             super(itemView);

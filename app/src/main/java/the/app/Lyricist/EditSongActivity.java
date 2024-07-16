@@ -17,13 +17,6 @@ public class EditSongActivity extends AppCompatActivity
     private FloatingActionButton saveBtn, deleteBtn, backToSongAndVersionsBtn;
     private DBHandler dbHandler;
 
-    /**
-     * Executes ons startup, sets up the screen.
-     *
-     * @param savedInstanceState If the activity is being re-initialized after
-     *                           previously being shut down then this Bundle contains the data it most
-     *                           recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -51,14 +44,6 @@ public class EditSongActivity extends AppCompatActivity
         // Add on click listener for the save song button
         saveBtn.setOnClickListener(new View.OnClickListener()
         {
-            /**
-             * Triggered on click for when save button is clicked.
-             * Checks if new song name is unique.
-             * Updates song name in DB.
-             * Renames all images/videos/audio files in file system with old song name.
-             *
-             * @param v The view that was clicked.
-             */
             @Override
             public void onClick(View v)
             {
@@ -98,12 +83,6 @@ public class EditSongActivity extends AppCompatActivity
         // Delete song button clicked
         deleteBtn.setOnClickListener(new View.OnClickListener()
         {
-            /**
-             * Triggered after on click on delete button.
-             * Goes to delete song page.
-             *
-             * @param v The view that was clicked.
-             */
             @Override
             public void onClick(View v)
             {
@@ -119,12 +98,6 @@ public class EditSongActivity extends AppCompatActivity
         // Back to view song and versions page
         backToSongAndVersionsBtn.setOnClickListener(new View.OnClickListener()
         {
-            /**
-             * Triggered after on click on back button.
-             * Returns to the list of song's versions page.
-             *
-             * @param v The view that was clicked.
-             */
             @Override
             public void onClick(View v)
             {
@@ -137,9 +110,7 @@ public class EditSongActivity extends AppCompatActivity
         });
     }
 
-    /**
-     * Renames all images with new song name.
-     */
+    // Renames all images with new song name
     private void renameImages()
     {
         File file = new File(StringHelper.Image_Folder_Path);
@@ -165,9 +136,7 @@ public class EditSongActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Renames all videos with new song name.
-     */
+    // Renames all videos with new song name
     private void renameVideos()
     {
         File file = new File(StringHelper.Video_Folder_Path);
@@ -193,9 +162,7 @@ public class EditSongActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Renames all recordings with new song name.
-     */
+    // Renames all recordings with new song name
     private void renameRecordings()
     {
         File file = new File(StringHelper.Audio_Folder_Path);

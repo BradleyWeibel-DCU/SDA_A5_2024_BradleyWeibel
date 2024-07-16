@@ -28,14 +28,6 @@ public class MainActivity extends AppCompatActivity
     private DBHandler dbHandler;
     private SongRVAdapter songRVAdapter;
 
-    /**
-     * Executes on screen load.
-     * Creates the list of songs.
-     *
-     * @param savedInstanceState If the activity is being re-initialized after
-     *                           previously being shut down then this Bundle contains the data it most
-     *                           recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -69,12 +61,6 @@ public class MainActivity extends AppCompatActivity
         // User has clicked the Lyricist Image, open help screen
         headerImg.setOnClickListener(new View.OnClickListener()
         {
-            /**
-             * Executes on click of app icon.
-             * Opens 'help' screen.
-             *
-             * @param v The view that was clicked.
-             */
             @Override
             public void onClick(View v)
             {
@@ -87,12 +73,6 @@ public class MainActivity extends AppCompatActivity
         // User has clicked the Lyricist header, open help screen
         headerTxt.setOnClickListener(new View.OnClickListener()
         {
-            /**
-             * Executes on click of app header.
-             * Opens 'help' screen.
-             *
-             * @param v The view that was clicked.
-             */
             @Override
             public void onClick(View v)
             {
@@ -105,12 +85,6 @@ public class MainActivity extends AppCompatActivity
         // Add new song button is pushed
         addSongBtn.setOnClickListener(new View.OnClickListener()
         {
-            /**
-             * Executes after click of 'add song' button.
-             * Opens add song screen.
-             *
-             * @param v The view that was clicked.
-             */
             @Override
             public void onClick(View v)
             {
@@ -123,26 +97,9 @@ public class MainActivity extends AppCompatActivity
         // Text has been typed into the search bar
         searchBarEdt.addTextChangedListener(new TextWatcher()
         {
-            /**
-             * Empty constructor, executes before the text in the search bar has been changed.
-             *
-             * @param s
-             * @param start
-             * @param count
-             * @param after
-             */
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {} // Do not remove
 
-            /**
-             * Executes when text has been changed.
-             * Searches in song table in DB for matches like what has been entered in search bar.
-             *
-             * @param s
-             * @param start
-             * @param before
-             * @param count
-             */
             // Where the magic happens
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
@@ -165,11 +122,6 @@ public class MainActivity extends AppCompatActivity
                     searchBarEdt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.search_full_icon_orange, 0, 0, 0);
             }
 
-            /**
-             * Empty constructor, executes after text has been changed in search bar.
-             *
-             * @param s
-             */
             @Override
             public void afterTextChanged(Editable s) {} // Do not remove
         });

@@ -16,12 +16,6 @@ public class VersionRVAdapter extends RecyclerView.Adapter<VersionRVAdapter.View
     private ArrayList<VersionModal> versionModalArrayList;
     private Context context;
 
-    /**
-     * Method used to populate the local variables with passed variables.
-     *
-     * @param versionModalArrayList passed list of versions.
-     * @param context passed context needed for system to function.
-     */
     // Constructor
     public VersionRVAdapter(ArrayList<VersionModal> versionModalArrayList, Context context)
     {
@@ -29,14 +23,6 @@ public class VersionRVAdapter extends RecyclerView.Adapter<VersionRVAdapter.View
         this.context = context;
     }
 
-    /**
-     * Method to return the populated ViewHolder.
-     *
-     * @param parent   The ViewGroup into which the new View will be added after it is bound to
-     *                 an adapter position.
-     * @param viewType The view type of the new View.
-     * @return populated ViewHolder.
-     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
@@ -46,14 +32,6 @@ public class VersionRVAdapter extends RecyclerView.Adapter<VersionRVAdapter.View
         return new ViewHolder(view);
     }
 
-    /**
-     * Method to sets UI elements of a single item in the recycle view with modal values at a specified position.
-     * Sets onclick for this single recycle view item (version) to open version on other screen.
-     *
-     * @param holder   The ViewHolder which should be updated to represent the contents of the
-     *                 item at the given position in the data set.
-     * @param position The position of the item within the adapter's data set.
-     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position)
     {
@@ -66,12 +44,6 @@ public class VersionRVAdapter extends RecyclerView.Adapter<VersionRVAdapter.View
         // Add on click listener for recycler view item
         holder.itemView.setOnClickListener(new View.OnClickListener()
         {
-            /**
-             * Executes after click on single version in list.
-             * Opens version on other screen.
-             *
-             * @param v The view that was clicked.
-             */
             @Override
             public void onClick(View v)
             {
@@ -84,9 +56,6 @@ public class VersionRVAdapter extends RecyclerView.Adapter<VersionRVAdapter.View
         });
     }
 
-    /**
-     * @return returns int size of collection of version objects from the DB.
-     */
     // Get size of array list
     @Override
     public int getItemCount() { return versionModalArrayList.size(); }
@@ -96,11 +65,6 @@ public class VersionRVAdapter extends RecyclerView.Adapter<VersionRVAdapter.View
         // Creating variables for our text views
         private TextView versionNameTV, versionCreationDateTV, versionEditDateTV;
 
-        /**
-         * Assigns UI elements to local variables to be given UI values in 'onBindViewHolder'.
-         *
-         * @param itemView
-         */
         public ViewHolder(@NonNull View itemView)
         {
             super(itemView);

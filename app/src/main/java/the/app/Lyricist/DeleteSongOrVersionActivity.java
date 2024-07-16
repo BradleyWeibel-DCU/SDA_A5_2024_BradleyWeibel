@@ -21,13 +21,6 @@ public class DeleteSongOrVersionActivity extends AppCompatActivity
     private String songName, versionName;
     private DBHandler dbHandler;
 
-    /**
-     * Triggered on create, sets up the UI.
-     *
-     * @param savedInstanceState If the activity is being re-initialized after
-     *                           previously being shut down then this Bundle contains the data it most
-     *                           recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -60,12 +53,6 @@ public class DeleteSongOrVersionActivity extends AppCompatActivity
         // Add on click listener for the save song button
         deleteBtn.setOnClickListener(new View.OnClickListener()
         {
-            /**
-             * Triggered on click of delete button.
-             * Removes all images/videos/audio files of song/version that was deleted.
-             *
-             * @param v The view that was clicked.
-             */
             @Override
             public void onClick(View v)
             {
@@ -106,12 +93,6 @@ public class DeleteSongOrVersionActivity extends AppCompatActivity
         // Back to view song and versions page
         backToSongAndVersionsBtn.setOnClickListener(new View.OnClickListener()
         {
-            /**
-             * Triggered on click when back button is clicked.
-             * Returns to previous screen (either edit song or edit version screen).
-             *
-             * @param v The view that was clicked.
-             */
             @Override
             public void onClick(View v)
             {
@@ -138,12 +119,7 @@ public class DeleteSongOrVersionActivity extends AppCompatActivity
         });
     }
 
-    /**
-     * Removes all images from this song/version.
-     *
-     * @param thisSongName name of song (always supplied)
-     * @param thisVersionName name of version (optional, if supplied, only the version's images are removed)
-     */
+    // Removes all images from this song/version
     public void removeAllImages(String thisSongName, String thisVersionName)
     {
         File file = new File(StringHelper.Image_Folder_Path);
@@ -167,12 +143,7 @@ public class DeleteSongOrVersionActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Removes all videos from this song/version.
-     *
-     * @param thisSongName name of song (always supplied)
-     * @param thisVersionName name of version (optional, if supplied, only the version's videos are removed)
-     */
+    // Removes all videos from this song/version
     public void removeAllVideos(String thisSongName, String thisVersionName)
     {
         File file = new File(StringHelper.Video_Folder_Path);
@@ -196,12 +167,7 @@ public class DeleteSongOrVersionActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Removes all audio recordings from this song/version.
-     *
-     * @param thisSongName name of song (always supplied)
-     * @param thisVersionName name of version (optional, if supplied, only the version's audio files are removed)
-     */
+    // Removes all audio recordings from this song/version
     public void removeAllRecordings(String thisSongName, String thisVersionName)
     {
         File file = new File(StringHelper.Audio_Folder_Path);
